@@ -1,0 +1,21 @@
+version: '3'
+
+volumes:
+  mysql_data:
+    driver: local
+services:
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: budgetingapp
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: password
+    ports:
+      - 33366:3306
+
+
+      #    local means the volumes keyckloak_mysql_data and api_mysql_data are created on the same Docker host
+      #    where the container is run.

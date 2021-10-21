@@ -1,0 +1,10 @@
+{
+  "realm": "codercampus",
+  "auth-server-url": "http://127.0.0.1:8088/auth/",
+  "ssl-required": "external",
+  "resource": "codercampus_budget_app",
+  "public-client": true,
+  "verify-token-audience": true,
+  "use-resource-role-mappings": true,
+  "confidential-port": 0
+}

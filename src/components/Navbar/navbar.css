@@ -1,0 +1,16 @@
+.adminNavBarContainer{
+    margin-left: 15vw;
+    width: 85vw;
+}
+
+.adminNavBarContainer header .container{
+    margin-left:1vw;
+    max-width: 80vw;
+}
+
+@media (max-width: 1100px) {
+    .adminNavBarContainer{
+        margin-left: 5vw;
+        width: 95vw;
+    }
+}
