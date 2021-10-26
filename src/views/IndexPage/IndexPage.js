@@ -18,20 +18,18 @@ const IndexPage = (props) => {
     useEffect(()=>{
         pathHandler(path)
     },[])
+
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
-    const handleCloseLogin = () => setShowLogin(false);
-    const handleShowLogin = () => setShowLogin(true);
-
-    const handleCloseRegister= () => setShowRegister(false);
-    const handleShowRegister = () => setShowRegister(true);
+    const toggleLoginModal = () => setShowLogin(!showLogin);
+    const toggleRegisterModal= () => setShowRegister(!showRegister);
 
     return (
         <>
-            <NavBar handleShowLogin={handleShowLogin} handleShowRegister={handleShowRegister}/>
-            <LoginModal handleClose={handleCloseLogin} show={showLogin} handleShowRegister={handleShowRegister}/>
-            <RegisterModal handleClose={handleCloseRegister} show={showRegister}/>
+            <NavBar toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal}/>
+            <LoginModal handleClose={toggleLoginModal} show={showLogin} toggleRegisterModal={toggleRegisterModal}/>
+            <RegisterModal toggleRegisterModal={toggleRegisterModal} show={showRegister}/>
             <main>
 
                 <div id="myCarousel" className="carousel slide" data-bs-ride="carousel">

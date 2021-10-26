@@ -1,14 +1,28 @@
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
-import React from "react";
+import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
+import _ from "lodash";
 const LoginModal = (props) =>{
 
     const {handleClose,show,handleShowRegister} = props;
 
+    const [formState,setFormState] = useState({});
+
+    const handleFormChange = (event)=>{
+        let name = event.target.name;
+        let value = event.target.value;
+
+        setFormState(prevState => ({...prevState, [name]: value}));
+    }
+
     const handleRegister = () =>{
         handleClose();
         handleShowRegister();
+    }
+
+    const handleLogin = () =>{
+
     }
 
     return (
@@ -27,11 +41,19 @@ const LoginModal = (props) =>{
                         <Form>
                             <Form.Group className="mb-3" controlId="formGroupEmail">
                                 <Form.Label>Email address</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
+                                <Form.Control
+                                    type="email"
+                                    placeholder="Enter email"
+                                    onChange={handleFormChange}
+                                />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formGroupPassword">
                                 <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" />
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Password"
+                                    onChange={handleFormChange}
+                                />
                             </Form.Group>
                             <span style={{marginLeft:"75%"}} onClick={handleRegister}>Or register</span>
                         </Form>
@@ -41,7 +63,7 @@ const LoginModal = (props) =>{
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary">Understood</Button>
+                    <Button variant="primary" onClick={handleLogin}>Login</Button>
                 </Modal.Footer>
             </Modal>
         </>

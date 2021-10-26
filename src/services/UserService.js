@@ -1,11 +1,15 @@
 
+import {useFetch} from "../customHooks/useFetch";
 
+const login = () => {
 
-const login = () => true;
+};
 
 const logout = () => true;
 
-const register = () => true;
+const register = () => {
+
+};
 
 const isAuthenticated = () => true;
 

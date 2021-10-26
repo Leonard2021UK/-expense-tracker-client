@@ -6,7 +6,7 @@ import AuthRenderer from "../../utilityComponents/AuthRenderer";
 import './navbar.css';
 const NavBar = (props)=>{
 
-    const {handleShowLogin,handleShowRegister} = props;
+    const {toggleLoginModal,toggleRegisterModal} = props;
 
     const handleLogin = () => UserService.login();
 
@@ -39,11 +39,8 @@ const NavBar = (props)=>{
 
                           <div className="text-end">
                               <PublicRenderer>
-                                  <button className="btn btn-outline-light me-2" onClick={handleShowLogin}>Login</button>
-                                  <button className="btn btn-warning" onClick={handleShowRegister}>Register</button>
-                                  {/*<a href={"/login"} className="btn btn-outline-light me-2">Login</a>*/}
-                                  {/*<a href={"/logout"} className="btn btn-warning">Register</a>*/}
-
+                                  <button className="btn btn-outline-light me-2" onClick={toggleLoginModal}>Login</button>
+                                  <button className="btn btn-warning" onClick={toggleRegisterModal}>Register</button>
                               </PublicRenderer>
                               <AuthRenderer>
                                   <div className="dropdown">
