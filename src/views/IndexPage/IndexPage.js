@@ -28,7 +28,7 @@ const IndexPage = (props) => {
     return (
         <>
             <NavBar toggleLoginModal={toggleLoginModal} toggleRegisterModal={toggleRegisterModal}/>
-            <LoginModal handleClose={toggleLoginModal} show={showLogin} toggleRegisterModal={toggleRegisterModal}/>
+            <LoginModal toggleLoginModal={toggleLoginModal} show={showLogin} toggleRegisterModal={toggleRegisterModal}/>
             <RegisterModal toggleRegisterModal={toggleRegisterModal} show={showRegister}/>
             <main>
 

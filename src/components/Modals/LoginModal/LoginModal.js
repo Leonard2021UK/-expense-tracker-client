@@ -3,11 +3,17 @@ import exact from 'prop-types-exact';
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import _ from "lodash";
+import {clearRegisterForm} from "../../../redux/features/authentication/registerFormSlice";
+import { useDispatch } from 'react-redux'
+import {Formik} from "formik";
+
 const LoginModal = (props) =>{
 
-    const {handleClose,show,handleShowRegister} = props;
+    const {toggleLoginModal,show,toggleRegisterModal} = props;
 
     const [formState,setFormState] = useState({});
+
+    const dispatch = useDispatch()
 
     const handleFormChange = (event)=>{
         let name = event.target.name;
@@ -17,8 +23,13 @@ const LoginModal = (props) =>{
     }
 
     const handleRegister = () =>{
-        handleClose();
-        handleShowRegister();
+        toggleLoginModal();
+        toggleRegisterModal();
+    }
+
+    const handleClose = () =>{
+        dispatch(clearRegisterForm());
+        toggleLoginModal();
     }
 
     const handleLogin = () =>{
@@ -38,25 +49,27 @@ const LoginModal = (props) =>{
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{width:"80%",margin:"auto"}}>
-                        <Form>
-                            <Form.Group className="mb-3" controlId="formGroupEmail">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    placeholder="Enter email"
-                                    onChange={handleFormChange}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formGroupPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={handleFormChange}
-                                />
-                            </Form.Group>
-                            <span style={{marginLeft:"75%"}} onClick={handleRegister}>Or register</span>
-                        </Form>
+                        <Formik initialValues={{ name:"", email:"", phone:"", blog:""}} >
+                            <Form>
+                                <Form.Group className="mb-3" controlId="formGroupEmail">
+                                    <Form.Label>Email address</Form.Label>
+                                    <Form.Control
+                                        type="email"
+                                        placeholder="Enter email"
+                                        onChange={handleFormChange}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="formGroupPassword">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control
+                                        type="password"
+                                        placeholder="Password"
+                                        onChange={handleFormChange}
+                                    />
+                                </Form.Group>
+                                <span style={{marginLeft:"75%"}} onClick={handleRegister}>Or register</span>
+                            </Form>
+                        </Formik>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -73,7 +86,7 @@ const LoginModal = (props) =>{
 export default LoginModal;
 
 LoginModal.propTypes = exact({
-    handleClose: PropTypes.func,
+    toggleLoginModal: PropTypes.func,
     show: PropTypes.bool,
-    handleShowRegister: PropTypes.func
+    toggleRegisterModal: PropTypes.func
 });
