@@ -43,7 +43,7 @@ const RegisterModal = (props) =>{
                 </Modal.Header>
                 <Modal.Body>
                     <div style={{width:"80%",margin:"auto"}}>
-                        
+
                         <Form>
                             <Form.Group className="mb-3" controlId="formGroupFirstName">
                                 <Form.Label>First name</Form.Label>
