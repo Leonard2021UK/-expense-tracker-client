@@ -22,16 +22,16 @@ const RegisterModal = (props) =>{
         toggleRegisterModal();
     }
 
-    const handleOnBlur = () =>{
-        dispatch(setRegisterFormState({formState:formState}));
-   }
-
-    const handleFormChange = (event)=>{
-        let name = event.target.name;
-        let value = event.target.value;
-
-        setFormState(prevState => ({...prevState, [name]: value}));
-    }
+   //  const handleOnBlur = () =>{
+   //      dispatch(setRegisterFormState({formState:formState}));
+   // }
+   //
+   //  const handleFormChange = (event)=>{
+   //      let name = event.target.name;
+   //      let value = event.target.value;
+   //
+   //      setFormState(prevState => ({...prevState, [name]: value}));
+   //  }
 
     const validationSchema = Yup.object().shape({
         firstName: Yup.string()
@@ -47,9 +47,11 @@ const RegisterModal = (props) =>{
             .max(100, "*Email must be less than 100 characters")
             .required("*Email is required"),
         password: Yup.string()
+            .oneOf([Yup.ref('confirmPassword'), null], 'Passwords must match')
             .required('Password is required'),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .required('Password confirmation is required'),
     });
 
     return (
@@ -68,6 +70,16 @@ const RegisterModal = (props) =>{
                         <Formik
                             initialValues={{firstName: "",lastName:"",email:"",password:"",confirmPassword:""}}
                             validationSchema={validationSchema}
+                            onSubmit={(values, {setSubmitting, resetForm}) => {
+                                // When button submits form and form is in the process of submitting, submit button is disabled
+                                setSubmitting(true);
+
+                                // Resets form after submission is complete
+                                resetForm();
+
+                                // Sets setSubmitting to false after form is reset
+                                setSubmitting(false);
+                            }}
                         >
 
                             {(
@@ -81,8 +93,7 @@ const RegisterModal = (props) =>{
                                     isSubmitting
                                 }
                             )=>(
-                                <Form>
-                                    {console.log(values)}
+                                <Form onSubmit={handleSubmit}>
                                     <Form.Group className="mb-3" controlId="formGroupFirstName">
                                         <Form.Label>First name</Form.Label>
                                         <Form.Control
@@ -108,8 +119,10 @@ const RegisterModal = (props) =>{
                                             onBlur={handleBlur}
                                             value={values.lastName}
                                             className={touched.lastName && errors.lastName ? "error" : null}
-
                                         />
+                                        {touched.lastName && errors.lastName ? (
+                                            <div className="error-message">{errors.lastName}</div>
+                                        ): null}
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="formGroupEmail">
                                         <Form.Label>Email address</Form.Label>
@@ -121,8 +134,10 @@ const RegisterModal = (props) =>{
                                             onBlur={handleBlur}
                                             value={values.email}
                                             className={touched.email && errors.email ? "error" : null}
-
                                         />
+                                        {touched.email && errors.email ? (
+                                            <div className="error-message">{errors.email}</div>
+                                        ): null}
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="formGroupPassword">
                                         <Form.Label>Password</Form.Label>
@@ -134,8 +149,10 @@ const RegisterModal = (props) =>{
                                             onBlur={handleBlur}
                                             value={values.password}
                                             className={touched.password && errors.password ? "error" : null}
-
                                         />
+                                        {touched.password && errors.password ? (
+                                            <div className="error-message">{errors.password}</div>
+                                        ): null}
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="formGroupPasswordConfirm">
                                         <Form.Label>Confirm password</Form.Label>
@@ -147,20 +164,28 @@ const RegisterModal = (props) =>{
                                             onBlur={handleBlur}
                                             value={values.confirmPassword}
                                             className={touched.confirmPassword && errors.confirmPassword ? "error" : null}
-
                                         />
+                                        {touched.confirmPassword && errors.confirmPassword ? (
+                                            <div className="error-message">{errors.confirmPassword}</div>
+                                        ): null}
                                     </Form.Group>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={handleClose}>
+                                            Close
+                                        </Button>
+                                        <Button variant="primary" type="submit" disabled={isSubmitting}> Register</Button>
+                                    </Modal.Footer>
                                 </Form>
                             )}
                         </Formik>
                     </div>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary">Register</Button>
-                </Modal.Footer>
+                {/*<Modal.Footer>*/}
+                {/*    <Button variant="secondary" onClick={handleClose}>*/}
+                {/*        Close*/}
+                {/*    </Button>*/}
+                {/*    <Button variant="primary" disabled={isSubmitting}> Register</Button>*/}
+                {/*</Modal.Footer>*/}
             </Modal>
         </>
     )
