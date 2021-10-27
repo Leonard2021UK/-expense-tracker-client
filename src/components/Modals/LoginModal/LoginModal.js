@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 import React, {useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
-import _ from "lodash";
 import {clearRegisterForm} from "../../../redux/features/authentication/registerFormSlice";
 import { useDispatch } from 'react-redux'
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import './loginModalStyle.css';
+import UserService from "../../../services/UserService";
 
 const LoginModal = (props) =>{
 
@@ -43,7 +43,7 @@ const LoginModal = (props) =>{
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .email("*Must be a valid email address")
-            .max(100, "*Email must be less than 100 characters")
+            .max(40, "*Email must be less than 100 characters")
             .required("*Email is required"),
         password: Yup.string()
             .required('Password is required'),
@@ -69,12 +69,17 @@ const LoginModal = (props) =>{
                             onSubmit={(values, {setSubmitting, resetForm}) => {
                                 // When button submits form and form is in the process of submitting, submit button is disabled
                                 setSubmitting(true);
+                                console.log(values)
+                                UserService.login(values).then((response)=>{
+                                    console.log(response)
+                                })
 
                                 // Resets form after submission is complete
                                 resetForm();
 
                                 // Sets setSubmitting to false after form is reset
                                 setSubmitting(false);
+
                             }}
                         >
                             {(

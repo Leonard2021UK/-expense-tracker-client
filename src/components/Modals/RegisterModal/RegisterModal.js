@@ -3,53 +3,36 @@ import {Button, Form, Modal} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
 import LoginModal from "../LoginModal/LoginModal";
-import { useDispatch } from 'react-redux'
-import {setRegisterFormState,clearRegisterForm} from "../../../redux/features/authentication/registerFormSlice";
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import './registerModalStyle.css';
+import UserService from "../../../services/UserService";
 
 const RegisterModal = (props) =>{
 
     const {toggleRegisterModal,show} = props;
 
-    const dispatch = useDispatch()
-
-    const [formState,setFormState] = useState({});
-
     const handleClose = () =>{
-        dispatch(clearRegisterForm());
         toggleRegisterModal();
     }
 
-   //  const handleOnBlur = () =>{
-   //      dispatch(setRegisterFormState({formState:formState}));
-   // }
-   //
-   //  const handleFormChange = (event)=>{
-   //      let name = event.target.name;
-   //      let value = event.target.value;
-   //
-   //      setFormState(prevState => ({...prevState, [name]: value}));
-   //  }
-
     const validationSchema = Yup.object().shape({
-        firstName: Yup.string()
-            .min(2, "*First name must have at least 2 characters")
-            .max(100, "*First name can't be longer than 100 characters")
-            .required("*First nam is required"),
-        lastName: Yup.string()
-            .min(2, "*Last name must have at least 2 characters")
-            .max(100, "*Last name can't be longer than 100 characters")
-            .required("*Last name is required"),
+        username: Yup.string()
+            .min(3,"*Username must be at least 3 characters")
+            .max(50, "*Username must be less than 100 characters")
+            .required("*Username is required"),
         email: Yup.string()
             .email("*Must be a valid email address")
-            .max(100, "*Email must be less than 100 characters")
+            .max(50, "*Email must be less than 100 characters")
             .required("*Email is required"),
         password: Yup.string()
+            .min(6, "*Password must have at least 6 characters")
+            .max(40, "*Password can't be longer than 40 characters")
             .oneOf([Yup.ref('confirmPassword'), null], 'Passwords must match')
             .required('Password is required'),
         confirmPassword: Yup.string()
+            .min(6, "*Password must have at least 6 characters")
+            .max(40, "*Password can't be longer than 40 characters")
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required('Password confirmation is required'),
     });
@@ -68,12 +51,15 @@ const RegisterModal = (props) =>{
                 <Modal.Body>
                     <div style={{width:"80%",margin:"auto"}}>
                         <Formik
-                            initialValues={{firstName: "",lastName:"",email:"",password:"",confirmPassword:""}}
+                            initialValues={{username:"",email:"",password:"",confirmPassword:""}}
                             validationSchema={validationSchema}
                             onSubmit={(values, {setSubmitting, resetForm}) => {
                                 // When button submits form and form is in the process of submitting, submit button is disabled
                                 setSubmitting(true);
-
+                                console.log(values)
+                                UserService.register(values).then((response)=>{
+                                    console.log(response)
+                                })
                                 // Resets form after submission is complete
                                 resetForm();
 
@@ -81,7 +67,6 @@ const RegisterModal = (props) =>{
                                 setSubmitting(false);
                             }}
                         >
-
                             {(
                                 {
                                     values,
@@ -94,34 +79,19 @@ const RegisterModal = (props) =>{
                                 }
                             )=>(
                                 <Form onSubmit={handleSubmit}>
-                                    <Form.Group className="mb-3" controlId="formGroupFirstName">
-                                        <Form.Label>First name</Form.Label>
+                                    <Form.Group className="mb-3" controlId="formGroupUserName">
+                                        <Form.Label>Username</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="firstName"
-                                            placeholder="Firstname"
+                                            name="username"
+                                            placeholder="Username"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            value={values.firstName}
-                                            className={touched.firstName && errors.firstName ? "error" : null}
+                                            value={values.userName}
+                                            className={touched.username && errors.username ? "error" : null}
                                         />
-                                        {touched.firstName && errors.firstName ? (
-                                            <div className="error-message">{errors.firstName}</div>
-                                        ): null}
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" controlId="formGroupLastName">
-                                        <Form.Label>Last name</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="lastName"
-                                            placeholder="Last name"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            value={values.lastName}
-                                            className={touched.lastName && errors.lastName ? "error" : null}
-                                        />
-                                        {touched.lastName && errors.lastName ? (
-                                            <div className="error-message">{errors.lastName}</div>
+                                        {touched.username && errors.username ? (
+                                            <div className="error-message">{errors.username}</div>
                                         ): null}
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="formGroupEmail">

@@ -6,7 +6,7 @@ const _ = require('lodash');
  * @param options - request option (headers,body,method,etc.)
  * @returns {Promise<ValidationOptions.unknown | {errorCauses: [{errorSummary: string}], errorLink: string, errorCode: string, errorId: string, errorSummary: string}>}
  */
-export function useFetch(url, options) {
+export function UseCustomFetch(url, options) {
 
     //Request controller to abort unfinished requests
     let controller = new AbortController();
