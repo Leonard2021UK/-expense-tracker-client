@@ -13,21 +13,10 @@ const LoginModal = (props) =>{
 
     const {toggleLoginModal,show,toggleRegisterModal} = props;
 
-    const dispatch = useDispatch()
-
-    const [formState,setFormState] = useState({});
-
     const handleClose = () =>{
-        dispatch(clearRegisterForm());
         toggleLoginModal();
     }
 
-    const handleFormChange = (event)=>{
-        let name = event.target.name;
-        let value = event.target.value;
-
-        setFormState(prevState => ({...prevState, [name]: value}));
-    }
 
     const handleRegister = () =>{
         toggleLoginModal();

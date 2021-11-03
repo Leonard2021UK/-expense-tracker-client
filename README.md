@@ -103,4 +103,7 @@ https://keycloak.discourse.group/t/securing-speing-boot-restful-api-and-react-js
 #check used port binding by Jboss keycloak
 grep port standalone/configuration/standalone.xml
 
+#The Ultimate Guide to handling JWTs on frontend clients (GraphQL)
+https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#jwt_persist
+
 
