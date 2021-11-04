@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 import React, {useState} from "react";
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Form, Modal, Spinner} from "react-bootstrap";
 import {clearRegisterForm} from "../../../redux/features/authentication/registerFormSlice";
 import { useDispatch } from 'react-redux'
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import './loginModalStyle.css';
 import UserService from "../../../services/UserService";
+import {useHistory} from "react-router-dom";
+import CustomSpinner from "../../Spinner/CustomSpinner";
 
 const LoginModal = (props) =>{
 
+    let history = useHistory();
+
     const {toggleLoginModal,show,toggleRegisterModal} = props;
+    const [showSpinner,setShowSpinner] = useState(false);
 
     const handleClose = () =>{
         toggleLoginModal();
@@ -58,11 +63,14 @@ const LoginModal = (props) =>{
                             onSubmit={(values, {setSubmitting, resetForm}) => {
                                 // When button submits form and form is in the process of submitting, submit button is disabled
                                 setSubmitting(true);
-                                console.log(values)
-                                UserService.login(values).then((response)=>{
-                                    // window.location.replace("http://localhost:3000/admin")
-                                    toggleLoginModal();
-                                })
+                                setShowSpinner(true)
+                                UserService.login(values).then(()=>{
+                                    //redirects to admin page
+                                    history.push("/admin");
+                                    // toggleLoginModal();
+                                }).then(()=>
+                                    setShowSpinner(false)
+                                )
 
                                 // Resets form after submission is complete
                                 resetForm();
@@ -126,6 +134,9 @@ const LoginModal = (props) =>{
                         </Formik>
                     </div>
                 </Modal.Body>
+                <Modal.Footer>
+                    <CustomSpinner hidden={showSpinner}/>
+                </Modal.Footer>
 
             </Modal>
         </>

@@ -19,7 +19,9 @@ const login = async (values) => {
     }
     return await UseCustomFetch(process.env.REACT_APP_SIGN_IN,fetchOption)
         .then(async (response)=>{
-            inMemoryJWT.setToken(await response['accessToken'])
+            const jwt = await response['accessToken'];
+            inMemoryJWT.setToken(jwt)
+            return inMemoryJWT
         })
 };
 
@@ -44,7 +46,7 @@ const register = async (values) => {
 };
 
 const isAuthenticated = () => {
-
+    return true;
 
 };
 
