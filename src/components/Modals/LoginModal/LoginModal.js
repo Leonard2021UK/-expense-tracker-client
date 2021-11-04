@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import exact from 'prop-types-exact';
 import React, {useState} from "react";
-import {Button, Form, Modal, Spinner} from "react-bootstrap";
-import {clearRegisterForm} from "../../../redux/features/authentication/registerFormSlice";
-import { useDispatch } from 'react-redux'
+import {Button, Form, Modal} from "react-bootstrap";
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import './loginModalStyle.css';
@@ -65,12 +63,13 @@ const LoginModal = (props) =>{
                                 setSubmitting(true);
                                 setShowSpinner(true)
                                 UserService.login(values).then(()=>{
-                                    //redirects to admin page
-                                    history.push("/admin");
+                                    setShowSpinner(false);
+
                                     // toggleLoginModal();
-                                }).then(()=>
-                                    setShowSpinner(false)
-                                )
+                                }).then(() => {
+                                        //redirects to admin page
+                                        history.push("/admin");
+                                    })
 
                                 // Resets form after submission is complete
                                 resetForm();
