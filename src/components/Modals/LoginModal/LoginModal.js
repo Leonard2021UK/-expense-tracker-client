@@ -60,7 +60,8 @@ const LoginModal = (props) =>{
                                 setSubmitting(true);
                                 console.log(values)
                                 UserService.login(values).then((response)=>{
-                                    console.log(response)
+                                    // window.location.replace("http://localhost:3000/admin")
+                                    toggleLoginModal();
                                 })
 
                                 // Resets form after submission is complete

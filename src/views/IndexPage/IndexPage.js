@@ -16,7 +16,7 @@ const IndexPage = (props) => {
     const {path,pathHandler} = props;
 
     useEffect(()=>{
-        pathHandler(path)
+        // pathHandler(path)
     },[])
 
     const [showLogin, setShowLogin] = useState(false);

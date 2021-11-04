@@ -1,30 +1,29 @@
-
+import inMemoryJWT from "../utils/inMemoryJWT";
 import {UseCustomFetch} from "../customHooks/useCustomFetch";
+// import { useHistory } from 'react-router-dom';
+//
+// const history = useHistory();
+
+
 
 const login = async (values) => {
+
     const fetchOption = {
         "method": "POST",
-        "headers": new Headers({'content-type': 'application/json'}),
+        "headers": new Headers({
+            'content-type': 'application/json',
+            
+        }),
         "body": JSON.stringify(values),
 
     }
     return await UseCustomFetch(process.env.REACT_APP_SIGN_IN,fetchOption)
         .then(async (response)=>{
-            return response;
+            inMemoryJWT.setToken(await response['accessToken'])
         })
 };
 
-let inMemoryToken;
 
-function loginHandle ({ jwt_token, jwt_token_expiry }, noRedirect) {
-    inMemoryToken = {
-        token: jwt_token,
-        expiry: jwt_token_expiry
-    };
-    if (!noRedirect) {
-        Router.push('/app')
-    }
-}
 
 
 
@@ -44,26 +43,15 @@ const register = async (values) => {
         })
 };
 
-const isAuthenticated = () => true;
+const isAuthenticated = () => {
+
+
+};
 
 const getToken = () => true;
 
-const parseJwt = (token) =>{
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
-}
-
 const isLoggedIn = () => {
-    const jwt_token = inMemoryToken;
-    if (!jwt_token) {
-        Router.push('/login')
-    }
-    return jwt_token
+    return inMemoryJWT.getToken() !== null;
 };
 
 const getUsername = () => "Anonymus";

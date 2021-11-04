@@ -1,5 +1,5 @@
 import IndexPage from "./views/IndexPage/IndexPage";
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, Switch} from "react-router-dom";
 import Admin from "./layout/admin/Admin";
 import PublicRenderer from "./utilityComponents/PublicRenderer";
 import AuthRenderer from "./utilityComponents/AuthRenderer";
@@ -15,12 +15,14 @@ const App = () => {
     return (
 
         <>
-            <PublicRenderer>
-                <IndexPage path={"/"} pathHandler={customPathHandler}/>
-            </PublicRenderer>
-            <AuthRenderer>
-                <Admin path={"/admin"} pathHandler={customPathHandler}/>
-            </AuthRenderer>
+            <Switch>
+                <PublicRenderer>
+                    <IndexPage path='/' exact={true} />
+                </PublicRenderer>
+                {/*<AuthRenderer>*/}
+                    <Admin path='/admin' pathHandler={customPathHandler}/>
+                {/*</AuthRenderer>*/}
+            </Switch>
         </>
     );
 }

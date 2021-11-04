@@ -11,7 +11,8 @@ const Admin = (props) =>{
     const {path,pathHandler} = props;
 
     useEffect(()=>{
-        pathHandler(path)
+        console.log("ADMIN")
+        // pathHandler(path)
     },[])
 
     /**

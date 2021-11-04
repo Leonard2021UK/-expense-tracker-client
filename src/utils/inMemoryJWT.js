@@ -1,4 +1,4 @@
-const inMemoryJWTManager = () => {
+const inMemoryJWT = () => {
     let inMemoryJWT = null;
 
     const getToken = () => inMemoryJWT;
@@ -20,4 +20,4 @@ const inMemoryJWTManager = () => {
     }
 };
 
-export default inMemoryJWTManager();
+export default inMemoryJWT();
