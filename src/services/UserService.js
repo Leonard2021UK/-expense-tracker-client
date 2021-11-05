@@ -3,6 +3,8 @@ import {UseCustomFetch} from "../customHooks/useCustomFetch";
 // import { useHistory } from 'react-router-dom';
 //
 // const history = useHistory();
+// Load the core build.
+const _ = require('lodash/core');
 
 
 
@@ -18,18 +20,35 @@ const login = async (values) => {
 
     }
     return await UseCustomFetch(process.env.REACT_APP_SIGN_IN,fetchOption)
-        .then(async (response)=>{
-            const jwt = await response['accessToken'];
-            inMemoryJWT.setToken(jwt)
+        .then( async (response)=>{
+
+            if(response['status'] === 200){
+                const parsedResponse = await response.json();
+                if(parsedResponse['accessToken']){
+                    const jwt = parsedResponse['accessToken'];
+                    inMemoryJWT.setToken(jwt)
+                }
+
+            }
             return inMemoryJWT
         })
 };
 
+const syncLogout = (event) => {
+    if (event.key === 'logout') {
+        console.log('logged out from storage!');
+        window.location.replace("/");
+    }
+
+}
 
 
 
+const logout = () => {
+    inMemoryJWT.setToken(null);
+    window.localStorage.setItem('logout', Date.now())
 
-const logout = () => true;
+};
 
 const register = async (values) => {
     const fetchOption = {
@@ -63,6 +82,8 @@ const hasRealmRole = () => "USER";
 const hasResourceRole = () => "USER";
 
 const isAuthorized = () => true
+
+window.addEventListener('storage', syncLogout)
 
 const UserService = {
     login,

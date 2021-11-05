@@ -9,3 +9,12 @@
     position: absolute;
     font-size: .8em;
 }
+
+.login-error-message-container{
+    display: flex;
+    justify-content: center;
+}
+.login-error-message{
+
+    color: #FF6565;
+}

@@ -8,6 +8,7 @@ import './loginModalStyle.css';
 import UserService from "../../../services/UserService";
 import {useHistory} from "react-router-dom";
 import CustomSpinner from "../../Spinner/CustomSpinner";
+const _ = require('lodash/core');
 
 const LoginModal = (props) =>{
 
@@ -15,8 +16,9 @@ const LoginModal = (props) =>{
 
     const {toggleLoginModal,show,toggleRegisterModal} = props;
     const [showSpinner,setShowSpinner] = useState(false);
-
+    const [showLoginError,setShowLoginError] = useState(false);
     const handleClose = () =>{
+        setShowLoginError(false);
         toggleLoginModal();
     }
 
@@ -54,6 +56,11 @@ const LoginModal = (props) =>{
                     <Modal.Title>Login</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    {showLoginError ? (
+                        <div className="login-error-message-container">
+                            <div className="login-error-message">{"Incorrect username or password!"}</div>
+                        </div>
+                    ): null}
                     <div style={{width:"80%",margin:"auto"}}>
                         <Formik
                             initialValues={{email:"",password:""}}
@@ -62,13 +69,18 @@ const LoginModal = (props) =>{
                                 // When button submits form and form is in the process of submitting, submit button is disabled
                                 setSubmitting(true);
                                 setShowSpinner(true)
-                                UserService.login(values).then(()=>{
+                                UserService.login(values).then((response)=>{
                                     setShowSpinner(false);
-
-                                    // toggleLoginModal();
-                                }).then(() => {
+                                    if(_.isNull(response.getToken())){
+                                        setShowLoginError(true);
+                                    }else{
                                         //redirects to admin page
                                         history.push("/admin");
+                                    }
+                                    // toggleLoginModal();
+                                }).then(() => {
+
+
                                     })
 
                                 // Resets form after submission is complete

@@ -2,9 +2,13 @@ import CompanyLogo from "../../assets/svg/CompanyLogo/CompanyLogo";
 import UserService from "../../services/UserService";
 import PublicRenderer from "../../utilityComponents/PublicRenderer";
 import AuthRenderer from "../../utilityComponents/AuthRenderer";
+import {useHistory} from "react-router-dom";
+
 
 import './navbar.css';
 const NavBar = (props)=>{
+
+    let history = useHistory();
 
     const {toggleLoginModal,toggleRegisterModal} = props;
 
@@ -12,7 +16,10 @@ const NavBar = (props)=>{
 
     const handleRegister= () => UserService.register();
 
-    const handleLogout = () => UserService.logout();
+    const handleLogout = () => {
+        UserService.logout(history);
+        history.push("/");
+    }
 
     return(
           <>

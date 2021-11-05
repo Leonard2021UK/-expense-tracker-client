@@ -35,7 +35,7 @@ export function UseCustomFetch(url, options) {
 
     return fetchWithTimeout(url, options, 3000)
         .then(async (response) => {
-            return response.json();
+            return response;
         })
         .catch((error) => {
             controller.abort();

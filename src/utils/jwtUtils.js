@@ -1,6 +1,6 @@
 import {Redirect} from "react-router-dom";
 
-let inMemoryToken;
+// let inMemoryToken;
 
 
 
@@ -12,4 +12,11 @@ const parseJwt = (token) =>{
     }).join(''));
 
     return JSON.parse(jsonPayload);
+}
+
+const isTokenExpired = (token) =>{
+    const tokenPayload = parseJwt(token);
+    console.log("token payload");
+    console.log(tokenPayload);
+
 }
