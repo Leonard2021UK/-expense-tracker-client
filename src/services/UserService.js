@@ -24,6 +24,7 @@ const login = async (values) => {
 
             if(response['status'] === 200){
                 const parsedResponse = await response.json();
+                console.log(parsedResponse)
                 if(parsedResponse['accessToken']){
                     const jwt = parsedResponse['accessToken'];
                     inMemoryJWT.setToken(jwt)
@@ -69,6 +70,17 @@ const isAuthenticated = () => {
 
 };
 
+const refreshToken = async () => {
+    const fetchOption = {
+        "method": "POST",
+        "headers": new Headers({'content-type': 'application/json','Access-Control-Allow-Credentials':"true"}),
+    }
+
+    return await UseCustomFetch(process.env.REACT_APP_REFRESH_TOKEN,fetchOption)
+        .then(async (response)=>{
+            return response;
+        })
+}
 const getToken = () => true;
 
 const isLoggedIn = () => {
@@ -95,7 +107,8 @@ const UserService = {
     getUsername,
     isLoggedIn,
     register,
-    isAuthorized
+    isAuthorized,
+    refreshToken
 }
 
 export default UserService;

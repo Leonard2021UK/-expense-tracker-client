@@ -70,6 +70,7 @@ const LoginModal = (props) =>{
                                 setSubmitting(true);
                                 setShowSpinner(true)
                                 UserService.login(values).then((response)=>{
+
                                     setShowSpinner(false);
                                     if(_.isNull(response.getToken())){
                                         setShowLoginError(true);

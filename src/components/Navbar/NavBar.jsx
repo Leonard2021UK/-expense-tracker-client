@@ -16,6 +16,12 @@ const NavBar = (props)=>{
 
     const handleRegister= () => UserService.register();
 
+    const getRefresh =  () =>{
+        UserService.refreshToken().then(async(response) => {
+            console.log(await response.json())
+        })
+    }
+
     const handleLogout = () => {
         UserService.logout(history);
         history.push("/");
@@ -61,7 +67,7 @@ const NavBar = (props)=>{
                                           aria-labelledby="dropdownUser1">
                                           <li><a className="dropdown-item" href="#">New project...</a></li>
                                           <li><a className="dropdown-item" href="#">Settings</a></li>
-                                          <li><a className="dropdown-item" href="#">Profile</a></li>
+                                          <li><a className="dropdown-item" onClick={getRefresh}>Profile</a></li>
                                           <li>
                                               <hr className="dropdown-divider"/>
                                           </li>
