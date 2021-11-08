@@ -73,7 +73,11 @@ const isAuthenticated = () => {
 const refreshToken = async () => {
     const fetchOption = {
         "method": "POST",
-        "headers": new Headers({'content-type': 'application/json','Access-Control-Allow-Credentials':"true"}),
+        'credentials': 'include',
+        "headers": new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        }),
     }
 
     return await UseCustomFetch(process.env.REACT_APP_REFRESH_TOKEN,fetchOption)

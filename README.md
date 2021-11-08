@@ -106,4 +106,15 @@ grep port standalone/configuration/standalone.xml
 #The Ultimate Guide to handling JWTs on frontend clients (GraphQL)
 https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#jwt_persist
 
+#How to Get SSL HTTPS for Localhost
+https://www.section.io/engineering-education/how-to-get-ssl-https-for-localhost/
 
+#Importing an existing SSL key/certificate pair into a Java keystore
+https://blog.jgc.org/2011/06/importing-existing-ssl-keycertificate.html
+
+#The Most Common Java Keytool Keystore Commands
+https://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html
+https://www.thomasvitale.com/https-spring-boot-ssl-certificate/
+
+#How to use HTTPS for local development
+https://web.dev/how-to-use-local-https/
