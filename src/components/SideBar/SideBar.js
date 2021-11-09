@@ -15,12 +15,9 @@ const SideBar = ()=>{
         <>
         <div className="sideBarContainer">
             <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style={{height:"100%"}}>
-                <a href="/" className="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <div className="company-logo-container">
-                        <CompanyLogo width={25} height={25}/>
-                    </div>
+
+                <CompanyLogo width={50} height={50}/>
                     <span className="fs-4">{activeSiteName}</span>
-                </a>
 
                 <hr/>
                 <ul className="nav nav-pills flex-column mb-auto">
