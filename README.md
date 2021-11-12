@@ -121,3 +121,17 @@ https://web.dev/how-to-use-local-https/
 
 #SSL certificates "missing private key" in Chrome
 https://superuser.com/questions/1457044/ssl-certificates-missing-private-key-in-chrome
+
+#ERROR handling in a restAPI
+https://reflectoring.io/bean-validation-with-spring-boot/
+https://reflectoring.io/spring-boot-exception-handling/
+https://reflectoring.io/spring-boot-exception-handling/
+
+
+#Bean validation
+https://reflectoring.io/bean-validation-with-spring-boot/#validating-programmatically
+
+https://medium.com/@jovannypcg/understanding-springs-controlleradvice-cd96a364033f
+
+#Design patterns
+https://howtodoinjava.com/design-patterns/creational/builder-pattern-in-java/
