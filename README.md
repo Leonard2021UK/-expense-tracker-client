@@ -119,6 +119,9 @@ https://www.thomasvitale.com/https-spring-boot-ssl-certificate/
 #How to use HTTPS for local development
 https://web.dev/how-to-use-local-https/
 
+
+https://blog.bitsrc.io/using-https-for-local-development-for-react-angular-and-node-fdfaf69693cd
+
 #SSL certificates "missing private key" in Chrome
 https://superuser.com/questions/1457044/ssl-certificates-missing-private-key-in-chrome
 
