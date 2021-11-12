@@ -138,3 +138,17 @@ https://medium.com/@jovannypcg/understanding-springs-controlleradvice-cd96a36403
 
 #Design patterns
 https://howtodoinjava.com/design-patterns/creational/builder-pattern-in-java/
+
+#ERROR handling in a restAPI
+https://reflectoring.io/bean-validation-with-spring-boot/
+https://reflectoring.io/spring-boot-exception-handling/
+https://reflectoring.io/spring-boot-exception-handling/
+
+
+#Bean validation
+https://reflectoring.io/bean-validation-with-spring-boot/#validating-programmatically
+
+https://medium.com/@jovannypcg/understanding-springs-controlleradvice-cd96a364033f
+
+#Design patterns
+https://howtodoinjava.com/design-patterns/creational/builder-pattern-in-java/
