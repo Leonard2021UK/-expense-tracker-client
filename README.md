@@ -142,7 +142,6 @@ https://howtodoinjava.com/design-patterns/creational/builder-pattern-in-java/
 #ERROR handling in a restAPI
 https://reflectoring.io/bean-validation-with-spring-boot/
 https://reflectoring.io/spring-boot-exception-handling/
-https://reflectoring.io/spring-boot-exception-handling/
 
 
 #Bean validation
