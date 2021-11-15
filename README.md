@@ -151,3 +151,9 @@ https://medium.com/@jovannypcg/understanding-springs-controlleradvice-cd96a36403
 
 #Design patterns
 https://howtodoinjava.com/design-patterns/creational/builder-pattern-in-java/
+
+#Java Exception: get detailMessage only
+https://stackoverflow.com/questions/33825693/java-exception-get-detailmessage-only
+
+#MapsStruct
+https://stackabuse.com/guide-to-mapstruct-in-java-advanced-mapping-library/
