@@ -157,3 +157,6 @@ https://stackoverflow.com/questions/33825693/java-exception-get-detailmessage-on
 
 #MapsStruct
 https://stackabuse.com/guide-to-mapstruct-in-java-advanced-mapping-library/
+
+#Ultimate Guide to Implementing equals() and hashCode() with Hibernate
+https://thorben-janssen.com/ultimate-guide-to-implementing-equals-and-hashcode-with-hibernate/
