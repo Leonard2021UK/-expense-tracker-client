@@ -160,3 +160,6 @@ https://stackabuse.com/guide-to-mapstruct-in-java-advanced-mapping-library/
 
 #Ultimate Guide to Implementing equals() and hashCode() with Hibernate
 https://thorben-janssen.com/ultimate-guide-to-implementing-equals-and-hashcode-with-hibernate/
+
+#Spring Profiles
+https://www.baeldung.com/spring-profiles
