@@ -150,3 +150,6 @@ https://thorben-janssen.com/ultimate-guide-to-implementing-equals-and-hashcode-w
 
 #Spring Profiles
 https://www.baeldung.com/spring-profiles
+
+#MapStruct
+https://stackoverflow.com/questions/59925679/mapstruct-how-to-make-my-method-of-mapping-from-long-to-object

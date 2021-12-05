@@ -26,18 +26,7 @@ const routes = [
         component: ExpenseTrackerView,
         layout: "/admin",
         type: ["ROLE_ADMIN","ROLE_USER"],
-        submenu: [
-            {
-                path: "/expense-tracker/create",
-                name: "List rackers",
-                icon: "#speedometer2",
-                component: ExpenseTrackerView,
-                layout: "/admin",
-                type: ["ROLE_ADMIN","ROLE_USER"],
-                submenu: []
-
-            }
-        ]
+        submenu: []
 
     }
 ];

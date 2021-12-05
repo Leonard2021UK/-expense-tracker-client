@@ -6,6 +6,7 @@ import '../../components/Navbar/navbar.css'
 import {Route, Switch} from "react-router-dom";
 import UserService from "../../services/UserService";
 import routes from "../../routes";
+import {Col, Container, Row} from "react-bootstrap";
 const Admin = (props) =>{
 
     const {path,pathHandler} = props;
@@ -37,16 +38,39 @@ const Admin = (props) =>{
 
         });
     };
-
+    // <Col lg={4} md={3} xs={1}>
+    //     <SideBar props={props}/>
+    // </Col>
+    // <Col >
+    //     <NavBar />
+    // </Col>
     return (
         <>
-            <div className="adminNavBarContainer">
-                <NavBar />
-            </div>
-            <div className="sideBarContainer">
-                <SideBar props={props}/>
-            </div>
-            <Switch>{getRoutes(routes)}</Switch>
+            <Container fluid style={{padding:0}}>
+                <Row style={{margin:0}}>
+                    <Col xs={2} md={2} lg={2} style={{padding:0}}>
+                        <Col style={{height:100+"vh",padding:0}}>
+                            <SideBar/>
+                        </Col>
+
+                    </Col>
+                    <Col xs={10} md={10} lg={10} style={{padding:0}}>
+                        <Row style={{margin:0}}>
+                            <NavBar />
+                        </Row>
+                        <Row style={{margin:0}}>
+                            <Col xs={12} md={12} lg={12} style={{paddingLeft:2+"em",paddingRight:2+"em"}}>
+                                <Switch>{getRoutes(routes)}</Switch>
+                            </Col>
+
+                        </Row>
+
+                    </Col>
+
+                </Row>
+
+            </Container>
+
         </>
     )
 }

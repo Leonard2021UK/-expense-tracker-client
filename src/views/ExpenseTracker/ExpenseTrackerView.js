@@ -1,12 +1,15 @@
 import ExpenseTrackerTable from "../../components/ExpenseTrackerTable/ExpenseTrackerTable";
 import {useEffect} from "react";
 import {useApiService} from "../../services/useApiService";
-import {useDispatch} from "react-redux";
-import {setExpenseTrackers,clearExpenseTrackers} from "../../redux/features/authentication/expenseTrackerSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {setExpenseTrackers,clearExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlice";
 
 const ExpenseTrackerView = ()=>{
 
     const dispatch = useDispatch();
+
+    const rExpenseTrackers = useSelector((state) => state.expenseTrackers.expenseTrackers);
+
 
     const {getAllExpenseTrackers} = useApiService();
 
@@ -14,7 +17,7 @@ const ExpenseTrackerView = ()=>{
         getAllExpenseTrackers()
             .then(async (response)=>{
                 let res = await response.json();
-            dispatch(setExpenseTrackers(res));
+            dispatch(setExpenseTrackers({expenseTrackers:res}));
             console.log(res)
         })
     })
@@ -22,7 +25,7 @@ const ExpenseTrackerView = ()=>{
 
     return (
         <>
-            <ExpenseTrackerTable/>
+            <ExpenseTrackerTable expenseTrackers={rExpenseTrackers}/>
         </>
     )
 }

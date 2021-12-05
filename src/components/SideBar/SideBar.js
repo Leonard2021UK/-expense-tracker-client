@@ -5,6 +5,7 @@ import {NavLink} from "react-router-dom";
 import {useState} from "react";
 import UserService from "../../services/UserService";
 import SubMenu from "./SubMenu";
+import {Col} from "react-bootstrap";
 const SideBar = ()=>{
 
     const [activeSiteName,setActiveSiteName] = useState();
@@ -13,21 +14,20 @@ const SideBar = ()=>{
 
     return (
         <>
-        <div className="sideBarContainer">
-            <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style={{height:"100%"}}>
+            <div className="flex-column flex-shrink-0 text-white bg-dark" style={{height:"100%",paddingLeft:1+"vw",paddingTop:1+"vw"}}>
 
                 <CompanyLogo width={50} height={50}/>
-                    <span className="fs-4">{activeSiteName}</span>
+                    <span className="fs-4" style={{paddingLeft:1+"vw"}}>{activeSiteName ? activeSiteName:"Dashboard"}</span>
 
-                <hr/>
-                <ul className="nav nav-pills flex-column mb-auto">
+
+                <ul className="nav nav-pills flex-column mb-auto" style={{paddingTop:5+"vh"}}>
                     {routes.map((prop,key)=>{
                         if (prop.redirect)
                             return null;
                         if (!UserService.hasRealmRole(prop.type))
                             return  null;
-                        if(prop.submenu.length !== 0 && UserService.hasRealmRole(prop.type))
-                            return <SubMenu key={key} title={prop.name} icon={prop.icon} items={prop.submenu}/>
+                        // if(prop.submenu.length !== 0 && UserService.hasRealmRole(prop.type))
+                        //     return <SubMenu key={key} title={prop.name} icon={prop.icon} items={prop.submenu} setActiveSiteName={setActiveSiteName}/>
                         return(
                             <li className="nav-item" key={key}>
                                 <NavLink
@@ -53,7 +53,6 @@ const SideBar = ()=>{
                 </ul>
             </div>
 
-        </div>
         </>
 
     )
