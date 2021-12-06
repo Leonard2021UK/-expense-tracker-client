@@ -14,6 +14,8 @@ const ExpenseTrackerView = ()=>{
     const {getAllExpenseTrackers} = useApiService();
 
     useEffect(()=>{
+        console.log("useefect")
+
         getAllExpenseTrackers()
             .then(async (response)=>{
                 let res = await response.json();

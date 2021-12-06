@@ -17,6 +17,8 @@ export function useApiService() {
                 "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
             }
         };
+        console.log("REQUEST")
+
         const url = process.env.REACT_APP_EXPENSES_TRACKER;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{

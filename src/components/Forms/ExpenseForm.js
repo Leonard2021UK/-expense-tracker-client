@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import LoginModal from "../Modals/LoginModal/LoginModal";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import './registerModalStyle.css';
 import UserService from "../../services/UserService";
 
 const ExpenseForm = (props) =>{
@@ -80,7 +79,7 @@ const ExpenseForm = (props) =>{
 
 export default ExpenseForm;
 
-LoginModal.propTypes = exact({
+ExpenseForm.propTypes = exact({
     toggleRegisterModal: PropTypes.func,
     show: PropTypes.bool,
 });
