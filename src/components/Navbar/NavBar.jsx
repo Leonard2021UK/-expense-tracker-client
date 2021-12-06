@@ -6,6 +6,7 @@ import {useHistory} from "react-router-dom";
 
 
 import './navbar.css';
+import {Container} from "react-bootstrap";
 const NavBar = (props)=>{
 
     let history = useHistory();
@@ -30,7 +31,7 @@ const NavBar = (props)=>{
     return(
           <>
               <header className="p-3 bg-dark text-white">
-                  <div className="container">
+                  <Container fluid>
                       <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                           <PublicRenderer>
                               <a href="/" className="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -56,15 +57,18 @@ const NavBar = (props)=>{
                               </PublicRenderer>
                               <AuthRenderer>
                                   <div className="dropdown">
-                                      <a href="#"
-                                         className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                                         id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                      <a
+                                          href="#"
+                                          className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                                          id="dropdownUser1"
+                                          data-bs-toggle="dropdown"
+                                          aria-expanded="false"
+                                      >
                                           <img src="https://github.com/mdo.png" alt="" width="32" height="32"
                                                className="rounded-circle me-2"/>
                                           <strong id="avatar-title">mdo</strong>
                                       </a>
-                                      <ul className="dropdown-menu dropdown-menu-dark text-small shadow"
-                                          aria-labelledby="dropdownUser1">
+                                      <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
                                           <li><a className="dropdown-item" href="#">New project...</a></li>
                                           <li><a className="dropdown-item" href="#">Settings</a></li>
                                           <li><a className="dropdown-item" onClick={getRefresh}>Profile</a></li>
@@ -77,7 +81,7 @@ const NavBar = (props)=>{
                               </AuthRenderer>
                           </div>
                       </div>
-                  </div>
+                  </Container>
               </header>
           </>
 

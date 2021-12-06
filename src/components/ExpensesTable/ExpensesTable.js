@@ -1,13 +1,22 @@
 import "./expensesTableStyle.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookOpen, faEdit, faMailBulk, faTrash, faArrowUp,faCheck,faTimes,faWindowClose} from "@fortawesome/free-solid-svg-icons";
+import ExpenseDetailsModal from "../Modals/ExpenseDetailsModal/ExpenseDetailsModal";
+import {useState} from "react";
 
 const ExpensesTable = (props)=>{
     const {expenses} = props;
     console.log(expenses)
+    const [expenseDetailsModalIsOpen, setExpenseDetailsModalIsOpen] = useState(false);
 
-    const handleShowExpenses = (expenses)=>{
+    const toggleExpenseDetailsModal = ()=>{
+        setExpenseDetailsModalIsOpen(!expenseDetailsModalIsOpen);
 
+    }
+    const handleShowExpenseDetails = (expenses)=>{
+        toggleExpenseDetailsModal();
+
+        console.log(expenses)
     }
     return (
         <>
@@ -15,6 +24,7 @@ const ExpensesTable = (props)=>{
             {/*<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">*/}
             {/*    <h1 className="h3" data-cy="page-header">Expenses</h1>*/}
             {/*</div>*/}
+            <ExpenseDetailsModal show={expenseDetailsModalIsOpen} expenses={expenses} toggleModal={toggleExpenseDetailsModal}/>
 
             <table className="table table-striped table-dark">
 
@@ -40,9 +50,9 @@ const ExpensesTable = (props)=>{
                             <td>{expense.createdAt}</td>
                             <td>{expense.createdBy}</td>
                             <td>
-                                <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} onClick={handleShowExpenses.bind(this,expense)} style={{margin:1+"vh"}} />
-                                <FontAwesomeIcon icon={faEdit} className="mr-2" color={"orange"} style={{margin:1+"vh"}} />
-                                <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh"}} />
+                                <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} onClick={handleShowExpenseDetails.bind(this,expense)} style={{margin:1+"vh",cursor:"pointer"}} />
+                                <FontAwesomeIcon icon={faEdit} className="mr-2" color={"orange"} style={{margin:1+"vh",cursor:"pointer"}} />
+                                <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh",cursor:"pointer"}} />
                             </td>
                         </tr>
 

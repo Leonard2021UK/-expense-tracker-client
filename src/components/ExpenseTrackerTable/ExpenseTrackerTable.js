@@ -50,9 +50,8 @@ const ExpenseTrackerTable = (props)=>{
                               <td>{expenseTracker.createdAt}</td>
                               <td>{expenseTracker.createdBy}</td>
                               <td>
-                                  <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} style={{margin:1+"vh"}} onClick={handleShowExpenses.bind(this,expenseTracker)}/>
-                                  <FontAwesomeIcon icon={faEdit} className="mr-2" color={"orange"} style={{margin:1+"vh"}} />
-                                  <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh"}} />
+                                  <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} style={{margin:1+"vh",cursor:"pointer"}} onClick={handleShowExpenses.bind(this,expenseTracker)}/>
+                                  <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh",cursor:"pointer"}} />
                               </td>
                           </tr>
 
