@@ -2,11 +2,13 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const expenseTrackerSlice = createSlice({
     name:"expenseTracker",
-    initialState:{},
+    initialState:{
+        expenseTrackers:{}
+    },
     reducers:{
         setExpenseTrackers(state,action) {
             const {expenseTrackers} = action.payload;
-            state = expenseTrackers;
+            state.expenseTrackers = expenseTrackers;
         },
         clearExpenseTrackers(state,action){
             state.expenseTrackers = {};

@@ -2,15 +2,16 @@ import "./expenseTrackerTable.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookOpen, faEdit, faMailBulk, faTrash, faArrowUp,faCheck,faTimes,faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import ExpenseListModal from "../Modals/ExpenseModal/ExpensesModal";
-import {useState} from "react";
-const ExpenseTrackerTable = (props)=>{
-    const {expenseTrackers} = props;
+import {useEffect, useState} from "react";
+import {setExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlice";
+import {useSelector} from "react-redux";
+const ExpenseTrackerTable = ()=>{
+
+    const rExpenseTrackers = useSelector((state) => state.expenseTrackers.expenseTrackers);
 
     const [expensesModalIsOpen, setExpensesModalIsOpen] = useState(false);
     const [expenses, setExpenses]= useState([]);
 
-
-    console.log(expenseTrackers)
     const toggleExpenseListModal = ()=>{
         setExpensesModalIsOpen(!expensesModalIsOpen);
 
@@ -20,6 +21,12 @@ const ExpenseTrackerTable = (props)=>{
         toggleExpenseListModal()
         setExpenses(expenseTracker.expenses)
     }
+
+    useEffect(()=>{
+        console.log("RexpenseTrackers")
+        console.log(rExpenseTrackers)
+
+    })
     return (
       <>
           <ExpenseListModal show={expensesModalIsOpen} expenses={expenses} toggleModal={toggleExpenseListModal}/>
@@ -41,7 +48,7 @@ const ExpenseTrackerTable = (props)=>{
                   </tr>
                   </thead>
                   <tbody>
-                  {expenseTrackers.map((expenseTracker,index)=>{
+                  {rExpenseTrackers.map((expenseTracker,index)=>{
                       return <>
                           <tr>
                               <th scope="row">{index}</th>
