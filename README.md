@@ -153,3 +153,14 @@ https://www.baeldung.com/spring-profiles
 
 #MapStruct
 https://stackoverflow.com/questions/59925679/mapstruct-how-to-make-my-method-of-mapping-from-long-to-object
+
+#Login to mysql in DOCKER
+sudo docker exec -it api_api_mysql_1 bash
+mysql -h localhost -P 33307 -u api -p
+show
+
+#Grant priviliges and usage for a user in MYSQL (SAMPLE)
+GRANT ALL PRIVILEGES ON user.* TO 'username'@'%' IDENTIFIED BY 'pswd';
+grant all privileges on dbname.* to user@localhost identified by 'pswd';
+GRANT USAGE ON *.* TO 'user'@'%' IDENTIFIED BY 'pswd'
+
