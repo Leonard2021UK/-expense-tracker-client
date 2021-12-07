@@ -6,8 +6,12 @@ import LoginModal from "../Modals/LoginModal/LoginModal";
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import UserService from "../../services/UserService";
-
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBookOpen, faTrash} from "@fortawesome/free-solid-svg-icons";
+import _ from "lodash";
 const ExpenseForm = (props) =>{
+
+    const {expense} = props;
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -20,7 +24,7 @@ const ExpenseForm = (props) =>{
         <>
             <div style={{width:"80%",margin:"auto"}}>
             <Formik
-                initialValues={{name:""}}
+                initialValues={{name:_.isUndefined(expense)?"":expense.name}}
                 validationSchema={validationSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     // When button submits form and form is in the process of submitting, submit button is disabled
@@ -54,7 +58,7 @@ const ExpenseForm = (props) =>{
                                 <Form.Control
                                     type="text"
                                     name="name"
-                                    placeholder="Enter namename"
+                                    placeholder="Enter name"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.name}
@@ -70,6 +74,7 @@ const ExpenseForm = (props) =>{
                                     type="email"
                                     name="email"
                                     placeholder="Enter email"
+                                    defaultValue={expense.email}
                                 />
                             </Form.Group>
                         </Row>
@@ -81,6 +86,7 @@ const ExpenseForm = (props) =>{
                                     type="phone"
                                     name="phone"
                                     placeholder="Enter phone number"
+                                    defaultValue={expense.phoneNumber}
                                 />
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridMobile">
@@ -89,6 +95,7 @@ const ExpenseForm = (props) =>{
                                     type="mobile"
                                     name="mobile"
                                     placeholder="Enter mobile number"
+                                    defaultValue={expense.mobileNumber}
                                 />
                             </Form.Group>
                         </Row>
@@ -135,7 +142,37 @@ const ExpenseForm = (props) =>{
                             </Col>
                         </Row>
                         <Row>
+                            <table className="table table-striped table-dark">
 
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Updated at</th>
+                                    <th scope="col">Created at</th>
+                                    <th scope="col">Created by</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {expense.items.map((item,index)=>{
+                                    return <>
+                                        <tr>
+                                            <th scope="row">{index}</th>
+                                            <td>{item.name}</td>
+                                            <td>{item.updatedAt}</td>
+                                            <td>{item.createdAt}</td>
+                                            <td>{item.createdBy}</td>
+                                            <td>
+                                                <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} style={{margin:1+"vh",cursor:"pointer"}} />
+                                                <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh",cursor:"pointer"}} />
+                                            </td>
+                                        </tr>
+
+                                    </>
+                                })}
+                                </tbody>
+                            </table>
                         </Row>
                         <Row>
                             <Form.Group>

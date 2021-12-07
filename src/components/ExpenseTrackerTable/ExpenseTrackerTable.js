@@ -22,11 +22,7 @@ const ExpenseTrackerTable = ()=>{
         setExpenses(expenseTracker.expenses)
     }
 
-    useEffect(()=>{
-        console.log("RexpenseTrackers")
-        console.log(rExpenseTrackers)
 
-    })
     return (
       <>
           <ExpenseListModal show={expensesModalIsOpen} expenses={expenses} toggleModal={toggleExpenseListModal}/>

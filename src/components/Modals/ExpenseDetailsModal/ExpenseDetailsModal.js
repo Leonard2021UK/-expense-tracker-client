@@ -7,7 +7,7 @@ import React from "react";
 import ExpenseForm from "../../Forms/ExpenseForm";
 
 const ExpenseDetailsModal = (props)=>{
-    const {toggleModal,show,expenses} = props;
+    const {toggleModal,show,expense} = props;
 
     const handleClose = () =>{
         toggleModal();
@@ -29,7 +29,7 @@ const ExpenseDetailsModal = (props)=>{
                     <Container fluid style={{padding:1+"vw"}}>
                         <Row>
                             <Col>
-                                <ExpenseForm/>
+                                <ExpenseForm expense={expense} />
                             </Col>
                         </Row>
                     </Container>

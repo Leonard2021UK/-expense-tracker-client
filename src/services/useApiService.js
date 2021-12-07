@@ -26,22 +26,23 @@ export function useApiService() {
             })
     }
 
-    // const getMyBookings = async ()=>{
-    //     const fetchOption = {
-    //         "method": "GET",
-    //         "headers": {
-    //             "Content-Type": "application/json",
-    //             "Accept": "application/json",
-    //             "Authorization": 'Bearer ' + rAuthUserInfo.userAccessToken,
-    //         }
-    //     };
-    //     const url = process.env.REACT_APP_GET_ALL_JOBREGISTRATIONS_FOR_USER;
-    //     // const url = "http:localhost:8085/jobrecord?id=10"
-    //     return await fetch(url,fetchOption)
-    //         .then(async (response)=>{
-    //             return response;
-    //         })
-    // }
+    const getAllUnitTypes = async ()=>{
+        const fetchOption = {
+            "method": "GET",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            }
+        };
+        console.log("REQUEST")
+
+        const url = process.env.REACT_APP_EXPENSES_TRACKER;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
 
     // Response {type: "cors", url: "http://localhost:8080/api/v1/jobrecord", redirected: false, status: 401, ok: false, …}
     // body: ReadableStream
