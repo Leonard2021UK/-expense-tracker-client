@@ -142,12 +142,20 @@ const ExpenseForm = (props) =>{
                             </Col>
                         </Row>
                         <Row>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Items submitted </Modal.Title>
+                            </Modal.Header>
+                        </Row>
+                        <Row>
                             <table className="table table-striped table-dark">
 
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Name</th>
+                                    <th scope="col">Item name</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Unit</th>
+                                    <th scope="col">Category</th>
                                     <th scope="col">Updated at</th>
                                     <th scope="col">Created at</th>
                                     <th scope="col">Created by</th>
@@ -160,6 +168,9 @@ const ExpenseForm = (props) =>{
                                         <tr>
                                             <th scope="row">{index}</th>
                                             <td>{item.name}</td>
+                                            <td>{item.amount}</td>
+                                            <td>{item.unitType.name}</td>
+                                            <td>{item.itemCategory.name}</td>
                                             <td>{item.updatedAt}</td>
                                             <td>{item.createdAt}</td>
                                             <td>{item.createdBy}</td>

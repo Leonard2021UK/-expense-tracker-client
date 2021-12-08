@@ -22,7 +22,7 @@ const ExpenseDetailsModal = (props)=>{
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Expense details: {}</Modal.Title>
+                    <Modal.Title>Expense details for {expense.name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {/*<div style={{width:"80%",margin:"auto"}}>*/}
