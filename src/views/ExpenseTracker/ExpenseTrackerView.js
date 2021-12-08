@@ -2,6 +2,7 @@ import ExpenseTrackerTable from "../../components/ExpenseTrackerTable/ExpenseTra
 import {useEffect} from "react";
 import {useApiService} from "../../services/useApiService";
 import {useDispatch, useSelector} from "react-redux";
+import {setInitData,clearInitData} from "../../redux/features/utility/appInitDataSlice";
 import {setExpenseTrackers,clearExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlice";
 import {setFirstName} from "../../redux/features/authentication/registerFormSlice";
 const ExpenseTrackerView = ()=>{
@@ -10,12 +11,12 @@ const ExpenseTrackerView = ()=>{
 
 
 
-    const {getAllExpenseTrackers} = useApiService();
+    const {getInitData} = useApiService();
 
     useEffect(()=>{
         console.log("useefect")
 
-        getAllExpenseTrackers()
+        getInitData()
             .then( (response)=>{
                 return response.json();
             }).then( (response)=>{

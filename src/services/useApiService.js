@@ -17,7 +17,6 @@ export function useApiService() {
                 "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
             }
         };
-        console.log("REQUEST")
 
         const url = process.env.REACT_APP_EXPENSES_TRACKER;
         return await UseCustomFetch(url,fetchOption)
@@ -35,26 +34,79 @@ export function useApiService() {
                 "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
             }
         };
-        console.log("REQUEST")
 
-        const url = process.env.REACT_APP_EXPENSES_TRACKER;
+        const url = process.env.REACT_APP_UNIT_TYPE;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+    const getAllPaymentTypes = async ()=>{
+        const fetchOption = {
+            "method": "GET",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            }
+        };
+
+        const url = process.env.REACT_APP_PAYMENT_TYPE;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+    const getAllExpenseAddresses = async ()=>{
+        const fetchOption = {
+            "method": "GET",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            }
+        };
+
+        const url = process.env.REACT_APP_EXPENSE_ADDRESS;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
                 return response;
             })
     }
 
-    // Response {type: "cors", url: "http://localhost:8080/api/v1/jobrecord", redirected: false, status: 401, ok: false, …}
-    // body: ReadableStream
-    // bodyUsed: true
-    // headers: Headers {}
-    // ok: false
-    // redirected: false
-    // status: 401
-    // statusText: "Unauthorized"
-    // type: "cors"
-    // url: "http://localhost:8080/api/v1/jobrecord"
-    // __proto__: Response
+    const getAllExpenseTypes = async ()=>{
+        const fetchOption = {
+            "method": "GET",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            }
+        };
+
+        const url = process.env.REACT_APP_EXPENSE_TYPE;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+
+    const getInitData = async ()=>{
+        const fetchOption = {
+            "method": "GET",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            }
+        };
+
+        const url = process.env.REACT_APP_INIT_DATA;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
 
     // const getJobRecordById = async (jobRecord)=>{
     //     console.log("jobrecord to update ", jobRecord);
@@ -208,7 +260,13 @@ export function useApiService() {
 
 
     return {
-        getAllExpenseTrackers
+        getAllExpenseTrackers,
+        getAllUnitTypes,
+        getAllPaymentTypes,
+        getAllExpenseAddresses,
+        getAllExpenseTypes,
+        getInitData
+
         // getJobRecordById,
         // getAllJobRegistration,
         // getMyBookings,
