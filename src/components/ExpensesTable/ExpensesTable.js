@@ -9,6 +9,7 @@ const ExpensesTable = (props)=>{
     console.log(expenses)
     const [expenseDetailsModalIsOpen, setExpenseDetailsModalIsOpen] = useState(false);
     const [selectedExpense, setSelectedExpense] = useState({});
+    const [disable, setDisable] = useState(true);
 
     const toggleExpenseDetailsModal = ()=>{
         setExpenseDetailsModalIsOpen(!expenseDetailsModalIsOpen);
@@ -26,10 +27,14 @@ const ExpensesTable = (props)=>{
             {/*<div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">*/}
             {/*    <h1 className="h3" data-cy="page-header">Expenses</h1>*/}
             {/*</div>*/}
-            <ExpenseDetailsModal show={expenseDetailsModalIsOpen} expense={selectedExpense} toggleModal={toggleExpenseDetailsModal}/>
+            <ExpenseDetailsModal
+                show={expenseDetailsModalIsOpen}
+                expense={selectedExpense}
+                toggleModal={toggleExpenseDetailsModal}
+                disable={disable}
+            />
 
             <table className="table table-striped table-dark">
-
                 <thead>
                 <tr>
                     <th scope="col">#</th>

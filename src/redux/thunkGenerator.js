@@ -1,16 +1,28 @@
 import inMemoryJWT from "../utils/inMemoryJWT";
-import fetchOptions from "../../fetchOptions";
 
 const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirName,fetchUrl)=>{
     //TODO implement caching e.g. redux-persist, reselect
-    //Check the store tree hierarchy
 
+    console.log("THUNK GENERATOR")
+    console.log(sliceName)
+    console.log(actions)
+    console.log(dispatch)
+    console.log(prevState)
+    console.log(reduxRootDirName)
+    console.log(fetchUrl)
+
+    //Check the store tree hierarchy
+    // Check if the data stored is upto date, only if not make a request
+    //validates one level deep in the redux store
     const requestedReduxFieldIsValid = ((prevState || {})[`${reduxRootDirName}`] || {}).didInvalidate;
+    //validates two level deep in the redux store
     const requestedReduxSliceIsValid = (((prevState || {})[`${reduxRootDirName}`] || {})[`${sliceName}`] || {}).didInvalidate;
+
 
     // if (prevState && ((prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`].didInvalidate) || (prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`].didInvalidate)))
         if (requestedReduxFieldIsValid || requestedReduxSliceIsValid)
         {
+            console.log("THUNK GENERATOR IS VALID")
 
         //Get access token from redux store
         // const accessToken = prevState.authUserInfo.user0AuthToken;
@@ -31,13 +43,16 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
         try {
 
             const response = await fetch(fetchUrl, fetchOption);
-            const data = await response.json();
-            console.log(sliceName)
-            console.log(data)
+            console.log(response)
+
             // Suggestion fetching is successful
-            if (data.data !== null && data.status === "success") {
-                dispatch(actions[`${sliceName}RequestSuccess`]({data: data}));
+            if (response.status === 200) {
+                const data = await response.json();
+                if(data !== null){
+                    dispatch(actions[`${sliceName}RequestSuccess`]({data: data}));
+                }
             } else {
+                const data = await response.json();
                 dispatch(actions[`${sliceName}RequestFail`]({data: data}));
                 dispatch(actions[`${sliceName}InValidate`]({data: true}));
             }

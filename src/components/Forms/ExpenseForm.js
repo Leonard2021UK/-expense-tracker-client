@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Col, FloatingLabel, Form, Modal, Row} from "react-bootstrap";
+import {Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Table} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
 import LoginModal from "../Modals/LoginModal/LoginModal";
@@ -9,10 +9,157 @@ import UserService from "../../services/UserService";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookOpen, faTrash} from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
+import ItemTableRow from "../ItemsTable/ItemTableRow/ItemTableRow";
+import ItemsTable from "../ItemsTable/ItemsTable";
+import ItemsTableHeader from "../ItemsTable/ItemsTableHeader/ItemsTableHeader";
+import AutoSuggestion from "../AutoSuggestion/AutoSuggestion";
+import RowAction from "../RowAction/RowAction";
 const ExpenseForm = (props) =>{
 
-    const {expense} = props;
+        const data = React.useMemo(
+        () => [
+            {
+                firstName: 'Hello',
+                lastName: 'World',
+                age: Math.floor(Math.random() * 30),
+                visits: Math.floor(Math.random() * 100),
+                progress: Math.floor(Math.random() * 100),
+                status: 77
+            },
+            {
+                firstName: 'react-table',
+                lastName: 'rocks',
+                age: Math.floor(Math.random() * 30),
+                visits: Math.floor(Math.random() * 100),
+                progress: Math.floor(Math.random() * 100),
+                status: 77
+            },
+            {
+                firstName: 'whatever',
+                lastName: 'you want',
+                age: Math.floor(Math.random() * 30),
+                visits: Math.floor(Math.random() * 100),
+                progress: Math.floor(Math.random() * 100),
+                status: 77
+            },
+        ],
+        []
+    )
 
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: <ItemsTableHeader id="itemInfo" name="itemInfo" title = "Item information"/>,
+                columns: [
+                    {
+                        Header: <ItemsTableHeader id="itemNr" name="itemNr" title = "Item Nr."/>,
+                        id:"id",
+                        accessor: 'itemNr',
+                        Cell:(props)=>{
+                            const rowId = parseInt(props.row.id)+1;
+                            return(
+                                <div className="item_number" id={"row_" + rowId}>
+                                    {rowId}
+                                </div>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="itemName" name="itemName" title = "Item name"/>,
+                        id:"id",
+                        accessor: 'itemName',
+                        Cell:()=>{
+                            return(
+                                <AutoSuggestion/>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="amount" name="amount" title = "Amount"/>,
+                        accessor: 'amount',
+                        Cell:()=>{
+                            return(
+                                <InputGroup>
+                                    <FormControl/>
+                                </InputGroup>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="unit" name="unit" title = "Unit"/>,
+                        accessor: 'unit',
+                        Cell:()=>{
+                            return(
+                                <AutoSuggestion/>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="unitPrice" name="unitPrice" title = "Unit price"/>,
+                        id:"id",
+                        accessor: 'unitPrice',
+                        Cell:()=>{
+                            return(
+                                <InputGroup>
+                                    <FormControl/>
+                                </InputGroup>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="itemCategory" name="itemCategory" title = "Category"/>,
+                        accessor: 'itemCategory',
+                        Cell:()=>{
+                            return(
+                                <AutoSuggestion/>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="totalPrice" name="totalPrice" title = "Total price"/>,
+                        id:"id",
+                        accessor: 'totalPrice',
+                        Cell:()=>{
+                            return(
+                                <InputGroup>
+                                    <FormControl/>
+                                </InputGroup>
+                            )}
+                    }
+                ],
+            },
+            {
+                Header: <ItemsTableHeader id="actions" name="actions" title = "Actions"/>,
+                columns: [
+                    {
+                        Header: <ItemsTableHeader id="itemDetails" name="itemDetails" title = "Details"/>,
+                        id:"id",
+                        accessor: 'age',
+                        Cell:()=>{
+                            return(
+                                <RowAction con={faBookOpen} color={"green"}/>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="itemUpdate" name="itemUpdate" title = "Update"/>,
+                        id:"id",
+                        accessor: 'visits',
+                        Cell:()=>{
+                            return(
+                                <RowAction icon={faBookOpen} className="mr-2" color={"orange"}/>
+                            )}
+                    },
+                    {
+                        Header: <ItemsTableHeader id="itemRemove" name="itemRemove" title = "Remove"/>,
+                        id:"id",
+                        accessor: 'visits',
+                        Cell:()=>{
+                            return(
+                                <RowAction icon={faTrash} color={"red"}/>
+                            )}
+                    }
+                ],
+            },
+        ],
+        []
+    )
+    const {expense,disable} = props;
+    console.log("EXPENSEE")
+    console.log(expense)
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(3,"*name must be at least 3 characters")
@@ -62,6 +209,7 @@ const ExpenseForm = (props) =>{
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.name}
+                                    disabled={disable}
                                     className={touched.name && errors.name ? "error" : null}
                                 />
                                 {touched.name && errors.name ? (
@@ -75,6 +223,8 @@ const ExpenseForm = (props) =>{
                                     name="email"
                                     placeholder="Enter email"
                                     defaultValue={expense.email}
+                                    disabled={disable}
+
                                 />
                             </Form.Group>
                         </Row>
@@ -87,6 +237,7 @@ const ExpenseForm = (props) =>{
                                     name="phone"
                                     placeholder="Enter phone number"
                                     defaultValue={expense.phoneNumber}
+                                    disabled={disable}
                                 />
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridMobile">
@@ -96,27 +247,44 @@ const ExpenseForm = (props) =>{
                                     name="mobile"
                                     placeholder="Enter mobile number"
                                     defaultValue={expense.mobileNumber}
+                                    disabled={disable}
                                 />
                             </Form.Group>
                         </Row>
                         <Row>
                             <Col>
                                 <FloatingLabel controlId="floatingSelect" label="Address">
-                                    <Form.Select aria-label="Floating label select example">
-                                        <option>Select address</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <Form.Select
+                                        aria-label="Floating label select example"
+                                        disabled={disable}
+                                    >
+                                        {disable ? <option>{expense.expenseAddress.name}</option> :
+                                            (
+                                                <>
+                                                    <option>Select address</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </>
+                                            )}
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
                             <Col>
                                 <FloatingLabel controlId="floatingSelect" label="Payment type">
-                                    <Form.Select aria-label="Floating label select example">
-                                        <option>Select payment type</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <Form.Select
+                                        aria-label="Floating label select example"
+                                        disabled={disable}
+                                    >
+                                        {disable ? <option>{expense.expensePaymentType.name}</option> :
+                                            (
+                                                <>
+                                                    <option>Select address</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </>
+                                            )}
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
@@ -124,11 +292,19 @@ const ExpenseForm = (props) =>{
                         <Row style={{marginTop:5 + "vh"}}>
                              <Col>
                                 <FloatingLabel controlId="floatingSelect" label="Expense type">
-                                    <Form.Select aria-label="Floating label select example">
-                                        <option>Select expense type</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <Form.Select
+                                        aria-label="Floating label select example"
+                                        disabled={disable}
+                                    >
+                                        {disable ? <option>{expense.expensePaymentType.name}</option> :
+                                            (
+                                                <>
+                                                    <option>Select address</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </>
+                                            )}
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
@@ -137,7 +313,11 @@ const ExpenseForm = (props) =>{
                         <Row style={{marginTop:5 + "vh",marginBottom:5 + "vh"}}>
                             <Col>
                                 <FloatingLabel controlId="floatingTextarea" label="Comments">
-                                    <Form.Control as={Col} placeholder="Leave a comment here" />
+                                    <Form.Control
+                                        as="textarea"
+                                        placeholder="Leave a comment here"
+                                        disabled={disable}
+                                    />
                                 </FloatingLabel>
                             </Col>
                         </Row>
@@ -147,43 +327,32 @@ const ExpenseForm = (props) =>{
                             </Modal.Header>
                         </Row>
                         <Row>
-                            <table className="table table-striped table-dark">
+                            {/*<Table striped bordered hover variant="dark">*/}
 
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Item name</th>
-                                    <th scope="col">Amount</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Category</th>
-                                    <th scope="col">Updated at</th>
-                                    <th scope="col">Created at</th>
-                                    <th scope="col">Created by</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {expense.items.map((item,index)=>{
-                                    return <>
-                                        <tr>
-                                            <th scope="row">{index}</th>
-                                            <td>{item.name}</td>
-                                            <td>{item.amount}</td>
-                                            <td>{item.unitType.name}</td>
-                                            <td>{item.itemCategory.name}</td>
-                                            <td>{item.updatedAt}</td>
-                                            <td>{item.createdAt}</td>
-                                            <td>{item.createdBy}</td>
-                                            <td>
-                                                <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} style={{margin:1+"vh",cursor:"pointer"}} />
-                                                <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh",cursor:"pointer"}} />
-                                            </td>
-                                        </tr>
+                            {/*    <thead>*/}
+                            {/*    <tr>*/}
+                            {/*        <th scope="col">#</th>*/}
+                            {/*        <th scope="col">Item name</th>*/}
+                            {/*        <th scope="col">Amount</th>*/}
+                            {/*        <th scope="col">Unit</th>*/}
+                            {/*        <th scope="col">Unit price</th>*/}
+                            {/*        <th scope="col">Category</th>*/}
+                            {/*        <th scope="col">Price in total</th>*/}
+                            {/*        <th scope="col">Actions</th>*/}
+                            {/*    </tr>*/}
+                            {/*    </thead>*/}
+                            {/*    <tbody>*/}
+                            {/*    {expense.items.map((item,index)=>{*/}
+                            {/*        return <>*/}
+                            {/*            <tr>*/}
+                            {/*                <ItemTableRow/>*/}
+                            {/*            </tr>*/}
 
-                                    </>
-                                })}
-                                </tbody>
-                            </table>
+                            {/*        </>*/}
+                            {/*    })}*/}
+                            {/*    </tbody>*/}
+                            {/*</Table>*/}
+                            <ItemsTable columns={columns} data={expense.items}/>
                         </Row>
                         <Row>
                             <Form.Group>

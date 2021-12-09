@@ -3,28 +3,17 @@ import {useEffect} from "react";
 import {useApiService} from "../../services/useApiService";
 import {useDispatch, useSelector} from "react-redux";
 import {setInitData,clearInitData} from "../../redux/features/utility/appInitDataSlice";
-import {setExpenseTrackers,clearExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlice";
+import {expenseTrackerThunk} from "../../redux/features/domain/expenseTrackerSlice";
 import {setFirstName} from "../../redux/features/authentication/registerFormSlice";
 const ExpenseTrackerView = ()=>{
 
     const dispatch = useDispatch();
 
-
-
-    const {getInitData} = useApiService();
-
     useEffect(()=>{
-        console.log("useefect")
+        console.log("CALLING THUNK")
+        dispatch(expenseTrackerThunk());
 
-        getInitData()
-            .then( (response)=>{
-                return response.json();
-            }).then( (response)=>{
-                dispatch(setExpenseTrackers({expenseTrackers:response}));
-                dispatch(setFirstName({firstName:"LEO"}));
-                console.log(response)
-        })
-    })
+    },[])
 
 
     return (

@@ -1,20 +1,23 @@
 import fetchedSliceGenerator from "../../fetchedSliceGenerator";
 import thunkGenerator from "../../thunkGenerator";
 
-const rootTreeName = "suggestions";
-const unitTypeSuggestionSlice = fetchedSliceGenerator("unitType");
+const rootTreeName = "expenseTrackers";
+const expenseTrackerSuggestionSlice = fetchedSliceGenerator("expenseTrackers");
 
-export const { unitTypeRequest, unitTypeInValidate,unitTypeRequestFail,unitTypeRequestSuccess,unitTypeRequestException } = unitTypeSuggestionSlice.actions;
+export const { expenseTrackerRequest, expenseTrackerInValidate,expenseTrackerRequestFail,expenseTrackerRequestSuccess,expenseTrackerRequestException } = expenseTrackerSuggestionSlice.actions;
 
-export default unitTypeSuggestionSlice.reducer;
+export default expenseTrackerSuggestionSlice.reducer;
 
-export const unitTypeSliceName = unitTypeSuggestionSlice.name;
-let suggestionActions = unitTypeSuggestionSlice.actions;
-let fetchUrl = process.env.REACT_APP_UNIT_TYPE;
+export const expenseTrackerSliceName = expenseTrackerSuggestionSlice.name;
+let suggestionActions = expenseTrackerSuggestionSlice.actions;
+let fetchUrl = process.env.REACT_APP_EXPENSES_TRACKER;
 
-export const unitTypeThunk = ()=> async (dispatch,getState) => {
+export const expenseTrackerThunk = ()=> async (dispatch,getState) => {
+    console.log("CALLING THUNK GENERATOR")
+
     const prevState = getState();
-    await thunkGenerator(unitTypeSliceName,suggestionActions,dispatch,prevState,rootTreeName,fetchUrl);
+    await thunkGenerator(expenseTrackerSliceName,suggestionActions,dispatch,prevState,rootTreeName,fetchUrl);
+
 };
 
 
@@ -27,30 +30,30 @@ export const unitTypeThunk = ()=> async (dispatch,getState) => {
 
 
 
-import {createSlice} from "@reduxjs/toolkit";
-
-const expenseTrackerSlice = createSlice({
-    name:"expenseTracker",
-    initialState:{
-        expenseTrackers:{},
-        invalidate:true
-    },
-    reducers:{
-        setExpenseTrackers(state,action) {
-            const {expenseTrackers} = action.payload;
-            state.expenseTrackers = expenseTrackers;
-            this.state.invalidate = false;
-        },
-        clearExpenseTrackers(state,action){
-            state.expenseTrackers = {};
-        },
-        invalidateExpenseTrackers(state,action){
-            const {invalidate} = action.payload;
-            state.invalidate = invalidate;
-        }
-    }
-});
-
-
-export const { setExpenseTrackers,clearExpenseTrackers,invalidateExpenseTrackers} = expenseTrackerSlice.actions;
-export default expenseTrackerSlice.reducer;
+// import {createSlice} from "@reduxjs/toolkit";
+//
+// const expenseTrackerSlice = createSlice({
+//     name:"expenseTracker",
+//     initialState:{
+//         expenseTrackers:{},
+//         invalidate:true
+//     },
+//     reducers:{
+//         setExpenseTrackers(state,action) {
+//             const {expenseTrackers} = action.payload;
+//             state.expenseTrackers = expenseTrackers;
+//             this.state.invalidate = false;
+//         },
+//         clearExpenseTrackers(state,action){
+//             state.expenseTrackers = {};
+//         },
+//         invalidateExpenseTrackers(state,action){
+//             const {invalidate} = action.payload;
+//             state.invalidate = invalidate;
+//         }
+//     }
+// });
+//
+//
+// export const { setExpenseTrackers,clearExpenseTrackers,invalidateExpenseTrackers} = expenseTrackerSlice.actions;
+// export default expenseTrackerSlice.reducer;

@@ -7,7 +7,7 @@ import {setExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlic
 import {useSelector} from "react-redux";
 const ExpenseTrackerTable = ()=>{
 
-    const rExpenseTrackers = useSelector((state) => state.expenseTrackers.expenseTrackers);
+    const rExpenseTrackers = useSelector((state) => state.expenseTrackers.response);
 
     const [expensesModalIsOpen, setExpensesModalIsOpen] = useState(false);
     const [expenses, setExpenses]= useState([]);
