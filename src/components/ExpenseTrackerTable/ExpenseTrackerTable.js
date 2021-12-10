@@ -5,8 +5,9 @@ import ExpenseListModal from "../Modals/ExpenseModal/ExpensesModal";
 import {useEffect, useState} from "react";
 import {setExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlice";
 import {useSelector} from "react-redux";
-const ExpenseTrackerTable = ()=>{
-
+import ExpenseTrackerTableToolBar from "../TableToolBars/ExpenseTrackerTableToolBar";
+const ExpenseTrackerTable = (props)=>{
+    const {toggleExpenseTrackerModal} = props;
     const rExpenseTrackers = useSelector((state) => state.expenseTrackers.response);
 
     const [expensesModalIsOpen, setExpensesModalIsOpen] = useState(false);
@@ -30,6 +31,7 @@ const ExpenseTrackerTable = ()=>{
               <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                   <h1 className="h3" data-cy="page-header">Expense trackers</h1>
               </div>
+             <ExpenseTrackerTableToolBar toggleExpenseTrackerModal={toggleExpenseTrackerModal}/>
 
               <table className="table table-striped table-dark">
 
@@ -37,6 +39,7 @@ const ExpenseTrackerTable = ()=>{
                   <tr>
                       <th scope="col">#</th>
                       <th scope="col">Name</th>
+                      <th scope="col">Category</th>
                       <th scope="col">Updated at</th>
                       <th scope="col">Created at</th>
                       <th scope="col">Created by</th>
@@ -49,6 +52,7 @@ const ExpenseTrackerTable = ()=>{
                           <tr>
                               <th scope="row">{index}</th>
                               <td>{expenseTracker.name}</td>
+                              <td>{expenseTracker.mainCategoryId}</td>
                               <td>{expenseTracker.updatedAt}</td>
                               <td>{expenseTracker.createdAt}</td>
                               <td>{expenseTracker.createdBy}</td>

@@ -2,18 +2,19 @@ import React, {useState} from "react";
 import {Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Table} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
-import LoginModal from "../Modals/LoginModal/LoginModal";
+import "./expenseFormStyle.css";
+import LoginModal from "../../Modals/LoginModal/LoginModal";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import UserService from "../../services/UserService";
+import UserService from "../../../services/UserService";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookOpen, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faBookOpen, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
-import ItemTableRow from "../ItemsTable/ItemTableRow/ItemTableRow";
-import ItemsTable from "../ItemsTable/ItemsTable";
-import ItemsTableHeader from "../ItemsTable/ItemsTableHeader/ItemsTableHeader";
-import AutoSuggestion from "../AutoSuggestion/AutoSuggestion";
-import RowAction from "../RowAction/RowAction";
+import ItemTableRow from "../../ItemsTable/ItemTableRow/ItemTableRow";
+import ItemsTable from "../../ItemsTable/ItemsTable";
+import ItemsTableHeader from "../../ItemsTable/ItemsTableHeader/ItemsTableHeader";
+import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
+import RowAction from "../../RowAction/RowAction";
 const ExpenseForm = (props) =>{
 
         const data = React.useMemo(
@@ -49,11 +50,12 @@ const ExpenseForm = (props) =>{
     const columns = React.useMemo(
         () => [
             {
+                id:"id1",
                 Header: <ItemsTableHeader id="itemInfo" name="itemInfo" title = "Item information"/>,
                 columns: [
                     {
                         Header: <ItemsTableHeader id="itemNr" name="itemNr" title = "Item Nr."/>,
-                        id:"id",
+                        id:"id11",
                         accessor: 'itemNr',
                         Cell:(props)=>{
                             const rowId = parseInt(props.row.id)+1;
@@ -65,15 +67,16 @@ const ExpenseForm = (props) =>{
                     },
                     {
                         Header: <ItemsTableHeader id="itemName" name="itemName" title = "Item name"/>,
-                        id:"id",
+                        id:"id12",
                         accessor: 'itemName',
                         Cell:()=>{
                             return(
-                                <AutoSuggestion/>
+                                <AutoSuggestion />
                             )}
                     },
                     {
                         Header: <ItemsTableHeader id="amount" name="amount" title = "Amount"/>,
+                        id:"id13",
                         accessor: 'amount',
                         Cell:()=>{
                             return(
@@ -84,6 +87,7 @@ const ExpenseForm = (props) =>{
                     },
                     {
                         Header: <ItemsTableHeader id="unit" name="unit" title = "Unit"/>,
+                        id:"id14",
                         accessor: 'unit',
                         Cell:()=>{
                             return(
@@ -92,7 +96,7 @@ const ExpenseForm = (props) =>{
                     },
                     {
                         Header: <ItemsTableHeader id="unitPrice" name="unitPrice" title = "Unit price"/>,
-                        id:"id",
+                        id:"id15",
                         accessor: 'unitPrice',
                         Cell:()=>{
                             return(
@@ -103,6 +107,7 @@ const ExpenseForm = (props) =>{
                     },
                     {
                         Header: <ItemsTableHeader id="itemCategory" name="itemCategory" title = "Category"/>,
+                        id:"id16",
                         accessor: 'itemCategory',
                         Cell:()=>{
                             return(
@@ -111,7 +116,7 @@ const ExpenseForm = (props) =>{
                     },
                     {
                         Header: <ItemsTableHeader id="totalPrice" name="totalPrice" title = "Total price"/>,
-                        id:"id",
+                        id:"id17",
                         accessor: 'totalPrice',
                         Cell:()=>{
                             return(
@@ -123,29 +128,32 @@ const ExpenseForm = (props) =>{
                 ],
             },
             {
+                id:"id3",
                 Header: <ItemsTableHeader id="actions" name="actions" title = "Actions"/>,
+                headerClassName:"text-center",
                 columns: [
                     {
                         Header: <ItemsTableHeader id="itemDetails" name="itemDetails" title = "Details"/>,
-                        id:"id",
-                        accessor: 'age',
+                        headerClassName:"text-center",
+                        id:"id18",
+                        accessor: 'visits',
                         Cell:()=>{
                             return(
-                                <RowAction con={faBookOpen} color={"green"}/>
+                                <RowAction icon={faBookOpen} color={"green"} className="text-center"/>
                             )}
                     },
                     {
                         Header: <ItemsTableHeader id="itemUpdate" name="itemUpdate" title = "Update"/>,
-                        id:"id",
+                        id:"id19",
                         accessor: 'visits',
                         Cell:()=>{
                             return(
-                                <RowAction icon={faBookOpen} className="mr-2" color={"orange"}/>
+                                <RowAction icon={faEdit} className="mr-2" color={"orange"}/>
                             )}
                     },
                     {
                         Header: <ItemsTableHeader id="itemRemove" name="itemRemove" title = "Remove"/>,
-                        id:"id",
+                        id:"id20",
                         accessor: 'visits',
                         Cell:()=>{
                             return(
@@ -326,7 +334,7 @@ const ExpenseForm = (props) =>{
                                 <Modal.Title>Items submitted </Modal.Title>
                             </Modal.Header>
                         </Row>
-                        <Row>
+                        <Row >
                             {/*<Table striped bordered hover variant="dark">*/}
 
                             {/*    <thead>*/}

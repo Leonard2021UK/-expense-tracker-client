@@ -1,5 +1,5 @@
+import "./ItemsTableStyle.css";
 const {useTable} = require("react-table");
-
 function ItemsTable({ columns, data }) {
     // Use the state and functions returned from useTable to build your UI
     const {
@@ -12,6 +12,12 @@ function ItemsTable({ columns, data }) {
         columns,
         data
     })
+    headerGroups.map(headerGroup =>{
+        headerGroup.headers.map(column =>{
+            console.log(column.getHeaderProps())
+            }
+        )
+    })
 
     // Render the UI for your table
     return (
@@ -20,7 +26,7 @@ function ItemsTable({ columns, data }) {
             {headerGroups.map(headerGroup => (
                 <tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                        <th className="text-center" {...column.getHeaderProps()}>{column.render('Header')}</th>
                     ))}
                 </tr>
             ))}
@@ -29,7 +35,7 @@ function ItemsTable({ columns, data }) {
             {rows.map((row, i) => {
                 prepareRow(row)
                 return (
-                    <tr {...row.getRowProps()}>
+                    <tr className="text-center border-bottom row-hover" {...row.getRowProps()}>
                         {row.cells.map(cell => {
                             return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                         })}

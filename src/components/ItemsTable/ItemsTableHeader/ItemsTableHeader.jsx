@@ -1,18 +1,18 @@
 import React from "react";
 import {Button} from "react-bootstrap";
-
+// import "../ItemsTableStyle.css"
 const ItemsTableHeader = (props)=>{
     return (
-            <Button
+            <th
                 color="link"
-                className="animation-on-hover"
+                className="animation-on-hover "
                 id={props.id}
                 name={props.name}
                 type="button"
                 disabled={false}
             >
                 <div>{props.title}</div>
-            </Button>
+            </th>
     )
 };
 

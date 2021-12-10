@@ -4,7 +4,7 @@ import {faBookOpen, faEdit, faMailBulk, faTrash, faArrowUp,faCheck,faTimes,faWin
 import {Col, Container, Modal, Row} from "react-bootstrap";
 import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 import React from "react";
-import ExpenseForm from "../../Forms/ExpenseForm";
+import ExpenseForm from "../../Forms/ExpenseForm/ExpenseForm";
 
 const ExpenseDetailsModal = (props)=>{
     const {toggleModal,show,expense,disable} = props;

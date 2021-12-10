@@ -5,10 +5,8 @@ import {useSelector,useDispatch} from "react-redux";
 const _ = require('lodash');
 
 const AutoSuggestion = (props) => {
-    const {id,labelKey,suggestionLabels,initialValue} = props;
+    const {id,suggestionLabels,initialValue,options,className,setFieldValue,setFieldTouched} = props;
 
-    const [selection, setSelection] = useState([]);
-    const reduxSuggestions = useSelector(state => state.suggestions);
     const [selectedItem,setSetSelectedItem] = useState(initialValue);
 
 
@@ -40,7 +38,7 @@ const AutoSuggestion = (props) => {
             // Iterate over the provided labels
             _.forEach(suggestionLabels,(label) =>{
 
-                // Get the appropriate values from the stored option
+                // Get the appropriate properties from the current option in the collection
                 storedOption = storedOption.concat(option[label])
             });
 
@@ -63,11 +61,19 @@ const AutoSuggestion = (props) => {
             <Form.Group>
                 <Typeahead
                     id={id}
+                    onBlur = {(e)=>setFieldTouched('category',true)}
                     labelKey={getLabelKey.bind(this,suggestionLabels)}
-                    onChange={setSelection}
-                    options={["ff","fff"]}
+                    onInputChange={(text, event) => setFieldValue('category', text)}
+                    onChange={(selectedItem) =>{
+                        console.log(selectedItem)
+                        const value = (selectedItem.length > 0) ? selectedItem[0].name:'';
+                        setFieldValue('category',value)
+                        setSetSelectedItem(selectedItem)
+                    }}
+                    options={options}
                     placeholder="Choose a state..."
-                    selected={selection}
+                    selected={selectedItem}
+                    className={"form-control " + className}
                 />
             </Form.Group>
         </>

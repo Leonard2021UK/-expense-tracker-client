@@ -1,0 +1,17 @@
+.toolbar-button{
+    background: none;
+    /*color: inherit;*/
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+
+}
+
+.toolbar-button:hover{
+    color: #fa6d72 !important;
+    border: none;
+}
+
+.toolbar-button:active { border-style: outset;}

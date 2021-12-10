@@ -1,0 +1,7 @@
+.text-center{
+    text-align: center;
+}
+
+.row-hover:hover{
+    background: #6d88fa;
+}
