@@ -9,7 +9,7 @@ import ExpenseTrackerTableToolBar from "../TableToolBars/ExpenseTrackerTableTool
 const ExpenseTrackerTable = (props)=>{
     const {toggleExpenseTrackerModal} = props;
     const rExpenseTrackers = useSelector((state) => state.expenseTrackers.response);
-
+    console.log(rExpenseTrackers)
     const [expensesModalIsOpen, setExpensesModalIsOpen] = useState(false);
     const [expenses, setExpenses]= useState([]);
 

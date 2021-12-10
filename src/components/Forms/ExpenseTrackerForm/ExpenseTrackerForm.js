@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 import UserService from "../../../services/UserService";
 import _ from "lodash";
 import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 
 const ExpenseTrackerForm = (props) =>{
 
@@ -76,7 +78,8 @@ const ExpenseTrackerForm = (props) =>{
                                 </Form.Group>
                             </Row>
                             <Row style={{marginTop:5 + "vh"}}>
-                                <Col>
+                                <Col className="form-control">
+                                    {/*TODO non-existing category allows submit the form*/}
                                     <AutoSuggestion
                                         id="main-category"
                                         onChange={handleChange}
@@ -87,6 +90,8 @@ const ExpenseTrackerForm = (props) =>{
                                         suggestionLabels={["name"]}
                                         className={touched.category && errors.category ? "error" : null}
                                     />
+                                    <FontAwesomeIcon icon={faFolderPlus} className="fas fa-2x" color={"green"} style={{margin:1+"vh",cursor:"pointer"}} />
+
                                     {touched.category && errors.category ? (
                                         <div className="error-message">{errors.category}</div>
                                     ): null}

@@ -25,6 +25,8 @@ const fetchedSliceGenerator = (name)=>{
                 state.receivedAt = Date.now();
             },
             [`${name}RequestSuccess`]:(state,payload)=> {
+                console.log("PAYLOADDDDDDDD")
+                console.log(payload)
                 state.data = payload.payload.data.data;
                 state.response = payload.payload.data;
                 state.isFetching = false;

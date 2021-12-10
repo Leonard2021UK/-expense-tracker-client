@@ -1,13 +1,19 @@
 import {Typeahead} from "react-bootstrap-typeahead";
-import {Form} from "react-bootstrap";
-import {useState} from "react";
+import {Form, Button, InputGroup, FormControl} from "react-bootstrap";
+import React, {useState} from "react";
 import {useSelector,useDispatch} from "react-redux";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
+
 const _ = require('lodash');
 
 const AutoSuggestion = (props) => {
+
     const {id,suggestionLabels,initialValue,options,className,setFieldValue,setFieldTouched} = props;
 
     const [selectedItem,setSetSelectedItem] = useState(initialValue);
+    const [nonExisting,setNonExisting] = useState();
+    const [disableCreateButton,setDisableCreateButton] = useState();
 
 
     /**
@@ -58,24 +64,34 @@ const AutoSuggestion = (props) => {
 
     return (
         <>
-            <Form.Group>
-                <Typeahead
-                    id={id}
-                    onBlur = {(e)=>setFieldTouched('category',true)}
-                    labelKey={getLabelKey.bind(this,suggestionLabels)}
-                    onInputChange={(text, event) => setFieldValue('category', text)}
-                    onChange={(selectedItem) =>{
-                        console.log(selectedItem)
-                        const value = (selectedItem.length > 0) ? selectedItem[0].name:'';
-                        setFieldValue('category',value)
-                        setSetSelectedItem(selectedItem)
-                    }}
-                    options={options}
-                    placeholder="Choose a state..."
-                    selected={selectedItem}
-                    className={"form-control " + className}
-                />
-            </Form.Group>
+
+                    <Typeahead
+                        id={id}
+                        onBlur = {(e)=>{
+                            if (!_.isUndefined(selectedItem) && selectedItem.length === 0){
+                                setFieldValue('category','')
+                                setNonExisting(e.target.value)
+
+                            }
+                            return setFieldTouched('category',true)
+                        }}
+                        labelKey={getLabelKey.bind(this,suggestionLabels)}
+                        onInputChange={(text, event) => {
+
+                        }}
+                        onChange={(selectedItem) =>{
+                            console.log(selectedItem)
+                            const value = (selectedItem.length > 0) ? selectedItem[0].name:'';
+                            setFieldValue('category',value)
+                            setSetSelectedItem(selectedItem)
+                        }}
+                        options={options}
+                        placeholder="Choose a state..."
+                        selected={selectedItem}
+                        className={className}
+                    />
+
+
         </>
     );
 };
