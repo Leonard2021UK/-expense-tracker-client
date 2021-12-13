@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Spinner} from "react-bootstrap";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import {mainCategoryThunk,mainCategoryInValidate} from "../../../redux/features/suggestions/mainCategorySuggestionSlice";
+import {mainCategoryThunk,mainCategoryInValidate} from "../../../redux/features/suggestions/mainCategorySuggestionSlice"
+import {expenseTrackerThunk,expenseTrackersInValidate} from "../../../redux/features/domain/expenseTrackerSlice";
 import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
 import './expenseTrackerFormStyle.css';
@@ -10,6 +11,7 @@ import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
+import {setExpenseTrackerCategory,setExpenseTrackerName} from "../../../redux/features/domain/expenseTrackerFormSlice";
 
 const ExpenseTrackerForm = (props) =>{
 
@@ -23,8 +25,9 @@ const ExpenseTrackerForm = (props) =>{
 
 
     //declared separately to be able to use to validate creation button
-    const {fetchMainCategory,fetchExpenseTracker} = useApiService();
+    const {fetchMainCategory,saveExpenseTracker} = useApiService();
     const dispatch = useDispatch();
+    const rExpenseTrackerForm = useSelector((state) => state.expenseTrackerForm.formState)
 
     const handleCreateNewCategory = ()=>{
         const reqBody = {
@@ -62,9 +65,7 @@ const ExpenseTrackerForm = (props) =>{
         }
     })
 
-    const getSelectedItem(){
 
-    }
 
     return (
         <>
@@ -75,20 +76,23 @@ const ExpenseTrackerForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        console.log(values)
-                        alert("SUBMITTING")
+                        console.log(rExpenseTrackerForm)
+
+
+                        // alert("SUBMITTING")
                         const reqBody = {
-                            "name":values.name,
-                            "mainCategoryId":getSelectedItem()
+                            "name":rExpenseTrackerForm.mainCategoryName,
+                            "mainCategoryId":rExpenseTrackerForm.mainCategory[0].id
                         }
-                        setFetchingNewCategory(true);
-                        fetchMainCategory("POST",reqBody)
+                        // setFetchingNewCategory(true);
+                        saveExpenseTracker(reqBody)
                             .then(async (response)=>{
+                                console.log(response)
                                 if(response.ok){
                                     let parsedResponse = await response.json();
-                                    setSavedNewMainCategory( [parsedResponse]);
-                                    dispatch(mainCategoryInValidate({data:true}));
-                                    dispatch(mainCategoryThunk());
+                                    // setSavedNewMainCategory( [parsedResponse]);
+                                    dispatch(expenseTrackersInValidate({data:true}));
+                                    dispatch(expenseTrackerThunk());
                                 }
                                 //TODO error handling
                             }).then(()=>{
@@ -126,7 +130,12 @@ const ExpenseTrackerForm = (props) =>{
                                         type="text"
                                         name="name"
                                         placeholder="Enter name"
-                                        onChange={handleChange}
+                                        onChange={(e,event)=>{
+                                            console.log(e.target.value);
+                                            setFieldValue('name', e.target.value);
+                                            dispatch(setExpenseTrackerName({mainCategoryName:values.name}))
+                                            return  handleChange("name")
+                                        }}
                                         onBlur={handleBlur}
                                         value={values.name}
                                         disabled={disable}
@@ -144,6 +153,8 @@ const ExpenseTrackerForm = (props) =>{
                                         <Col lg={10}>
                                             <AutoSuggestion
                                                 id="main-category"
+                                                suggestionName="mainCategory"
+                                                reduxReducer={setExpenseTrackerCategory}
                                                 initialValue={savedNewMainCategory}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}

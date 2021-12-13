@@ -4,7 +4,7 @@ import thunkGenerator from "../../thunkGenerator";
 const rootTreeName = "expenseTrackers";
 const expenseTrackerSuggestionSlice = fetchedSliceGenerator("expenseTrackers");
 
-export const { expenseTrackerRequest, expenseTrackerInValidate,expenseTrackerRequestFail,expenseTrackerRequestSuccess,expenseTrackerRequestException } = expenseTrackerSuggestionSlice.actions;
+export const { expenseTrackerRequest, expenseTrackersInValidate,expenseTrackerRequestFail,expenseTrackerRequestSuccess,expenseTrackerRequestException } = expenseTrackerSuggestionSlice.actions;
 
 export default expenseTrackerSuggestionSlice.reducer;
 

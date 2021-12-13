@@ -9,6 +9,8 @@ const _ = require('lodash');
 
 const AutoSuggestion = (props) => {
 
+    const dispatch = useDispatch();
+
     const {
         id,
         suggestionLabels,
@@ -17,6 +19,8 @@ const AutoSuggestion = (props) => {
         className,
         setFieldValue,
         setFieldTouched,
+        reduxReducer,
+        suggestionName,
         nonExistingOptionIsValid,
         setNonExistingOption
     } = props;
@@ -95,13 +99,13 @@ const AutoSuggestion = (props) => {
             <Typeahead
                 id={id}
                 onBlur = {(e)=>{
-                    console.log(selectedItem)
                     if (_.isEmpty(selectedItem) ){
                         setFieldValue('category','')
                         setNonExistingOption(e.target.value)
                     }else{
                         setNonExistingOption('')
                     }
+                    dispatch(reduxReducer({[suggestionName]:selectedItem}))
                     setFieldTouched('category',true)
                 }}
                 labelKey={getLabelKey.bind(this,suggestionLabels)}
@@ -109,6 +113,8 @@ const AutoSuggestion = (props) => {
                     setNonExistingOption(text)
                     setFieldValue('category', text);
                     setSelectedItem([])
+                    dispatch(reduxReducer({[suggestionName]:[]}))
+
 
                 }}
                 onChange={(selectedItem) =>{
@@ -116,6 +122,8 @@ const AutoSuggestion = (props) => {
                     const value = (selectedItem.length > 0) ? selectedItem[0].name:'';
                     setFieldValue('category',value)
                     setSelectedItem(selectedItem)
+                    dispatch(reduxReducer({[suggestionName]:selectedItem}))
+
                 }}
                 options={options}
                 placeholder="Choose a state..."

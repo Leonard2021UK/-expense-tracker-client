@@ -8,18 +8,17 @@ import {UseCustomFetch} from "../customHooks/useCustomFetch";
 export function useApiService() {
 
 
-    const fetchExpenseTracker = async (method,data = {})=>{
+    const saveExpenseTracker = async (data)=>{
         const fetchOption = {
-            "method": method,
+            "method": "POST",
             "headers": {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
             },
             "body": JSON.stringify(data)
-
         };
-
+        console.log(data)
         const url = process.env.REACT_APP_EXPENSES_TRACKER;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
@@ -111,6 +110,7 @@ export function useApiService() {
     }
 
     const fetchMainCategory = async (method,data = {})=>{
+        console.log("INFECHT")
         const fetchOption = {
             "method": method,
             "headers": {
@@ -279,7 +279,7 @@ export function useApiService() {
 
 
     return {
-        fetchExpenseTracker,
+        saveExpenseTracker,
         getAllUnitTypes,
         getAllPaymentTypes,
         getAllExpenseAddresses,
