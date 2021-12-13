@@ -8,14 +8,16 @@ import {UseCustomFetch} from "../customHooks/useCustomFetch";
 export function useApiService() {
 
 
-    const getAllExpenseTrackers = async ()=>{
+    const fetchExpenseTracker = async (method,data = {})=>{
         const fetchOption = {
-            "method": "GET",
+            "method": method,
             "headers": {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
-            }
+            },
+            "body": JSON.stringify(data)
+
         };
 
         const url = process.env.REACT_APP_EXPENSES_TRACKER;
@@ -108,6 +110,23 @@ export function useApiService() {
             })
     }
 
+    const fetchMainCategory = async (method,data = {})=>{
+        const fetchOption = {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            },
+            "body": JSON.stringify(data)
+        };
+
+        const url = process.env.REACT_APP_MAIN_CATEGORY;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
     // const getJobRecordById = async (jobRecord)=>{
     //     console.log("jobrecord to update ", jobRecord);
     //     const fetchOption = {
@@ -260,13 +279,13 @@ export function useApiService() {
 
 
     return {
-        getAllExpenseTrackers,
+        fetchExpenseTracker,
         getAllUnitTypes,
         getAllPaymentTypes,
         getAllExpenseAddresses,
         getAllExpenseTypes,
-        getInitData
-
+        getInitData,
+        fetchMainCategory
         // getJobRecordById,
         // getAllJobRegistration,
         // getMyBookings,

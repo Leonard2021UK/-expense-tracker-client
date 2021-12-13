@@ -16,6 +16,7 @@ const fetchedSliceGenerator = (name)=>{
                 state.isFetching = payload.payload.data;
             },
             [`${name}InValidate`]:(state,payload)=>{
+                console.log(payload)
                 state.didInvalidate = payload.payload.data;
             },
             [`${name}RequestFail`]:(state,payload)=>{
@@ -25,11 +26,9 @@ const fetchedSliceGenerator = (name)=>{
                 state.receivedAt = Date.now();
             },
             [`${name}RequestSuccess`]:(state,payload)=> {
-                console.log("PAYLOADDDDDDDD")
-                console.log(payload)
                 state.data = payload.payload.data.data;
                 state.response = payload.payload.data;
-                state.isFetching = false;
+                // state.isFetching = false;
                 state.receivedAt = Date.now();
             },
             [`${name}RequestException`]:(state,payload)=> {

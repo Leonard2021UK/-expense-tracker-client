@@ -1,28 +1,70 @@
-import React, {useState} from "react";
-import {Button, Col, FloatingLabel, Form, Modal, Row} from "react-bootstrap";
+import React, {useEffect, useState} from "react";
+import {Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Spinner} from "react-bootstrap";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import UserService from "../../../services/UserService";
+import {mainCategoryThunk,mainCategoryInValidate} from "../../../redux/features/suggestions/mainCategorySuggestionSlice";
+import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
+import './expenseTrackerFormStyle.css';
 import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
+import {useApiService} from "../../../services/useApiService";
 
 const ExpenseTrackerForm = (props) =>{
 
-
+    const categoryMinLength = 3;
+    let nonExistingOptionIsValid = false;
     const {expense,disable,mainCategories} = props;
+    const [nonExistingOption,setNonExistingOption] = useState('');
+    const [savedNewMainCategory,setSavedNewMainCategory] = useState([]);
+    const [fetchingNewCategory,setFetchingNewCategory] = useState(false);
+    const [yupValidationCallback,setYupValidationCallback] = useState(()=>{});
 
+
+    //declared separately to be able to use to validate creation button
+    const {fetchMainCategory,fetchExpenseTracker} = useApiService();
+    const dispatch = useDispatch();
+
+    const handleCreateNewCategory = ()=>{
+        const reqBody = {
+            "name":nonExistingOption
+        }
+        setFetchingNewCategory(true);
+        fetchMainCategory("POST",reqBody)
+            .then(async (response)=>{
+                if(response.ok){
+                    let parsedResponse = await response.json();
+                    setSavedNewMainCategory( [parsedResponse]);
+                    dispatch(mainCategoryInValidate({data:true}));
+                    dispatch(mainCategoryThunk());
+                }
+        //TODO error handling
+            }).then(()=>{
+                setFetchingNewCategory(false);
+
+        })
+    }
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(3,"Name must be at least 3 characters")
             .max(50, "Name must be less than 50 characters")
             .required("Name is required"),
         category: Yup.string()
-            .min(3,"Category must be at least 3 characters")
+            .min(categoryMinLength,"Category must be at least " + categoryMinLength + " characters")
             .max(50, "Category must be less than 50 characters")
-            .required("Category does not exists! Change or create new!"),
+            .required("Category doesn't exists! Change or create as new!"),
     });
+
+    useEffect(()=>{
+        if(!_.isEmpty(nonExistingOption) && nonExistingOption.length >= categoryMinLength ){
+            nonExistingOptionIsValid = true;
+        }
+    })
+
+    const getSelectedItem(){
+
+    }
 
     return (
         <>
@@ -35,6 +77,24 @@ const ExpenseTrackerForm = (props) =>{
                         setSubmitting(true);
                         console.log(values)
                         alert("SUBMITTING")
+                        const reqBody = {
+                            "name":values.name,
+                            "mainCategoryId":getSelectedItem()
+                        }
+                        setFetchingNewCategory(true);
+                        fetchMainCategory("POST",reqBody)
+                            .then(async (response)=>{
+                                if(response.ok){
+                                    let parsedResponse = await response.json();
+                                    setSavedNewMainCategory( [parsedResponse]);
+                                    dispatch(mainCategoryInValidate({data:true}));
+                                    dispatch(mainCategoryThunk());
+                                }
+                                //TODO error handling
+                            }).then(()=>{
+                            setFetchingNewCategory(false);
+
+                        })
                         // UserService.register(values).then((response)=>{
                         //     console.log(response)
                         // })
@@ -78,49 +138,66 @@ const ExpenseTrackerForm = (props) =>{
                                 </Form.Group>
                             </Row>
                             <Row style={{marginTop:5 + "vh"}}>
-                                <Col className="form-control">
-                                    {/*TODO non-existing category allows submit the form*/}
-                                    <AutoSuggestion
-                                        id="main-category"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        setFieldValue={setFieldValue}
-                                        setFieldTouched={setFieldTouched}
-                                        options={mainCategories}
-                                        suggestionLabels={["name"]}
-                                        className={touched.category && errors.category ? "error" : null}
-                                    />
-                                    <FontAwesomeIcon icon={faFolderPlus} className="fas fa-2x" color={"green"} style={{margin:1+"vh",cursor:"pointer"}} />
+                                {/*<Form.Group>*/}
+                                {/*    <InputGroup className="mb-5">*/}
+                                <Form.Label>Category</Form.Label>
+                                        <Col lg={10}>
+                                            <AutoSuggestion
+                                                id="main-category"
+                                                initialValue={savedNewMainCategory}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                setFieldTouched={setFieldTouched}
+                                                options={mainCategories}
+                                                setNonExistingOption={setNonExistingOption}
+                                                nonExistingOptionIsValid ={nonExistingOptionIsValid}
+                                                suggestionLabels={["name"]}
+                                                className={touched.category && errors.category ? "error" : null}
+                                            />
 
-                                    {touched.category && errors.category ? (
-                                        <div className="error-message">{errors.category}</div>
-                                    ): null}
-                                    {/*<FloatingLabel controlId="floatingSelect" label="Expense type">*/}
-                                    {/*    <Form.Select*/}
-                                    {/*        aria-label="Floating label select example"*/}
-                                    {/*        disabled={false}*/}
-                                    {/*    >*/}
-                                    {/*        {disable ? <option>Test</option> :*/}
-                                    {/*            (*/}
-                                    {/*                <>*/}
-                                    {/*                    <option>Select address</option>*/}
-                                    {/*                    <option value="1">One</option>*/}
-                                    {/*                    <option value="2">Two</option>*/}
-                                    {/*                    <option value="3">Three</option>*/}
-                                    {/*                </>*/}
-                                    {/*            )}*/}
-                                    {/*    </Form.Select>*/}
-                                    {/*</FloatingLabel>*/}
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Form.Group>
-                                    <Row style={{marginTop:5 + "vh"}}>
-                                        <Col md={1}>
-                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Create</Button>
+
+                                            {touched.category && errors.category ? (
+                                                <div className="error-message ">{errors.category}</div>
+                                            ): null}
                                         </Col>
-                                    </Row>
-                                </Form.Group>
+                                        <Col lg={2}>
+                                            {/*<Button*/}
+                                            {/*    variant="outline-secondary"*/}
+                                            {/*    id="button-addon2"*/}
+                                            {/*    className={"input-addon-button"}*/}
+                                            {/*    onClick={handleCreateNewCategory}*/}
+                                            {/*    disabled={ nonExistingOption === '' || nonExistingOption.length < categoryMinLength}*/}
+                                            {/*>*/}
+                                                <FontAwesomeIcon
+                                                    icon={faFolderPlus}
+                                                    className={(nonExistingOption === '' || nonExistingOption.length < categoryMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                                    color={"green"}
+                                                    style={{margin:1+"vh",cursor:"pointer"}}
+                                                    onClick={handleCreateNewCategory}
+                                                />
+                                            {/*</Button>*/}
+                                        </Col>
+
+
+                                    {/*</InputGroup>*/}
+                                {/*</Form.Group>*/}
+                            </Row>
+                            <Row style={{marginTop:5 + "vh"}}>
+                                <Col lg={2}>
+                                    {/*<Form.Group>*/}
+                                    {/*    <Row style={{marginTop:5 + "vh"}}>*/}
+                                            <Col sm={1}>
+                                                <Button variant="primary" type="submit" disabled={isSubmitting}>Create</Button>
+                                            </Col>
+                                        {/*</Row>*/}
+
+                                    {/*</Form.Group>*/}
+                                </Col>
+                                <Col lg={2} className={(fetchingNewCategory)?'':"hide-spinner"}>
+                                    <Spinner animation="border" size="sm" />
+
+                                </Col>
                             </Row>
 
 

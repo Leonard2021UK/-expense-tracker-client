@@ -3,13 +3,13 @@ import inMemoryJWT from "../utils/inMemoryJWT";
 const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirName,fetchUrl)=>{
     //TODO implement caching e.g. redux-persist, reselect
 
-    console.log("THUNK GENERATOR")
-    console.log(sliceName)
-    console.log(actions)
-    console.log(dispatch)
-    console.log(prevState)
-    console.log(reduxRootDirName)
-    console.log(fetchUrl)
+    // console.log("THUNK GENERATOR")
+    // console.log(sliceName)
+    // console.log(actions)
+    // console.log(dispatch)
+    // console.log(prevState)
+    // console.log(reduxRootDirName)
+    // console.log(fetchUrl)
 
     //Check the store tree hierarchy
     // Check if the data stored is upto date, only if not make a request
@@ -18,11 +18,13 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
     //validates two level deep in the redux store
     const requestedReduxSliceIsValid = (((prevState || {})[`${reduxRootDirName}`] || {})[`${sliceName}`] || {}).didInvalidate;
 
+    // console.log(requestedReduxFieldIsValid)
+    // console.log(requestedReduxSliceIsValid)
 
     // if (prevState && ((prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`].didInvalidate) || (prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`].didInvalidate)))
         if (requestedReduxFieldIsValid || requestedReduxSliceIsValid)
         {
-            console.log("THUNK GENERATOR IS VALID")
+            // console.log("THUNK GENERATOR IS VALID")
 
         //Get access token from redux store
         // const accessToken = prevState.authUserInfo.user0AuthToken;
@@ -41,10 +43,10 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
         dispatch(actions[`${sliceName}RequestFetching`]({data: true}));
         dispatch(actions[`${sliceName}InValidate`]({data: false}));
         try {
-
+            // dispatch(actions[`${sliceName}RequestFetching`]({data: true}));
             const response = await fetch(fetchUrl, fetchOption);
-            console.log(response)
-
+            console.log("RESPONSE IS BACK")
+            // console.log(response)
             // Suggestion fetching is successful
             if (response.status === 200) {
                 const data = await response.json();
@@ -59,6 +61,7 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
             //End fetch
             dispatch(actions[`${sliceName}RequestFetching`]({data: false}));
         } catch (e){
+            console.log(e)
             dispatch(actions[`${sliceName}RequestException`]({data: []}));
             //End fetch
             dispatch(dispatch(actions[`${sliceName}RequestFetching`]({data: false})));
