@@ -2,10 +2,11 @@ import "./expenseTrackerTable.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookOpen, faEdit, faMailBulk, faTrash, faArrowUp,faCheck,faTimes,faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import ExpenseListModal from "../Modals/ExpenseModal/ExpensesModal";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {setExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlice";
 import {useSelector} from "react-redux";
 import ExpenseTrackerTableToolBar from "../TableToolBars/ExpenseTrackerTableToolBar";
+import CustomPagination from "../CustomPagination/CustomPagination";
 const ExpenseTrackerTable = (props)=>{
     const {toggleExpenseTrackerModal} = props;
     const rExpenseTrackers = useSelector((state) => state.expenseTrackers.response);
@@ -66,6 +67,7 @@ const ExpenseTrackerTable = (props)=>{
                   })}
                   </tbody>
               </table>
+          <CustomPagination rExpenseTrackers={rExpenseTrackers}/>
 
           {/*</main>*/}
       </>

@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, Container, Modal, Row} from "react-bootstrap";
+import {Col, Container, Modal, Row, ToastContainer} from "react-bootstrap";
 import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 import ExpenseTrackerForm from "../../Forms/ExpenseTrackerForm/ExpenseTrackerForm";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,12 +8,12 @@ function CreateExpenseTrackerModal(props){
 
     const rMainCategory= useSelector((state) => state.suggestions.mainCategory.response);
 
-    const{show,handleClose} = props;
+    const{show,toggleModal} = props;
 
     return(
         <Modal
             show={show}
-            onHide={handleClose}
+            onHide={toggleModal}
             backdrop="static"
             dialogClassName="modal-50w"
             keyboard={false}
@@ -26,7 +26,8 @@ function CreateExpenseTrackerModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ExpenseTrackerForm mainCategories={rMainCategory}/>
+                            <ExpenseTrackerForm mainCategories={rMainCategory} toggleModal={toggleModal} />
+
                         </Col>
                     </Row>
                 </Container>

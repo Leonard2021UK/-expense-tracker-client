@@ -1,5 +1,5 @@
 import ExpenseTrackerTable from "../../components/ExpenseTrackerTable/ExpenseTrackerTable";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useApiService} from "../../services/useApiService";
 import {useDispatch, useSelector} from "react-redux";
 import {setInitData,clearInitData} from "../../redux/features/utility/appInitDataSlice";
@@ -8,10 +8,13 @@ import {mainCategoryThunk} from "../../redux/features/suggestions/mainCategorySu
 import {setFirstName} from "../../redux/features/authentication/registerFormSlice";
 import ExpenseTrackerTableToolBar from "../../components/TableToolBars/ExpenseTrackerTableToolBar";
 import CreateExpenseTrackerModal from "../../components/Modals/CreateExpenseTrackerModal/CreateExpenseTrackerModal";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import CustomPagination from "../../components/CustomPagination/CustomPagination";
+
 const ExpenseTrackerView = ()=>{
 
     const dispatch = useDispatch();
-
     const [expenseTrackerModalIsOpen, setExpenseTrackerModalIsOpen] = useState(false);
 
 
@@ -19,7 +22,6 @@ const ExpenseTrackerView = ()=>{
         console.log("CALLING THUNK")
         dispatch(expenseTrackerThunk());
         dispatch(mainCategoryThunk());
-
 
     },[])
 
@@ -29,8 +31,20 @@ const ExpenseTrackerView = ()=>{
 
     return (
         <>
-            <CreateExpenseTrackerModal show={expenseTrackerModalIsOpen} handleClose={toggleExpenseTrackerModal}/>
+            <CreateExpenseTrackerModal show={expenseTrackerModalIsOpen} toggleModal={toggleExpenseTrackerModal} />
             <ExpenseTrackerTable toggleExpenseTrackerModal={toggleExpenseTrackerModal}/>
+            <ToastContainer
+                containerId="toast-container"
+                position="bottom-left"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

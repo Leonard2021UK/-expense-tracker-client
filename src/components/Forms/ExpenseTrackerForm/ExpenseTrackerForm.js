@@ -1,5 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Spinner} from "react-bootstrap";
+import {
+    Button,
+    Col,
+    FloatingLabel,
+    Form,
+    FormControl,
+    InputGroup,
+    Modal,
+    Row,
+    Spinner,
+    ToastContainer
+} from "react-bootstrap";
 import {Formik} from "formik";
 import * as Yup from 'yup';
 import {mainCategoryThunk,mainCategoryInValidate} from "../../../redux/features/suggestions/mainCategorySuggestionSlice"
@@ -12,15 +23,20 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
 import {setExpenseTrackerCategory,setExpenseTrackerName} from "../../../redux/features/domain/expenseTrackerFormSlice";
+import {useResponse} from "../../../customHooks/useResponse";
 
 const ExpenseTrackerForm = (props) =>{
 
     const categoryMinLength = 3;
     let nonExistingOptionIsValid = false;
-    const {expense,disable,mainCategories} = props;
+    const {disable,mainCategories,toggleModal} = props;
     const [nonExistingOption,setNonExistingOption] = useState('');
     const [savedNewMainCategory,setSavedNewMainCategory] = useState([]);
     const [fetchingNewCategory,setFetchingNewCategory] = useState(false);
+    const [fetchingNewExpenseTracker,setFetchingNewExpenseTracker] = useState(false);
+    const [handleNewMainCategoryResponse] = useResponse(setSavedNewMainCategory);
+    const [handleNewExpenseTrackerResponse] = useResponse();
+
     const [yupValidationCallback,setYupValidationCallback] = useState(()=>{});
 
 
@@ -34,15 +50,18 @@ const ExpenseTrackerForm = (props) =>{
             "name":nonExistingOption
         }
         setFetchingNewCategory(true);
+        setTimeout(()=>{},2000)
         fetchMainCategory("POST",reqBody)
             .then(async (response)=>{
                 if(response.ok){
-                    let parsedResponse = await response.json();
-                    setSavedNewMainCategory( [parsedResponse]);
+                    handleNewMainCategoryResponse(response, "New category was successfully created!")
+                    // setSavedNewMainCategory( [parsedResponse]);
                     dispatch(mainCategoryInValidate({data:true}));
                     dispatch(mainCategoryThunk());
+
+                }else {
+                    handleNewMainCategoryResponse(response, null,"New category couldn't be created!")
                 }
-        //TODO error handling
             }).then(()=>{
                 setFetchingNewCategory(false);
 
@@ -84,19 +103,25 @@ const ExpenseTrackerForm = (props) =>{
                             "name":rExpenseTrackerForm.mainCategoryName,
                             "mainCategoryId":rExpenseTrackerForm.mainCategory[0].id
                         }
-                        // setFetchingNewCategory(true);
+                        setFetchingNewExpenseTracker(true);
                         saveExpenseTracker(reqBody)
                             .then(async (response)=>{
                                 console.log(response)
                                 if(response.ok){
-                                    let parsedResponse = await response.json();
+                                    toggleModal();
+                                    handleNewExpenseTrackerResponse(response, "New expense-tracker was successfully created!")
+                                    // let parsedResponse = await response.json();
                                     // setSavedNewMainCategory( [parsedResponse]);
                                     dispatch(expenseTrackersInValidate({data:true}));
                                     dispatch(expenseTrackerThunk());
+                                }else{
+                                    toggleModal();
+                                    handleNewExpenseTrackerResponse(response, null,"New expense-tracker couldn't be created!")
+
                                 }
                                 //TODO error handling
                             }).then(()=>{
-                            setFetchingNewCategory(false);
+                            setFetchingNewExpenseTracker(false);
 
                         })
                         // UserService.register(values).then((response)=>{
@@ -146,11 +171,11 @@ const ExpenseTrackerForm = (props) =>{
                                     ): null}
                                 </Form.Group>
                             </Row>
-                            <Row style={{marginTop:5 + "vh"}}>
+                            <Row className={"category-align"} style={{marginTop:5 + "vh"}}>
                                 {/*<Form.Group>*/}
                                 {/*    <InputGroup className="mb-5">*/}
                                 <Form.Label>Category</Form.Label>
-                                        <Col lg={10}>
+                                        <Col lg={8}>
                                             <AutoSuggestion
                                                 id="main-category"
                                                 suggestionName="mainCategory"
@@ -172,6 +197,7 @@ const ExpenseTrackerForm = (props) =>{
                                                 <div className="error-message ">{errors.category}</div>
                                             ): null}
                                         </Col>
+
                                         <Col lg={2}>
                                             {/*<Button*/}
                                             {/*    variant="outline-secondary"*/}
@@ -189,13 +215,16 @@ const ExpenseTrackerForm = (props) =>{
                                                 />
                                             {/*</Button>*/}
                                         </Col>
+                                <Col lg={2} className={(fetchingNewCategory)?'show-spinner':"hide-spinner"}>
+                                    <Spinner animation="border" size="sm" />
 
+                                </Col>
 
                                     {/*</InputGroup>*/}
                                 {/*</Form.Group>*/}
                             </Row>
                             <Row style={{marginTop:5 + "vh"}}>
-                                <Col lg={2}>
+                                <Col lg={3}>
                                     {/*<Form.Group>*/}
                                     {/*    <Row style={{marginTop:5 + "vh"}}>*/}
                                             <Col sm={1}>
@@ -205,16 +234,26 @@ const ExpenseTrackerForm = (props) =>{
 
                                     {/*</Form.Group>*/}
                                 </Col>
-                                <Col lg={2} className={(fetchingNewCategory)?'':"hide-spinner"}>
+                                <Col lg={3} className={(fetchingNewExpenseTracker)?'':"hide-spinner"}>
                                     <Spinner animation="border" size="sm" />
 
                                 </Col>
                             </Row>
-
-
                         </Form>
                     )}
                 </Formik>
+                <ToastContainer
+                    containerId="toast-container"
+                    position="bottom-left"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                />
             </div>
         </>
     )
