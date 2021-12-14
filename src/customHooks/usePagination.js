@@ -19,24 +19,33 @@ export const usePagination = (
 
     return useMemo(() => {
 
+        let leftRange = range(currentPage,siblingsSize);
         const totalPageCount = Math.ceil(total / pageSize);
 
         if (totalPageCount <= siblingsSize) {
             return range(1, totalPageCount)
         }
-
+        // are there more pages than the number we want to show (1-2-3-4 ... 15-16-17-18) siblingSize(4) - 4 or more
         if(totalPageCount > siblingsSize){
-            console.log(totalPageCount-(totalPageCount-siblingsSize)+1)
-            let rightRange = 0;
-            if(totalPageCount - siblingsSize > siblingsSize){
-                rightRange = range((totalPageCount-siblingsSize)+1,totalPageCount);
+            let rightRange = [];
+            // if the number of pages are enough to show siblingSize on both sides then calculate the right range
+            // which is the last siblingSize items from total
+            if((totalPageCount - siblingsSize) > siblingsSize){
+
+                    rightRange = range((totalPageCount-siblingsSize)+1,totalPageCount);
+
+
+
             }else{
-                rightRange = range(totalPageCount-(totalPageCount-siblingsSize)+1,totalPageCount);
+                // if the number of pages are NOT enough to show siblingSize on both sides then calculate the right range
+                // which is the last siblingSize items plus a gap (1-2-3-4...6) number 5-is the gap
+                if((totalPageCount - siblingsSize) > 1){
+                    rightRange = range(totalPageCount-(totalPageCount-siblingsSize)+2,totalPageCount);
+                }
             }
 
-            let leftRange = range(currentPage,siblingsSize);
-            return [...leftRange,GAP,...rightRange]
 
+            return [...leftRange,GAP,...rightRange]
 
         }
     }, [total, pageSize, siblingsSize, gapSize, currentPage]);

@@ -17,9 +17,9 @@ function CustomPagination(props) {
         // setCurrentPageContent(rExpenseTrackers.slice(lastItemPos - itemPerPage, itemPerPage - 1))
     })
     let option = {
-        total: 50,
+        total: 80,
         pageSize: 10,
-        siblingsSize: 4,
+        siblingsSize: 7,
         gapSize: 1,
         currentPage: 1
     }
