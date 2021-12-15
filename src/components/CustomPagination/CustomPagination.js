@@ -17,11 +17,12 @@ function CustomPagination(props) {
         // setCurrentPageContent(rExpenseTrackers.slice(lastItemPos - itemPerPage, itemPerPage - 1))
     })
     let option = {
-        total: 80,
+        total: 600,
         pageSize: 10,
-        siblingsSize: 7,
+        thresholdIndex:4,
+        sideSize: 7,
         gapSize: 1,
-        currentPage: 1
+        currentPage:54
     }
     let paginationRange = usePagination(option);
 console.log(paginationRange)
