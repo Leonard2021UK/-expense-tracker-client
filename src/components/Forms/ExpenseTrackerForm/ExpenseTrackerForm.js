@@ -43,12 +43,18 @@ const ExpenseTrackerForm = (props) =>{
     const dispatch = useDispatch();
     const rExpenseTrackerForm = useSelector((state) => state.expenseTrackerForm.formState)
 
+    useEffect(()=>{
+        console.log(savedNewMainCategory)
+
+        dispatch(setExpenseTrackerCategory({"mainCategory":savedNewMainCategory}))
+
+    },[savedNewMainCategory])
     const handleCreateNewCategory = ()=>{
         const reqBody = {
             "name":nonExistingOption
         }
         setFetchingNewCategory(true);
-        setTimeout(()=>{},2000)
+
         fetchMainCategory("POST",reqBody)
             .then(async (response)=>{
                 if(response.ok){
@@ -60,10 +66,9 @@ const ExpenseTrackerForm = (props) =>{
                 }else {
                     handleNewMainCategoryResponse(response, null,"New category couldn't be created!")
                 }
-            }).then(()=>{
                 setFetchingNewCategory(false);
 
-        })
+            })
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string()

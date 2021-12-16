@@ -62,6 +62,7 @@ export function useResponse(setState,reset) {
             if (customSuccessMessage){
                 console.log("SUCCESSSSSSSSSS")
                 notification(customSuccessMessage,"success");
+
             }
             if(setState){
                 let r = await response.json()

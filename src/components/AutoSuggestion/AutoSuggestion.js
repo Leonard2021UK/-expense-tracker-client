@@ -103,6 +103,7 @@ const AutoSuggestion = (props) => {
                     if (_.isEmpty(selectedItem) ){
                         setFieldValue('category','')
                         setNonExistingOption(e.target.value)
+
                     }else{
                         setNonExistingOption('')
                     }
