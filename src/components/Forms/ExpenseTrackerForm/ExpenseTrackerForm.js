@@ -37,8 +37,6 @@ const ExpenseTrackerForm = (props) =>{
     const [handleNewMainCategoryResponse] = useResponse(setSavedNewMainCategory);
     const [handleNewExpenseTrackerResponse] = useResponse();
 
-    const [yupValidationCallback,setYupValidationCallback] = useState(()=>{});
-
 
     //declared separately to be able to use to validate creation button
     const {fetchMainCategory,saveExpenseTracker} = useApiService();

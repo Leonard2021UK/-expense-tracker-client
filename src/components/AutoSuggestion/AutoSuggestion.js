@@ -36,8 +36,9 @@ const AutoSuggestion = (props) => {
         // initial value is not empty set Yup validation for initial value
         if(!_.isEmpty(initialValue)){
             //TODO form appropriate value based on labels
+            console.log("initialValue ", initialValue)
             //this works when only one label is present
-            setFieldValue('category',initialValue[0][suggestionLabels[0]])
+            setFieldValue('category',initialValue[0].name)
 
         }
 

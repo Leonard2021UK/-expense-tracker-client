@@ -64,7 +64,9 @@ export function useResponse(setState,reset) {
                 notification(customSuccessMessage,"success");
             }
             if(setState){
-                setState(response)
+                let r = await response.json()
+                console.log(r)
+                setState(r)
             }
             //resets form
             if(reset){
