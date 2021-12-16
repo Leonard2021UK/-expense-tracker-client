@@ -6,6 +6,7 @@ import {usePagination} from "../../customHooks/usePagination";
 function CustomPagination(props) {
 
     const {data,setCurrentPageContent} = props;
+    console.log("PAGINATION DATA ",data)
     const [currentPage, setCurrentPage] = useState(1)
 
     let option = {
@@ -18,18 +19,24 @@ function CustomPagination(props) {
     let paginationRange = usePagination(option);
 
     const getCurrenPageData = ()=>{
-        if(currentPage === 1 && data.length < option.pageSize) {
+
+        let start, end;
+        if(currentPage === 1) {
+
             return data.slice(currentPage - 1, currentPage - 1 + option.pageSize);
         }
-        else if(currentPage > 1 && data.length < option.pageSize ){
-            return data.slice(currentPage * option.pageSize,currentPage - 1 + option.pageSize)
+        else if(currentPage > 1){
+
+            start = (currentPage - 1) * option.pageSize;
+            end = start + option.pageSize;
+            return data.slice(start,end);
         }
 
     }
 
     useEffect(()=>{
         setCurrentPageContent(getCurrenPageData())
-    },[currentPage])
+    },[currentPage,data])
 
     const handleFirstPage = ()=>{
         setCurrentPage(1)
@@ -42,7 +49,9 @@ function CustomPagination(props) {
 
     }
     const handleLastPage = ()=>{
-        setCurrentPage(50)
+        // total number of pages
+        const totalPageCount = Math.ceil(option.total / option.pageSize);
+        setCurrentPage(totalPageCount)
     }
 
     const handleCurrent = (item)=>{
@@ -50,16 +59,16 @@ function CustomPagination(props) {
     }
     return (
         <Pagination>
-            <Pagination.First disabled={!(paginationRange[0]>1)}  onClick={handleFirstPage}/>
-            <Pagination.Prev disabled={!(paginationRange[0]>1)}  onClick={handlePreviousPage}/>
+            <Pagination.First disabled={paginationRange[currentPage-1] === 1}  onClick={handleFirstPage}/>
+            <Pagination.Prev disabled={paginationRange[currentPage-1] === 1}    onClick={handlePreviousPage}/>
             {
                 paginationRange.map((item => {
                     let isActive = item === currentPage
                     return (item === "GAP") ? <Pagination.Ellipsis/> : <Pagination.Item active ={isActive} onClick={handleCurrent.bind(this,item)} >{item}</Pagination.Item>
                 }))
             }
-            <Pagination.Next disabled={currentPage === 50} onClick={handleNextPage}/>
-            <Pagination.Last disabled={currentPage === 50}  onClick={handleLastPage}/>
+            <Pagination.Next disabled={paginationRange[currentPage-1] === paginationRange.length} onClick={handleNextPage}/>
+            <Pagination.Last disabled={paginationRange[currentPage-1] === paginationRange.length}  onClick={handleLastPage}/>
         </Pagination>
     )
 }

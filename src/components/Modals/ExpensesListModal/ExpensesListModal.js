@@ -3,7 +3,7 @@ import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
 
-import './expensesModalStyle.css';
+import './expensesListModalStyle.css';
 import UserService from "../../../services/UserService";
 import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 const ExpenseListModal = (props) =>{

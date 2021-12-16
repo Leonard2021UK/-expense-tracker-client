@@ -2,7 +2,10 @@ import "./expensesTableStyle.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookOpen, faEdit, faMailBulk, faTrash, faArrowUp,faCheck,faTimes,faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import ExpenseDetailsModal from "../Modals/ExpenseDetailsModal/ExpenseDetailsModal";
-import {useState} from "react";
+import React, {useState} from "react";
+import TableToolBar from "../TableToolBars/TableToolBar";
+import CustomPagination from "../CustomPagination/CustomPagination";
+import CreateExpenseModal from "../Modals/CreateExpenseModal/CreateExpenseModal";
 
 const ExpensesTable = (props)=>{
     const {expenses} = props;
@@ -10,10 +13,16 @@ const ExpensesTable = (props)=>{
     const [expenseDetailsModalIsOpen, setExpenseDetailsModalIsOpen] = useState(false);
     const [selectedExpense, setSelectedExpense] = useState({});
     const [disable, setDisable] = useState(true);
+    const [currentPageContent, setCurrentPageContent] = useState([]);
+    const [createExpenseModalIsOpen, setCreateExpenseModalIsOpen] = useState(false);
 
     const toggleExpenseDetailsModal = ()=>{
         setExpenseDetailsModalIsOpen(!expenseDetailsModalIsOpen);
+    }
 
+    const toggleCreateExpenseModal = ()=>{
+        console.log("HELLO")
+        setCreateExpenseModalIsOpen(!createExpenseModalIsOpen);
     }
     const handleShowExpenseDetails = (expense)=>{
         setSelectedExpense(expense)
@@ -34,6 +43,8 @@ const ExpensesTable = (props)=>{
                 disable={disable}
             />
 
+            <TableToolBar toggleModal={toggleCreateExpenseModal} />
+
             <table className="table table-striped table-dark">
                 <thead>
                 <tr>
@@ -47,7 +58,7 @@ const ExpensesTable = (props)=>{
                 </tr>
                 </thead>
                 <tbody>
-                {expenses.map((expense,index)=>{
+                {currentPageContent.map((expense,index)=>{
                     return <>
                         <tr>
                             <th scope="row">{index}</th>
@@ -67,6 +78,7 @@ const ExpensesTable = (props)=>{
                 })}
                 </tbody>
             </table>
+            <CustomPagination data={expenses} setCurrentPageContent={setCurrentPageContent}/>
 
         {/*// </main>*/}
             </>

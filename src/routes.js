@@ -26,7 +26,7 @@ const routes = [
         component: ExpenseTrackerView,
         layout: "/admin",
         type: ["ROLE_ADMIN","ROLE_USER"],
-        submenu: []
+        submenu: [ ]
 
     }
 ];

@@ -94,7 +94,7 @@ const isLoggedIn = () => {
 
 const getUsername = () => "Anonymus";
 
-const hasRealmRole = () => "USER";
+const hasRealmRole = () => true;
 
 const hasResourceRole = () => "USER";
 

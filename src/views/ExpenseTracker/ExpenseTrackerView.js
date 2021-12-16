@@ -6,7 +6,7 @@ import {setInitData,clearInitData} from "../../redux/features/utility/appInitDat
 import {expenseTrackerThunk} from "../../redux/features/domain/expenseTrackerSlice";
 import {mainCategoryThunk} from "../../redux/features/suggestions/mainCategorySuggestionSlice";
 import {setFirstName} from "../../redux/features/authentication/registerFormSlice";
-import ExpenseTrackerTableToolBar from "../../components/TableToolBars/ExpenseTrackerTableToolBar";
+import TableToolBar from "../../components/TableToolBars/TableToolBar";
 import CreateExpenseTrackerModal from "../../components/Modals/CreateExpenseTrackerModal/CreateExpenseTrackerModal";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,7 +19,6 @@ const ExpenseTrackerView = ()=>{
 
 
     useEffect(()=>{
-        console.log("CALLING THUNK")
         dispatch(expenseTrackerThunk());
         dispatch(mainCategoryThunk());
 

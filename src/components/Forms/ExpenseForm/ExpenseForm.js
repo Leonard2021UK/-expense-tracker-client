@@ -17,6 +17,8 @@ import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import RowAction from "../../RowAction/RowAction";
 const ExpenseForm = (props) =>{
 
+    const {expense,disabled} = props;
+
         const data = React.useMemo(
         () => [
             {
@@ -165,9 +167,8 @@ const ExpenseForm = (props) =>{
         ],
         []
     )
-    const {expense,disable} = props;
-    console.log("EXPENSEE")
-    console.log(expense)
+
+
     const validationSchema = Yup.object().shape({
         name: Yup.string()
             .min(3,"*name must be at least 3 characters")
@@ -217,7 +218,7 @@ const ExpenseForm = (props) =>{
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.name}
-                                    disabled={disable}
+                                    disabled={disabled}
                                     className={touched.name && errors.name ? "error" : null}
                                 />
                                 {touched.name && errors.name ? (
@@ -230,8 +231,8 @@ const ExpenseForm = (props) =>{
                                     type="email"
                                     name="email"
                                     placeholder="Enter email"
-                                    defaultValue={expense.email}
-                                    disabled={disable}
+                                    defaultValue={_.isUndefined(expense)?"":expense.email}
+                                    disabled={disabled}
 
                                 />
                             </Form.Group>
@@ -244,8 +245,8 @@ const ExpenseForm = (props) =>{
                                     type="phone"
                                     name="phone"
                                     placeholder="Enter phone number"
-                                    defaultValue={expense.phoneNumber}
-                                    disabled={disable}
+                                    defaultValue={_.isUndefined(expense)?"":expense.phone}
+                                    disabled={disabled}
                                 />
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridMobile">
@@ -254,8 +255,8 @@ const ExpenseForm = (props) =>{
                                     type="mobile"
                                     name="mobile"
                                     placeholder="Enter mobile number"
-                                    defaultValue={expense.mobileNumber}
-                                    disabled={disable}
+                                    defaultValue={_.isUndefined(expense)?"":expense.mobile}
+                                    disabled={disabled}
                                 />
                             </Form.Group>
                         </Row>
@@ -264,9 +265,9 @@ const ExpenseForm = (props) =>{
                                 <FloatingLabel controlId="floatingSelect" label="Address">
                                     <Form.Select
                                         aria-label="Floating label select example"
-                                        disabled={disable}
+                                        disabled={disabled}
                                     >
-                                        {disable ? <option>{expense.expenseAddress.name}</option> :
+                                        {disabled ? <option>{_.isUndefined(expense)?"":expense.expenseAddress.name}</option> :
                                             (
                                                 <>
                                                     <option>Select address</option>
@@ -282,9 +283,9 @@ const ExpenseForm = (props) =>{
                                 <FloatingLabel controlId="floatingSelect" label="Payment type">
                                     <Form.Select
                                         aria-label="Floating label select example"
-                                        disabled={disable}
+                                        disabled={disabled}
                                     >
-                                        {disable ? <option>{expense.expensePaymentType.name}</option> :
+                                        {disabled ? <option>{_.isUndefined(expense)?"":expense.expensePaymentType.name}</option> :
                                             (
                                                 <>
                                                     <option>Select address</option>
@@ -302,9 +303,9 @@ const ExpenseForm = (props) =>{
                                 <FloatingLabel controlId="floatingSelect" label="Expense type">
                                     <Form.Select
                                         aria-label="Floating label select example"
-                                        disabled={disable}
+                                        disabled={disabled}
                                     >
-                                        {disable ? <option>{expense.expensePaymentType.name}</option> :
+                                        {disabled ? <option>{_.isUndefined(expense)?"":expense.expensePaymentType.name}</option> :
                                             (
                                                 <>
                                                     <option>Select address</option>
@@ -324,7 +325,7 @@ const ExpenseForm = (props) =>{
                                     <Form.Control
                                         as="textarea"
                                         placeholder="Leave a comment here"
-                                        disabled={disable}
+                                        disabled={disabled}
                                     />
                                 </FloatingLabel>
                             </Col>
@@ -360,7 +361,7 @@ const ExpenseForm = (props) =>{
                             {/*    })}*/}
                             {/*    </tbody>*/}
                             {/*</Table>*/}
-                            <ItemsTable columns={columns} data={expense.items}/>
+                            <ItemsTable columns={columns} data={_.isUndefined(expense)?[]:expense.items}/>
                         </Row>
                         <Row>
                             <Form.Group>
