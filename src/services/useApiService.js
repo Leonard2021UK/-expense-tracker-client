@@ -26,6 +26,75 @@ export function useApiService() {
             })
     }
 
+    const saveItem = async (data)=>{
+        const fetchOption = {
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            },
+            "body": JSON.stringify(data)
+        };
+        console.log(data)
+        const url = process.env.REACT_APP_ITEM;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+
+    const getAllItemCategories = async (data)=>{
+        const fetchOption = {
+            "method": "GET",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            }
+        };
+        console.log(data)
+        const url = process.env.REACT_APP_ITEM_CATEGORY;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+    const saveItemCategory= async (data)=>{
+        const fetchOption = {
+            "method": "POST",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            },
+            "body": JSON.stringify(data)
+        };
+        console.log(data)
+        const url = process.env.REACT_APP_ITEM;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+
+    const getAllItems = async (data)=>{
+        const fetchOption = {
+            "method": "GET",
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            }
+        };
+        console.log(data)
+        const url = process.env.REACT_APP_ITEM;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+
     const getAllUnitTypes = async ()=>{
         const fetchOption = {
             "method": "GET",
@@ -285,7 +354,12 @@ export function useApiService() {
         getAllExpenseAddresses,
         getAllExpenseTypes,
         getInitData,
-        fetchMainCategory
+        fetchMainCategory,
+        getAllItems,
+        saveItemCategory,
+        getAllItemCategories,
+        saveItem
+
         // getJobRecordById,
         // getAllJobRegistration,
         // getMyBookings,

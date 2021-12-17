@@ -3,30 +3,30 @@ import {Col, Container, Modal, Row, ToastContainer} from "react-bootstrap";
 import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 import ExpenseTrackerForm from "../../Forms/ExpenseTrackerForm/ExpenseTrackerForm";
 import {useDispatch, useSelector} from "react-redux";
-import ExpenseForm from "../../Forms/ExpenseForm/ExpenseForm";
 
-function CreateExpenseModal(props){
-
+function CreateItemModal(props){
 
     const{show,toggleModal} = props;
+
 
     return(
         <Modal
             show={show}
             onHide={toggleModal}
             backdrop="static"
-            dialogClassName="modal-80w"
+            dialogClassName="modal-50w"
             keyboard={false}
         >
             <Modal.Header closeButton>
-                <Modal.Title>Add new expense into the tracker</Modal.Title>
+                <Modal.Title>Add new item</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {/*<div style={{width:"80%",margin:"auto"}}>*/}
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ExpenseForm disabled={false}/>
+                            <h1>hhhhh</h1>
+
                         </Col>
                     </Row>
                 </Container>
@@ -43,4 +43,4 @@ function CreateExpenseModal(props){
     )
 }
 
-export default CreateExpenseModal;
+export default CreateItemModal;

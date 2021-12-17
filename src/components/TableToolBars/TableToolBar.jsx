@@ -1,5 +1,5 @@
 import React, {useEffect,useRef} from "react";
-import {Button,Tooltip} from "react-bootstrap";
+import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
 import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
 import "./TableToolBarStyle.css"
 import {useDispatch} from "react-redux";
@@ -10,8 +10,6 @@ const _ = require('lodash');
 const TableToolBar = (props)=>{
 
     const {toggleModal} = props;
-    console.log(toggleModal)
-    const toolBarRef = useRef(false);
 
     //Redux dispatch hook
     const dispatch = useDispatch();
@@ -89,6 +87,8 @@ const TableToolBar = (props)=>{
         // props.setTableData(prevState => (prevState.concat(selectedRows)))
     }
 
+
+
     return (
         <>
             <FontAwesomeIcon
@@ -99,13 +99,7 @@ const TableToolBar = (props)=>{
                 color={"green"}
                 style={{margin:1+"vh",cursor:"pointer"}}
             />
-            {/*<Tooltip*/}
-            {/*    delay={0}*/}
-            {/*    target="add"*/}
-            {/*    placement="top"*/}
-            {/*>*/}
-            {/*    Add new row*/}
-            {/*</Tooltip>*/}
+
             {/*<Button*/}
             {/*    color="link"*/}
             {/*    className="animation-on-hover toolbar-button"*/}

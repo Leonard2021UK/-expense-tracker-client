@@ -13,7 +13,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ExpenseListModal from "../Modals/ExpensesListModal/ExpensesListModal";
 import React, {useEffect, useState} from "react";
-import {setExpenseTrackers} from "../../redux/features/domain/expenseTrackerSlice";
 import {useSelector} from "react-redux";
 import TableToolBar from "../TableToolBars/TableToolBar";
 import CustomPagination from "../CustomPagination/CustomPagination";
@@ -52,8 +51,7 @@ const ExpenseTrackerTable = (props) => {
                 show={createExpenseModalIsOpen}
                 toggleModal={toggleCreateExpenseModal}
             />
-            <div
-                className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 className="h3" data-cy="page-header">Expense trackers</h1>
             </div>
             <TableToolBar toggleModal={toggleExpenseTrackerModal}/>

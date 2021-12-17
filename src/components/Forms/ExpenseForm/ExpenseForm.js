@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Table} from "react-bootstrap";
+import {Accordion, Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Table} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
 import "./expenseFormStyle.css";
@@ -15,9 +15,17 @@ import ItemsTable from "../../ItemsTable/ItemsTable";
 import ItemsTableHeader from "../../ItemsTable/ItemsTableHeader/ItemsTableHeader";
 import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import RowAction from "../../RowAction/RowAction";
+import TableToolBar from "../../TableToolBars/TableToolBar";
+import CreateItemModal from "../../Modals/CreateItemModal/CreateItemModal";
 const ExpenseForm = (props) =>{
 
     const {expense,disabled} = props;
+
+    const [createItemModalIsOpen,setCreateItemModalIsOpen] = useState(false);
+
+    const toggleCreateItemModal = ()=>{
+        setCreateItemModalIsOpen(!createItemModalIsOpen);
+    }
 
         const data = React.useMemo(
         () => [
@@ -178,6 +186,7 @@ const ExpenseForm = (props) =>{
 
     return (
         <>
+            <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal}/>
             <div style={{width:"80%",margin:"auto"}}>
             <Formik
                 initialValues={{name:_.isUndefined(expense)?"":expense.name}}
@@ -330,39 +339,25 @@ const ExpenseForm = (props) =>{
                                 </FloatingLabel>
                             </Col>
                         </Row>
-                        <Row>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Items submitted </Modal.Title>
-                            </Modal.Header>
-                        </Row>
+                        {/*<Row>*/}
+                        {/*    <Modal.Header closeButton>*/}
+                        {/*        <Modal.Title>Items submitted </Modal.Title>*/}
+                        {/*    </Modal.Header>*/}
+                        {/*</Row>*/}
                         <Row >
-                            {/*<Table striped bordered hover variant="dark">*/}
-
-                            {/*    <thead>*/}
-                            {/*    <tr>*/}
-                            {/*        <th scope="col">#</th>*/}
-                            {/*        <th scope="col">Item name</th>*/}
-                            {/*        <th scope="col">Amount</th>*/}
-                            {/*        <th scope="col">Unit</th>*/}
-                            {/*        <th scope="col">Unit price</th>*/}
-                            {/*        <th scope="col">Category</th>*/}
-                            {/*        <th scope="col">Price in total</th>*/}
-                            {/*        <th scope="col">Actions</th>*/}
-                            {/*    </tr>*/}
-                            {/*    </thead>*/}
-                            {/*    <tbody>*/}
-                            {/*    {expense.items.map((item,index)=>{*/}
-                            {/*        return <>*/}
-                            {/*            <tr>*/}
-                            {/*                <ItemTableRow/>*/}
-                            {/*            </tr>*/}
-
-                            {/*        </>*/}
-                            {/*    })}*/}
-                            {/*    </tbody>*/}
-                            {/*</Table>*/}
-                            <ItemsTable columns={columns} data={_.isUndefined(expense)?[]:expense.items}/>
+                            <Accordion defaultActiveKey="0">
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header>Items</Accordion.Header>
+                                    <Accordion.Body>
+                                        <TableToolBar toggleModal={toggleCreateItemModal}/>
+                                        <Row>
+                                            <ItemsTable columns={columns} data={_.isUndefined(expense)?[]:expense.items}/>
+                                        </Row>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
                         </Row>
+
                         <Row>
                             <Form.Group>
                                 <Row>
