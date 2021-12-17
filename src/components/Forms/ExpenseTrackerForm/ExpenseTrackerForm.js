@@ -73,7 +73,7 @@ const ExpenseTrackerForm = (props) =>{
             .min(3,"Name must be at least 3 characters")
             .max(50, "Name must be less than 50 characters")
             .required("Name is required"),
-        category: Yup.string()
+        mainCategory: Yup.string()
             .min(categoryMinLength,"Category must be at least " + categoryMinLength + " characters")
             .max(50, "Category must be less than 50 characters")
             .required("Category doesn't exists! Change or create as new!"),
@@ -195,7 +195,6 @@ const ExpenseTrackerForm = (props) =>{
                                                 suggestionLabels={["name"]}
                                                 className={touched.category && errors.category ? "error" : null}
                                             />
-
 
                                             {touched.category && errors.category ? (
                                                 <div className="error-message ">{errors.category}</div>

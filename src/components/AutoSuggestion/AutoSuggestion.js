@@ -101,19 +101,19 @@ const AutoSuggestion = (props) => {
                 id={id}
                 onBlur = {(e)=>{
                     if (_.isEmpty(selectedItem) ){
-                        setFieldValue('category','')
+                        setFieldValue(suggestionName,'')
                         setNonExistingOption(e.target.value)
 
                     }else{
                         setNonExistingOption('')
                     }
                     dispatch(reduxReducer({[suggestionName]:selectedItem}))
-                    setFieldTouched('category',true)
+                    setFieldTouched(suggestionName,true)
                 }}
                 labelKey={getLabelKey.bind(this,suggestionLabels)}
                 onInputChange={(text, event) => {
                     setNonExistingOption(text)
-                    setFieldValue('category', text);
+                    setFieldValue(suggestionName, text);
                     setSelectedItem([])
                     dispatch(reduxReducer({[suggestionName]:[]}))
 
@@ -122,7 +122,7 @@ const AutoSuggestion = (props) => {
                 onChange={(selectedItem) =>{
                     console.log(selectedItem)
                     const value = (selectedItem.length > 0) ? selectedItem[0].name:'';
-                    setFieldValue('category',value)
+                    setFieldValue(suggestionName,value)
                     setSelectedItem(selectedItem)
                     dispatch(reduxReducer({[suggestionName]:selectedItem}))
 

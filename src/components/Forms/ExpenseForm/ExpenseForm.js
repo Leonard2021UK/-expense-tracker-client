@@ -17,6 +17,8 @@ import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import RowAction from "../../RowAction/RowAction";
 import TableToolBar from "../../TableToolBars/TableToolBar";
 import CreateItemModal from "../../Modals/CreateItemModal/CreateItemModal";
+import {setExpenseTrackerCategory} from "../../../redux/features/domain/expenseTrackerFormSlice";
+import {setItemCategory} from "../../../redux/features/domain/itemFormSlice";
 const ExpenseForm = (props) =>{
 
     const {expense,disabled} = props;
@@ -27,35 +29,6 @@ const ExpenseForm = (props) =>{
         setCreateItemModalIsOpen(!createItemModalIsOpen);
     }
 
-        const data = React.useMemo(
-        () => [
-            {
-                firstName: 'Hello',
-                lastName: 'World',
-                age: Math.floor(Math.random() * 30),
-                visits: Math.floor(Math.random() * 100),
-                progress: Math.floor(Math.random() * 100),
-                status: 77
-            },
-            {
-                firstName: 'react-table',
-                lastName: 'rocks',
-                age: Math.floor(Math.random() * 30),
-                visits: Math.floor(Math.random() * 100),
-                progress: Math.floor(Math.random() * 100),
-                status: 77
-            },
-            {
-                firstName: 'whatever',
-                lastName: 'you want',
-                age: Math.floor(Math.random() * 30),
-                visits: Math.floor(Math.random() * 100),
-                progress: Math.floor(Math.random() * 100),
-                status: 77
-            },
-        ],
-        []
-    )
 
     const columns = React.useMemo(
         () => [
@@ -117,11 +90,31 @@ const ExpenseForm = (props) =>{
                     },
                     {
                         Header: <ItemsTableHeader id="itemCategory" name="itemCategory" title = "Category"/>,
-                        id:"id16",
+                        id:"id1",
                         accessor: 'itemCategory',
                         Cell:()=>{
                             return(
-                                <AutoSuggestion options={[]}/>
+                                <Col lg={8}>
+                                    <AutoSuggestion
+                                        id="item-category"
+                                        suggestionName="itemCategory"
+                                        reduxReducer={setItemCategory}
+                                        initialValue={savedItemCategory}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        setFieldTouched={setFieldTouched}
+                                        options={mainCategories}
+                                        setNonExistingOption={setNonExistingOption}
+                                        nonExistingOptionIsValid ={nonExistingOptionIsValid}
+                                        suggestionLabels={["name"]}
+                                        className={touched.category && errors.category ? "error" : null}
+                                    />
+
+                                    {touched.category && errors.category ? (
+                                        <div className="error-message ">{errors.category}</div>
+                                    ): null}
+                                </Col>
                             )}
                     },
                     {
