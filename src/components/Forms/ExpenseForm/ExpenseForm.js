@@ -81,7 +81,7 @@ const ExpenseForm = (props) =>{
                         accessor: 'itemName',
                         Cell:()=>{
                             return(
-                                <AutoSuggestion />
+                                <AutoSuggestion options={[]}/>
                             )}
                     },
                     {
@@ -101,7 +101,7 @@ const ExpenseForm = (props) =>{
                         accessor: 'unit',
                         Cell:()=>{
                             return(
-                                <AutoSuggestion/>
+                                <AutoSuggestion options={[]}/>
                             )}
                     },
                     {
@@ -121,7 +121,7 @@ const ExpenseForm = (props) =>{
                         accessor: 'itemCategory',
                         Cell:()=>{
                             return(
-                                <AutoSuggestion/>
+                                <AutoSuggestion options={[]}/>
                             )}
                     },
                     {
@@ -351,7 +351,22 @@ const ExpenseForm = (props) =>{
                                     <Accordion.Body>
                                         <TableToolBar toggleModal={toggleCreateItemModal}/>
                                         <Row>
-                                            <ItemsTable columns={columns} data={_.isUndefined(expense)?[]:expense.items}/>
+                                            <ItemsTable columns={columns} data={[
+                                                {
+                                                "id": null,
+                                                "createdBy": null,
+                                                "updatedBy": null,
+                                                "name": "neyw",
+                                                "amount": null,
+                                                "unitPrice": null,
+                                                "user": null,
+                                                "unitType": null,
+                                                "itemCategory": null,
+                                                "createdAt": null,
+                                                "updatedAt": null,
+                                                "archived": false
+                                            }
+                                            ]}/>
                                         </Row>
                                     </Accordion.Body>
                                 </Accordion.Item>

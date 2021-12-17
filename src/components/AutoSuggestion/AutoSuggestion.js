@@ -27,16 +27,16 @@ const AutoSuggestion = (props) => {
 
 
     //if initial value was provided initialise the state with that value otherwise set to empty array
-    const [selectedItem,setSelectedItem] = useState([]);
+    const [selectedItem,setSelectedItem] = useState(_.isUndefined(initialValue) ? []:initialValue);
 
     useEffect(()=>{
 
-        setSelectedItem(initialValue);
+        // setSelectedItem(initialValue);
 
         // initial value is not empty set Yup validation for initial value
-        if(!_.isEmpty(initialValue)){
+        if(!_.isEmpty(initialValue) && !_.isUndefined(initialValue)){
             //TODO form appropriate value based on labels
-            console.log("initialValue ", initialValue)
+            console.log("initialValue ", initialValue[0].name)
             //this works when only one label is present
             setFieldValue('category',initialValue[0].name)
 
@@ -132,8 +132,6 @@ const AutoSuggestion = (props) => {
                 selected={selectedItem.name}
                 className={className}
             />
-
-
         </>
     );
 };
