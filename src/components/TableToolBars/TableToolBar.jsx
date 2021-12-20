@@ -1,6 +1,6 @@
 import React, {useEffect,useRef} from "react";
 import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {faPlusSquare} from "@fortawesome/free-solid-svg-icons";
+import {faPlusSquare,faMinusSquare} from "@fortawesome/free-solid-svg-icons";
 import "./TableToolBarStyle.css"
 import {useDispatch} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ const _ = require('lodash');
 
 const TableToolBar = (props)=>{
 
-    const {toggleModal} = props;
+    const {add,remove} = props;
 
     //Redux dispatch hook
     const dispatch = useDispatch();
@@ -77,106 +77,52 @@ const TableToolBar = (props)=>{
         // )
     };
 
-    const removeTableRow = ()=>{
+    // const removeTableRow = ()=>{
+    //     // props.setTableData(prevState => prevState.slice(0,-1));
+    //     // props.setTableSuggestionRefs(prevState => prevState.slice(0,-1));
+    // };
+
+    // const addTableRow = ()=>{
         // props.setTableData(prevState => prevState.slice(0,-1));
         // props.setTableSuggestionRefs(prevState => prevState.slice(0,-1));
-    };
+    // };
 
-    const pasteRow = () =>{
-        // let selectedRows = props.tableData.filter((row,index)=> Object.keys(props.selectedRowIds).includes(index.toString()))
-        // props.setTableData(prevState => (prevState.concat(selectedRows)))
+    // const pasteRow = () =>{
+    //     // let selectedRows = props.tableData.filter((row,index)=> Object.keys(props.selectedRowIds).includes(index.toString()))
+    //     // props.setTableData(prevState => (prevState.concat(selectedRows)))
+    // }
+
+        return (
+            <>
+                {
+                    _.isUndefined(add) ? null :
+                        <FontAwesomeIcon
+                            name="add"
+                            onClick={add}
+                            icon={faPlusSquare}
+                            className="fas fa-2x"
+                            color={"green"}
+                            style={{margin: 1 + "vh", cursor: "pointer"}}
+                        />
+                }
+                {
+                    _.isUndefined(remove) ? null:
+                        <FontAwesomeIcon
+                        name="add"
+                        onClick={remove}
+                        icon={faMinusSquare}
+                        className="fas fa-2x"
+                        color={"red"}
+                        style={{margin:1+"vh",cursor:"pointer"}}
+                        />
+                }
+            </>
+        )
     }
 
 
 
-    return (
-        <>
-            <FontAwesomeIcon
-                name="add"
-                onClick={toggleModal}
-                icon={faPlusSquare}
-                className="fas fa-2x"
-                color={"green"}
-                style={{margin:1+"vh",cursor:"pointer"}}
-            />
 
-            {/*<Button*/}
-            {/*    color="link"*/}
-            {/*    className="animation-on-hover toolbar-button"*/}
-            {/*    id="delete"*/}
-            {/*    title=""*/}
-            {/*    name="DELETE"*/}
-            {/*    type="button"*/}
-            {/*    disabled={false}*/}
-            {/*    onClick={removeTableRow}*/}
-            {/*>*/}
-            {/*    <i className="tim-icons icon-simple-delete"/>*/}
-            {/*</Button>*/}
-            {/*<Tooltip*/}
-            {/*    delay={0}*/}
-            {/*    target="delete"*/}
-            {/*    placement="top"*/}
-            {/*>*/}
-            {/*    Delete last row*/}
-            {/*</Tooltip>*/}
-            {/*<Button*/}
-            {/*    color="link"*/}
-            {/*    className="animation-on-hover toolbar-button"*/}
-            {/*    id="copyRow"*/}
-            {/*    title=""*/}
-            {/*    name="COPY_ROW"*/}
-            {/*    type="button"*/}
-            {/*    disabled={false}*/}
-            {/*    // onClick={copyRow}*/}
-            {/*>*/}
-            {/*    <i className="tim-icons icon-single-copy-04"/>*/}
-            {/*</Button>*/}
-            {/*<Tooltip*/}
-            {/*    delay={0}*/}
-            {/*    target="copyRow"*/}
-            {/*    placement="top"*/}
-            {/*>*/}
-            {/*    Copy selected*/}
-            {/*</Tooltip>*/}
-            {/*<Button*/}
-            {/*    color="link"*/}
-            {/*    className="animation-on-hover toolbar-button"*/}
-            {/*    id="paste"*/}
-            {/*    title=""*/}
-            {/*    name="PASTE_SELECTED"*/}
-            {/*    type="button"*/}
-            {/*    disabled={false}*/}
-            {/*    onClick={pasteRow}*/}
-            {/*>*/}
-            {/*    <i className="tim-icons icon-paper"/>*/}
-            {/*</Button>*/}
-            {/*<Tooltip*/}
-            {/*    delay={0}*/}
-            {/*    target="paste"*/}
-            {/*    placement="top"*/}
-            {/*>*/}
-            {/*    Paste selected*/}
-            {/*</Tooltip>*/}
-            {/*<Button*/}
-            {/*    color="link"*/}
-            {/*    className="animation-on-hover toolbar-button"*/}
-            {/*    id="clearList"*/}
-            {/*    title=""*/}
-            {/*    name="CLEAR_LIST"*/}
-            {/*    type="button"*/}
-            {/*    onClick={clearTable}*/}
-            {/*>*/}
-            {/*    <i className="tim-icons icon-refresh-01"/>*/}
-            {/*</Button>*/}
-            {/*<Tooltip*/}
-            {/*    delay={0}*/}
-            {/*    target="clearList"*/}
-            {/*    placement="top"*/}
-            {/*>*/}
-            {/*    Clear table entries*/}
-            {/*</Tooltip>*/}
-            </>
-    )
-};
+
 
 export default TableToolBar;

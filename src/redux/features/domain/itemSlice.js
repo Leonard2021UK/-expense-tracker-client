@@ -13,7 +13,7 @@ let suggestionActions = itemSuggestionSlice.actions;
 let fetchUrl = process.env.REACT_APP_ITEM;
 
 export const itemThunk = ()=> async (dispatch,getState) => {
-    console.log("CALLING THUNK GENERATOR")
+    console.log("CALLING itemThunk GENERATOR")
 
     const prevState = getState();
     await thunkGenerator(itemSliceName,suggestionActions,dispatch,prevState,rootTreeName,fetchUrl);

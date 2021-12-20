@@ -3,8 +3,8 @@ import inMemoryJWT from "../utils/inMemoryJWT";
 const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirName,fetchUrl)=>{
     //TODO implement caching e.g. redux-persist, reselect
 
-    // console.log("THUNK GENERATOR")
-    // console.log(sliceName)
+    console.log("THUNK GENERATOR")
+    console.log(sliceName)
     // console.log(actions)
     // console.log(dispatch)
     // console.log(prevState)
@@ -18,8 +18,11 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
     //validates two level deep in the redux store
     const requestedReduxSliceIsValid = (((prevState || {})[`${reduxRootDirName}`] || {})[`${sliceName}`] || {}).didInvalidate;
 
-    // console.log(requestedReduxFieldIsValid)
-    // console.log(requestedReduxSliceIsValid)
+    console.log("requestedReduxFieldIsValid")
+    console.log(requestedReduxFieldIsValid)
+
+    console.log("requestedReduxSliceIsValid")
+    console.log(requestedReduxSliceIsValid)
 
     // if (prevState && ((prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`].didInvalidate) || (prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`].didInvalidate)))
         if (requestedReduxFieldIsValid || requestedReduxSliceIsValid)

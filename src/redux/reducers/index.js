@@ -6,6 +6,7 @@ import appInitDataSliceReducer from "../features/utility/appInitDataSlice";
 import expenseTrackerFormReducer from "../features/domain/expenseTrackerFormSlice";
 import suggestionsReducer from '../features/suggestions/suggestionsSliceCombiner';
 import itemFormReducer from "../features/domain/itemFormSlice";
+import itemsTableReducer from "../features/domain/tables/itemsTableSlice";
 
 export default combineReducers({
     registerForm:registerFormSliceReducer,
@@ -14,6 +15,7 @@ export default combineReducers({
     suggestions:suggestionsReducer,
     expenseTrackerForm:expenseTrackerFormReducer,
     itemForm:itemFormReducer,
+    itemsTable:itemsTableReducer
 });
 
 

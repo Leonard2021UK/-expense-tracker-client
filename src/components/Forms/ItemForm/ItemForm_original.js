@@ -329,7 +329,7 @@ const ItemForm = (props) =>{
                                                 />
                                             {/*</Button>*/}
                                         </Col>
-                                <Col lg={2} className={(fetchingNewCategory)?'show-spinner':"hide-spinner"}>
+                                <Col lg={2} className={(fetchingNewItem)?'show-spinner':"hide-spinner"}>
                                     <Spinner animation="border" size="sm" />
 
                                 </Col>

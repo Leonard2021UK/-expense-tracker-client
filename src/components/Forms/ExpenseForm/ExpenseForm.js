@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Accordion, Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Table} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
@@ -19,160 +19,91 @@ import TableToolBar from "../../TableToolBars/TableToolBar";
 import CreateItemModal from "../../Modals/CreateItemModal/CreateItemModal";
 import {setExpenseTrackerCategory} from "../../../redux/features/domain/expenseTrackerFormSlice";
 import {setItemCategory} from "../../../redux/features/domain/itemFormSlice";
+import {useResponse} from "../../../customHooks/useResponse";
+import {useApiService} from "../../../services/useApiService";
+import {useDispatch, useSelector} from "react-redux";
+import {unitTypeThunk} from "../../../redux/features/suggestions/unitSuggestionSlice";
+import {itemCategoryThunk} from "../../../redux/features/suggestions/itemCategorySuggestionSlice";
+import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
 const ExpenseForm = (props) =>{
 
     const {expense,disabled} = props;
 
+
+    const dispatch = useDispatch();
+
+    const categoryMinLength = 3;
+    const unitMinLength = 3;
+    const expenseNameMinLength = 3;
+    const itemNameMinLength = 3;
+
+    const [itemTableData,setItemTableData] = useState([])
+
+    let nonExistingItemCategoryOptionIsValid = false;
+    let nonExistingUnitOptionIsValid = false;
+    let nonExistingItemOptionIsValid = false;
+
+    const [nonExistingUnitOption,setNonExistingUnitOption] = useState('');
+    const [nonExistingCategoryOption,setNonExistingCategoryOption] = useState('');
+    const [nonExistingItemOption,setNonExistingItemOption] = useState('');
+
+    const [savedNewCategory,setSavedNewCategory] = useState([]);
+    const [savedNewUnit,setSavedNewUnit] = useState([]);
+    const [savedNewItem,setSavedNewItem] = useState([]);
+
+    const [fetchingNewCategory,setFetchingNewCategory] = useState(false);
+    const [fetchingNewUnit,setFetchingNewUnit] = useState(false);
+    const [fetchingNewItem,setFetchingNewItem] = useState(false);
+
+    const [handleNewCategoryResponse] = useResponse(setSavedNewCategory);
+    const [handleNewUnitResponse] = useResponse(setSavedNewUnit);
+    const [handleNewItemResponse] = useResponse(setSavedNewItem);
+
     const [createItemModalIsOpen,setCreateItemModalIsOpen] = useState(false);
+
+    const {getAllItemCategories,getAllUnitTypes,getAllItems,saveItem} = useApiService();
+
+    const rItemForm = useSelector((state) => state.itemForm.formState)
 
     const toggleCreateItemModal = ()=>{
         setCreateItemModalIsOpen(!createItemModalIsOpen);
     }
 
+    useEffect(()=>{
+        dispatch(unitTypeThunk())
+        dispatch(itemCategoryThunk())
+        dispatch(itemThunk())
+    })
 
-    const columns = React.useMemo(
-        () => [
-            {
-                id:"id1",
-                Header: <ItemsTableHeader id="itemInfo" name="itemInfo" title = "Item information"/>,
-                columns: [
-                    {
-                        Header: <ItemsTableHeader id="itemNr" name="itemNr" title = "Item Nr."/>,
-                        id:"id11",
-                        accessor: 'itemNr',
-                        Cell:(props)=>{
-                            const rowId = parseInt(props.row.id)+1;
-                            return(
-                                <div className="item_number" id={"row_" + rowId}>
-                                    {rowId}
-                                </div>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="itemName" name="itemName" title = "Item name"/>,
-                        id:"id12",
-                        accessor: 'itemName',
-                        Cell:()=>{
-                            return(
-                                <AutoSuggestion options={[]}/>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="amount" name="amount" title = "Amount"/>,
-                        id:"id13",
-                        accessor: 'amount',
-                        Cell:()=>{
-                            return(
-                                <InputGroup>
-                                    <FormControl/>
-                                </InputGroup>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="unit" name="unit" title = "Unit"/>,
-                        id:"id14",
-                        accessor: 'unit',
-                        Cell:()=>{
-                            return(
-                                <AutoSuggestion options={[]}/>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="unitPrice" name="unitPrice" title = "Unit price"/>,
-                        id:"id15",
-                        accessor: 'unitPrice',
-                        Cell:()=>{
-                            return(
-                                <InputGroup>
-                                    <FormControl/>
-                                </InputGroup>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="itemCategory" name="itemCategory" title = "Category"/>,
-                        id:"id1",
-                        accessor: 'itemCategory',
-                        Cell:()=>{
-                            return(
-                                <Col lg={8}>
-                                    <AutoSuggestion
-                                        id="item-category"
-                                        suggestionName="itemCategory"
-                                        reduxReducer={setItemCategory}
-                                        initialValue={savedItemCategory}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        setFieldValue={setFieldValue}
-                                        setFieldTouched={setFieldTouched}
-                                        options={mainCategories}
-                                        setNonExistingOption={setNonExistingOption}
-                                        nonExistingOptionIsValid ={nonExistingOptionIsValid}
-                                        suggestionLabels={["name"]}
-                                        className={touched.category && errors.category ? "error" : null}
-                                    />
+    const addTableRow = ()=>{
+        setItemTableData(prevState => ([...prevState,{
+            "name": "",
+            "amount": "",
+            "unitPrice": "",
+            "unitType": "",
+            "itemCategory": ""
+        }]))
+    }
 
-                                    {touched.category && errors.category ? (
-                                        <div className="error-message ">{errors.category}</div>
-                                    ): null}
-                                </Col>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="totalPrice" name="totalPrice" title = "Total price"/>,
-                        id:"id17",
-                        accessor: 'totalPrice',
-                        Cell:()=>{
-                            return(
-                                <InputGroup>
-                                    <FormControl/>
-                                </InputGroup>
-                            )}
-                    }
-                ],
-            },
-            {
-                id:"id3",
-                Header: <ItemsTableHeader id="actions" name="actions" title = "Actions"/>,
-                headerClassName:"text-center",
-                columns: [
-                    {
-                        Header: <ItemsTableHeader id="itemDetails" name="itemDetails" title = "Details"/>,
-                        headerClassName:"text-center",
-                        id:"id18",
-                        accessor: 'visits',
-                        Cell:()=>{
-                            return(
-                                <RowAction icon={faBookOpen} color={"green"} className="text-center"/>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="itemUpdate" name="itemUpdate" title = "Update"/>,
-                        id:"id19",
-                        accessor: 'visits',
-                        Cell:()=>{
-                            return(
-                                <RowAction icon={faEdit} className="mr-2" color={"orange"}/>
-                            )}
-                    },
-                    {
-                        Header: <ItemsTableHeader id="itemRemove" name="itemRemove" title = "Remove"/>,
-                        id:"id20",
-                        accessor: 'visits',
-                        Cell:()=>{
-                            return(
-                                <RowAction icon={faTrash} color={"red"}/>
-                            )}
-                    }
-                ],
-            },
-        ],
-        []
-    )
+    const removeTableRow = ()=>{
+        const lastRow = itemTableData[itemTableData.length-1];
+        setItemTableData(itemTableData.filter(item => lastRow !== item))
+    }
 
+    const removeSelectedTableRow = (id)=>{
+        const selectedRow = itemTableData[id];
+        setItemTableData(itemTableData.filter(item => item !== selectedRow));
+    }
+
+    const updateTableRow = (selectedItem,rowId,suggestionName)=>{
+        let prevState = [...itemTableData];
+        prevState[rowId] = selectedItem[0];
+        setItemTableData(prevState)
+    }
 
     const validationSchema = Yup.object().shape({
-        name: Yup.string()
-            .min(3,"*name must be at least 3 characters")
+        expenseName: Yup.string()
+            .min(expenseNameMinLength,"Name must be at least "+ expenseNameMinLength + " characters")
             .max(50, "*Name must be less than 100 characters")
             .required("*Name is required")
     });
@@ -182,17 +113,17 @@ const ExpenseForm = (props) =>{
             <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal}/>
             <div style={{width:"80%",margin:"auto"}}>
             <Formik
-                initialValues={{name:_.isUndefined(expense)?"":expense.name}}
+                initialValues={{expenseName:_.isUndefined(expense) ? "" : expense.name}}
                 validationSchema={validationSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     // When button submits form and form is in the process of submitting, submit button is disabled
                     setSubmitting(true);
                     console.log(values)
-                    UserService.register(values).then((response)=>{
-                        console.log(response)
-                    })
+                    // UserService.register(values).then((response)=>{
+                    //     console.log(response)
+                    // })
                     // Resets form after submission is complete
-                    resetForm();
+                    // resetForm();
 
                     // Sets setSubmitting to false after form is reset
                     setSubmitting(false);
@@ -206,7 +137,9 @@ const ExpenseForm = (props) =>{
                         handleChange,
                         handleBlur,
                         handleSubmit,
-                        isSubmitting
+                        isSubmitting,
+                        setFieldValue,
+                        setFieldTouched,
                     }
                 )=>(
                     <Form onSubmit={handleSubmit}>
@@ -215,16 +148,16 @@ const ExpenseForm = (props) =>{
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    name="name"
+                                    name="expenseName"
                                     placeholder="Enter name"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     value={values.name}
                                     disabled={disabled}
-                                    className={touched.name && errors.name ? "error" : null}
+                                    className={touched.expenseName && errors.expenseName ? "error" : null}
                                 />
-                                {touched.name && errors.name ? (
-                                    <div className="error-message">{errors.name}</div>
+                                {touched.expenseName && errors.expenseName ? (
+                                    <div className="error-message">{errors.expenseName}</div>
                                 ): null}
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridEmail">
@@ -239,7 +172,6 @@ const ExpenseForm = (props) =>{
                                 />
                             </Form.Group>
                         </Row>
-
                         <Row className="mb-3">
                             <Form.Group as={Col} controlId="formGridPhone">
                                 <Form.Label>Phone</Form.Label>
@@ -320,7 +252,6 @@ const ExpenseForm = (props) =>{
                                 </FloatingLabel>
                             </Col>
                         </Row>
-
                         <Row style={{marginTop:5 + "vh",marginBottom:5 + "vh"}}>
                             <Col>
                                 <FloatingLabel controlId="floatingTextarea" label="Comments">
@@ -342,24 +273,25 @@ const ExpenseForm = (props) =>{
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>Items</Accordion.Header>
                                     <Accordion.Body>
-                                        <TableToolBar toggleModal={toggleCreateItemModal}/>
+                                        <TableToolBar add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal}/>
                                         <Row>
-                                            <ItemsTable columns={columns} data={[
-                                                {
-                                                "id": null,
-                                                "createdBy": null,
-                                                "updatedBy": null,
-                                                "name": "neyw",
-                                                "amount": null,
-                                                "unitPrice": null,
-                                                "user": null,
-                                                "unitType": null,
-                                                "itemCategory": null,
-                                                "createdAt": null,
-                                                "updatedAt": null,
-                                                "archived": false
-                                            }
-                                            ]}/>
+                                            <ItemsTable
+                                                data={itemTableData}
+                                                errors={errors}
+                                                touched={touched}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                updateTableRow={updateTableRow}
+                                                setFieldValue={setFieldValue}
+                                                setFieldTouched={setFieldTouched}
+                                                removeSelectedTableRow={removeSelectedTableRow}
+                                                setNonExistingUnitOption={setNonExistingUnitOption}
+                                                setNonExistingCategoryOption={setNonExistingCategoryOption}
+                                                setNonExistingItemOption={setNonExistingItemOption}
+                                                nonExistingUnitOptionIsValid={nonExistingUnitOptionIsValid}
+                                                nonExistingItemOptionIsValid={nonExistingItemOptionIsValid}
+                                                nonExistingItemCategoryOptionIsValid={nonExistingItemCategoryOptionIsValid}
+                                            />
                                         </Row>
                                     </Accordion.Body>
                                 </Accordion.Item>
@@ -393,6 +325,6 @@ const ExpenseForm = (props) =>{
 export default ExpenseForm;
 
 ExpenseForm.propTypes = exact({
-    toggleRegisterModal: PropTypes.func,
-    show: PropTypes.bool,
+    expense: PropTypes.array,
+    disabled: PropTypes.bool,
 });
