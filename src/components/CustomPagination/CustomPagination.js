@@ -2,7 +2,7 @@ import {Pagination} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {usePagination} from "../../customHooks/usePagination";
-
+import _ from "lodash";
 function CustomPagination(props) {
 
     const {data,setCurrentPageContent} = props;
@@ -10,7 +10,7 @@ function CustomPagination(props) {
     const [currentPage, setCurrentPage] = useState(1)
 
     let option = {
-        total: data.length,
+        total: _.isNull(data) ? 10 : data.length,
         pageSize: 10,
         currentPage:currentPage,
         maxNumberOfTiles:16

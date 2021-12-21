@@ -176,7 +176,7 @@ TableAutoSuggestion.propTypes = exact({
     id:PropTypes.string,
     rowId:PropTypes.number,
     suggestionLabels:PropTypes.array,
-    initialValue:PropTypes.object,
+    initialValue:PropTypes.array,
     options:PropTypes.arrayOf(Object),
     className:PropTypes.string,
     reduxReducer:PropTypes.func,

@@ -73,7 +73,7 @@ const ExpenseTrackerTable = (props) => {
                 <tbody>
                 {currentPageContent.map((expenseTracker, index) => {
                     return <>
-                        <tr>
+                        <tr key={index}>
                             <th scope="row">{index}</th>
                             <td>{expenseTracker.name}</td>
                             <td>{expenseTracker.mainCategory.name}</td>
