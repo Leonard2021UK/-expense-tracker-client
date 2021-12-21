@@ -8,7 +8,6 @@ import ExpenseForm from "../../Forms/ExpenseForm/ExpenseForm";
 
 const ExpenseDetailsModal = (props)=>{
     const {toggleModal,show,expense,disable} = props;
-
     const handleClose = () =>{
         toggleModal();
     }
@@ -29,7 +28,7 @@ const ExpenseDetailsModal = (props)=>{
                     <Container fluid style={{padding:1+"vw"}}>
                         <Row>
                             <Col>
-                                <ExpenseForm expense={expense} disable={disable}/>
+                                <ExpenseForm initialValue={expense} disable={disable}/>
                             </Col>
                         </Row>
                     </Container>

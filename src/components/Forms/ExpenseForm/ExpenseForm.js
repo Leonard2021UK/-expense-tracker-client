@@ -27,8 +27,7 @@ import {itemCategoryThunk} from "../../../redux/features/suggestions/itemCategor
 import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
 const ExpenseForm = (props) =>{
 
-    const {expense,disabled} = props;
-
+    const {initialValue,disabled} = props;
 
     const dispatch = useDispatch();
 
@@ -113,7 +112,7 @@ const ExpenseForm = (props) =>{
             <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal}/>
             <div style={{width:"80%",margin:"auto"}}>
             <Formik
-                initialValues={{expenseName:_.isUndefined(expense) ? "" : expense.name}}
+                initialValues={{expenseName:_.isUndefined(initialValue) ? "" : initialValue.name}}
                 validationSchema={validationSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     // When button submits form and form is in the process of submitting, submit button is disabled
@@ -152,6 +151,7 @@ const ExpenseForm = (props) =>{
                                     placeholder="Enter name"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    defaultValue={_.isUndefined(initialValue) ? "" : initialValue.name}
                                     value={values.name}
                                     disabled={disabled}
                                     className={touched.expenseName && errors.expenseName ? "error" : null}
@@ -166,7 +166,7 @@ const ExpenseForm = (props) =>{
                                     type="email"
                                     name="email"
                                     placeholder="Enter email"
-                                    defaultValue={_.isUndefined(expense)?"":expense.email}
+                                    defaultValue={_.isUndefined(initialValue) ? "" : initialValue.email}
                                     disabled={disabled}
 
                                 />
@@ -179,7 +179,7 @@ const ExpenseForm = (props) =>{
                                     type="phone"
                                     name="phone"
                                     placeholder="Enter phone number"
-                                    defaultValue={_.isUndefined(expense)?"":expense.phone}
+                                    defaultValue={_.isUndefined(initialValue) ? "" : initialValue.phoneNumber}
                                     disabled={disabled}
                                 />
                             </Form.Group>
@@ -189,7 +189,7 @@ const ExpenseForm = (props) =>{
                                     type="mobile"
                                     name="mobile"
                                     placeholder="Enter mobile number"
-                                    defaultValue={_.isUndefined(expense)?"":expense.mobile}
+                                    defaultValue={_.isUndefined(initialValue) ? "" : initialValue.mobileNumber}
                                     disabled={disabled}
                                 />
                             </Form.Group>
@@ -201,15 +201,13 @@ const ExpenseForm = (props) =>{
                                         aria-label="Floating label select example"
                                         disabled={disabled}
                                     >
-                                        {disabled ? <option>{_.isUndefined(expense)?"":expense.expenseAddress.name}</option> :
-                                            (
-                                                <>
-                                                    <option>Select address</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </>
-                                            )}
+                                        <>
+                                            <option selected={!disabled}>{_.isUndefined(initialValue) ? "" : initialValue.expenseAddress.name }</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </>
+
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
@@ -219,15 +217,14 @@ const ExpenseForm = (props) =>{
                                         aria-label="Floating label select example"
                                         disabled={disabled}
                                     >
-                                        {disabled ? <option>{_.isUndefined(expense)?"":expense.expensePaymentType.name}</option> :
-                                            (
-                                                <>
-                                                    <option>Select address</option>
-                                                    <option value="1">One</option>
-                                                    <option value="2">Two</option>
-                                                    <option value="3">Three</option>
-                                                </>
-                                            )}
+
+                                        <>
+                                            <option selected={!disabled}>{_.isUndefined(initialValue) ? "" : initialValue.expensePaymentType.name }</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </>
+
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
@@ -239,7 +236,7 @@ const ExpenseForm = (props) =>{
                                         aria-label="Floating label select example"
                                         disabled={disabled}
                                     >
-                                        {disabled ? <option>{_.isUndefined(expense)?"":expense.expensePaymentType.name}</option> :
+                                        {disabled ? <option>{_.isUndefined(initialValue) ? "" : initialValue.expensePaymentType.name }</option> :
                                             (
                                                 <>
                                                     <option>Select address</option>
@@ -259,6 +256,8 @@ const ExpenseForm = (props) =>{
                                         as="textarea"
                                         placeholder="Leave a comment here"
                                         disabled={disabled}
+                                        defaultValue={_.isUndefined(initialValue) ? "" : initialValue.extraInfo}
+
                                     />
                                 </FloatingLabel>
                             </Col>
@@ -276,7 +275,7 @@ const ExpenseForm = (props) =>{
                                         <TableToolBar add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal}/>
                                         <Row>
                                             <ItemsTable
-                                                data={itemTableData}
+                                                data={_.isUndefined(initialValue) ? itemTableData : initialValue}
                                                 errors={errors}
                                                 touched={touched}
                                                 handleChange={handleChange}
