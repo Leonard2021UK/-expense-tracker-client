@@ -23,7 +23,7 @@ function ItemsTable(props) {
     const rItem = useSelector((state) => state.suggestions.item.response);
 
     const {
-        tableData,
+        data,
         disable,
         removeSelectedRow,
         updateTableRow,
@@ -37,9 +37,8 @@ function ItemsTable(props) {
 
     const dispatch = useDispatch();
 
-
-
-    const data = tableData.items;
+    //
+    // const data = tableData.items;
 
     const columns = React.useMemo(
         () => [
@@ -74,7 +73,7 @@ function ItemsTable(props) {
                                         suggestionName="item"
                                         handleTableChange={updateTableRow}
                                         reduxReducer={setItemFormState}
-                                        initialValue={_.isEmpty(data) ? [] : data[index]}
+                                        initialValue={_.isEmpty(data) ? [] : data[index].item}
                                         options={rItem}
                                         setNonExistingOption={setNonExistingItemOption}
                                         nonExistingOptionIsValid ={nonExistingItemOptionIsValid}
@@ -116,7 +115,7 @@ function ItemsTable(props) {
                                         suggestionName="unitType"
                                         handleTableChange={updateTableRow}
                                         reduxReducer={setUnit}
-                                        initialValue={_.isEmpty(data) ? [] : data[index]['unitType']}
+                                        initialValue={_.isEmpty(data) ? [] : data[index].unitType}
                                         options={rUnitTypes}
                                         setNonExistingOption={setNonExistingUnitOption}
                                         nonExistingOptionIsValid ={nonExistingUnitOptionIsValid}
@@ -160,7 +159,7 @@ function ItemsTable(props) {
                                         handleTableChange={updateTableRow}
                                         suggestionName="itemCategory"
                                         reduxReducer={setItemCategory}
-                                        initialValue={_.isUndefined(data) ? [] : data[index]["itemCategory"]}
+                                        initialValue={_.isUndefined(data) ? [] : data[index].itemCategory}
                                         options={rItemCategories}
                                         setNonExistingOption={setNonExistingCategoryOption}
                                         nonExistingOptionIsValid ={nonExistingItemCategoryOptionIsValid}

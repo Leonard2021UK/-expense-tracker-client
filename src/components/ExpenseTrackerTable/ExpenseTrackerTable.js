@@ -32,6 +32,7 @@ const ExpenseTrackerTable = (props) => {
     }
 
     const handleCreateExpense = () =>{
+        console.log("HELLO")
         toggleCreateExpenseModal();
     }
     const toggleExpenseListModal = () => {

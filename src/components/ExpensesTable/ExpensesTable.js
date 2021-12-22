@@ -63,7 +63,7 @@ const ExpensesTable = (props)=>{
                         <tr>
                             <th scope="row">{index}</th>
                             <td>{expense.name}</td>
-                            <td>{expense.items.length}</td>
+                            <td>{expense.expenseItems.length}</td>
                             <td>{expense.updatedAt}</td>
                             <td>{expense.createdAt}</td>
                             <td>{expense.createdBy}</td>

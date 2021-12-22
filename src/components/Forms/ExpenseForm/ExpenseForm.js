@@ -75,6 +75,7 @@ const ExpenseForm = (props) =>{
     })
 
     const addTableRow = ()=>{
+        console.log('adding table row')
         setItemTableData(prevState => ([...prevState,{
             "name": "",
             "amount": "",
@@ -275,7 +276,7 @@ const ExpenseForm = (props) =>{
                                         <TableToolBar add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal}/>
                                         <Row>
                                             <ItemsTable
-                                                tableData={_.isUndefined(initialValue) ? itemTableData : initialValue}
+                                                data={_.isUndefined(initialValue) ? itemTableData : initialValue.expenseItems}
                                                 errors={errors}
                                                 touched={touched}
                                                 handleChange={handleChange}
