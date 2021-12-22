@@ -32,7 +32,7 @@ const TableAutoSuggestion = (props) => {
     console.log("TABLE SUGGESTION ",initialValue)
 
     //if initial value was provided initialise the state with that value otherwise set to empty object
-    const [selectedItem,setSelectedItem] = useState([initialValue]);
+    const [selectedItem,setSelectedItem] = useState(initialValue);
     const [currentSuggestionValue,setCurrentSuggestionValue] = useState("");
 
     const handleOnBlur = (e)=>{

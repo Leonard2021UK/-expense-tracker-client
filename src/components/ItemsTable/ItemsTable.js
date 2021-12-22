@@ -73,7 +73,8 @@ function ItemsTable(props) {
                                         suggestionName="item"
                                         handleTableChange={updateTableRow}
                                         reduxReducer={setItemFormState}
-                                        initialValue={_.isEmpty(data) ? [] : data[index].item}
+                                        // data[index].item - present when update or show | data[index] - when create
+                                        initialValue={_.isUndefined(data[index].item) ? [] : [data[index].item]}
                                         options={rItem}
                                         setNonExistingOption={setNonExistingItemOption}
                                         nonExistingOptionIsValid ={nonExistingItemOptionIsValid}
@@ -115,7 +116,7 @@ function ItemsTable(props) {
                                         suggestionName="unitType"
                                         handleTableChange={updateTableRow}
                                         reduxReducer={setUnit}
-                                        initialValue={_.isEmpty(data) ? [] : data[index].unitType}
+                                        initialValue={_.isEmpty(data[index].unitType) ? [] : [data[index].unitType]}
                                         options={rUnitTypes}
                                         setNonExistingOption={setNonExistingUnitOption}
                                         nonExistingOptionIsValid ={nonExistingUnitOptionIsValid}
@@ -159,7 +160,7 @@ function ItemsTable(props) {
                                         handleTableChange={updateTableRow}
                                         suggestionName="itemCategory"
                                         reduxReducer={setItemCategory}
-                                        initialValue={_.isUndefined(data) ? [] : data[index].itemCategory}
+                                        initialValue={_.isEmpty(data[index].unitType) ? [] : [data[index].itemCategory]}
                                         options={rItemCategories}
                                         setNonExistingOption={setNonExistingCategoryOption}
                                         nonExistingOptionIsValid ={nonExistingItemCategoryOptionIsValid}

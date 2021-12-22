@@ -96,8 +96,13 @@ const ExpenseForm = (props) =>{
     }
 
     const updateTableRow = (selectedItem,rowId,suggestionName)=>{
+        console.log(selectedItem)
+        console.log(rowId)
+        console.log(suggestionName)
+
         let prevState = [...itemTableData];
         prevState[rowId] = selectedItem[0];
+
         setItemTableData(prevState)
     }
 
