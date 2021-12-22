@@ -19,6 +19,7 @@ const TableAutoSuggestion = (props) => {
         id,
         rowId,
         suggestionLabels,
+        handleSuggestionChange,
         handleTableChange,
         initialValue,
         options,
@@ -37,13 +38,18 @@ const TableAutoSuggestion = (props) => {
 
     const handleOnBlur = (e)=>{
 
-        console.log(_.isEmpty(selectedItem))
+        console.log("_.isEmpty(selectedItem) ",_.isEmpty(selectedItem))
 
+        // when suggestion is typed then check weather the typed value is an existing suggestion
+        // if yes set the selectedItem, if not keep it empty
         if(_.isEmpty(selectedItem)){
             let value = (_.isUndefined(e.target) ? e : e.target.value )
+            console.log(value)
             const cleanValue = _cleanValue(value);
-            _setSelectedOpt (cleanValue);
-
+            let isValidValue = _findAndSetSelectedOpt (cleanValue);
+            // if (!isValidValue){
+            //     alert("invalid value " + value)
+            // }
         }
 
         // // if(_.isArray(value)){
@@ -52,15 +58,14 @@ const TableAutoSuggestion = (props) => {
         console.log("HANDLE BLUR")
         // //
         console.log(currentSuggestionValue)
-        handleTableChange(selectedItem,rowId,suggestionName)
-
+        handleSuggestionChange(selectedItem,rowId,suggestionName)
         // setSelectedItem(value[0])
         //
         // // //Clean the string value received from the suggestion (remove white spaces)
         // const cleanValue = _cleanValue(currentSuggestionValue);
         // console.log(cleanValue)
         // // // //Check if input is valid in the suggestion field
-        // _setSelectedOpt (cleanValue);
+        // _findAndSetSelectedOpt (cleanValue);
 
         // setTimeout(()=>{
         //     console.log(selectedItem)
@@ -80,20 +85,21 @@ const TableAutoSuggestion = (props) => {
             setSelectedItem([])
         }else{
             setSelectedItem(selected)
+            setCurrentSuggestionValue("")
         }
         // setSelectedItem(value[0])
         // console.log(value)
 
     }
 
-    // const handleOnInputChange = (selected) =>{
-    //     console.log("HANDLE INPUT CHANGE")
-    //     console.log(selected)
-    //     // // let value = (_.isUndefined(selected.target) ? selected : selected.target.value )
-    //     // //
-    //     // setCurrentSuggestionValue(selected)
-    //     // console.log(currentSuggestionValue)
-    // }
+    const handleOnInputChange = (selected) =>{
+        console.log("HANDLE INPUT CHANGE")
+        console.log(selected)
+        let value = (_.isUndefined(selected.target) ? selected : selected.target.value )
+        // //
+        setCurrentSuggestionValue(value)
+        // console.log(currentSuggestionValue)
+    }
 
     /**
      *  @function getLabelKey - returns data to be shown in the suggestion for each record
@@ -115,12 +121,12 @@ const TableAutoSuggestion = (props) => {
     }
 
     /**
-     * @name _setSelectedOpt - stores the input value typed or selected in the suggestion field
+     * @name _findAndSetSelectedOpt - stores the input value typed or selected in the suggestion field
      * @param options - available options to be selected from the suggestion
      * @param cleanValue - cleaned value which has been typed or selected
      * @returns {boolean}
      */
-    const _setSelectedOpt = (cleanValue)=>{
+    const _findAndSetSelectedOpt = (cleanValue)=>{
         return options.some((option)=>{
             let storedOption = "";
 
@@ -132,18 +138,14 @@ const TableAutoSuggestion = (props) => {
 
             //Clean possible whitespaces from the concatenated option
             let cleanStoredOption = _cleanValue(storedOption);
-            console.log(cleanValue)
-            console.log(cleanStoredOption)
+
             //Store the selected if there is a match otherwise store NULL
             if (cleanValue === cleanStoredOption){
-                console.log("SAME")
 
-                console.log(cleanValue)
-                console.log(cleanStoredOption)
 
                 // setSelectedItem({value:option, isValid: true})
-                console.log(option)
-                setSelectedItem(option)
+                // setSelectedItem(option)
+                handleSuggestionChange(option,rowId,suggestionName)
 
                 return true;
                 // console.log(option)
@@ -160,7 +162,7 @@ const TableAutoSuggestion = (props) => {
                 labelKey={getLabelKey.bind(this,suggestionLabels)}
                 onBlur={handleOnBlur}
                 onChange={handleOnChange}
-                // onInputChange={handleOnInputChange}
+                onInputChange={handleOnInputChange}
                 options={options}
                 placeholder="Choose a state..."
                 selected={_.isEmpty(selectedItem)?"":selectedItem}

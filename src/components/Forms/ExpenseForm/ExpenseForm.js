@@ -78,10 +78,13 @@ const ExpenseForm = (props) =>{
         console.log('adding table row')
         setItemTableData(prevState => ([...prevState,{
             "name": "",
-            "amount": "",
-            "unitPrice": "",
             "unitType": "",
-            "itemCategory": ""
+            "itemCategory": "",
+            "rowId":"",
+            "itemId":"",
+            "amount":"",
+            "unitPrice":"",
+            "price":""
         }]))
     }
 
@@ -96,14 +99,54 @@ const ExpenseForm = (props) =>{
     }
 
     const updateTableRow = (selectedItem,rowId,suggestionName)=>{
-        console.log(selectedItem)
-        console.log(rowId)
-        console.log(suggestionName)
+
 
         let prevState = [...itemTableData];
         prevState[rowId] = selectedItem[0];
 
         setItemTableData(prevState)
+    }
+    const handleTableInputChange = (inputFieldValue,rowId) => {
+
+        console.log(rowId)
+        const inputType = inputFieldValue.target.type;
+        let name = inputFieldValue.target.name;
+        let value = inputFieldValue.target.value;
+        let id = inputFieldValue.target.id;
+
+        switch (true){
+            case (inputType === "text" ):
+                let prevState = [...itemTableData];
+                console.log(prevState[rowId])
+
+                prevState[rowId] = {...prevState[rowId],[name]:value};
+                console.log(prevState[rowId])
+
+                setItemTableData(prevState)
+
+        }
+        // console.log(selectedItem)
+        // console.log(rowId)
+        // console.log(suggestionName)
+        console.log(inputFieldValue)
+        console.log(inputFieldValue.target.type)
+
+        // updateTableRow(selectedItem,rowId,suggestionName,e)
+    }
+
+    const handleSuggestionChange = (selectedItem,rowId,suggestionName) =>{
+        console.log(selectedItem)
+        console.log(rowId)
+        console.log(suggestionName)
+
+        let prevState = [...itemTableData];
+        console.log(prevState[rowId])
+
+        prevState[rowId] = {...prevState[rowId],[suggestionName]:selectedItem};
+        console.log(prevState[rowId])
+
+        setItemTableData(prevState)
+
     }
 
     const validationSchema = Yup.object().shape({
@@ -286,6 +329,8 @@ const ExpenseForm = (props) =>{
                                                 touched={touched}
                                                 handleChange={handleChange}
                                                 handleBlur={handleBlur}
+                                                handleSuggestionChange={handleSuggestionChange}
+                                                handleTableInputChange={handleTableInputChange}
                                                 updateTableRow={updateTableRow}
                                                 setFieldValue={setFieldValue}
                                                 setFieldTouched={setFieldTouched}

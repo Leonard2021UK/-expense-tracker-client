@@ -27,6 +27,8 @@ function ItemsTable(props) {
         disable,
         removeSelectedRow,
         updateTableRow,
+        handleTableInputChange,
+        handleSuggestionChange,
         setNonExistingItemOption,
         setNonExistingUnitOption,
         setNonExistingCategoryOption,
@@ -39,6 +41,8 @@ function ItemsTable(props) {
 
     //
     // const data = tableData.items;
+
+
 
     const columns = React.useMemo(
         () => [
@@ -71,7 +75,7 @@ function ItemsTable(props) {
                                         id={"item_" + index}
                                         rowId={index}
                                         suggestionName="item"
-                                        handleTableChange={updateTableRow}
+                                        handleSuggestionChange={handleSuggestionChange}
                                         reduxReducer={setItemFormState}
                                         // data[index].item - present when update or show | data[index] - when create
                                         initialValue={_.isUndefined(data[index].item) ? [] : [data[index].item]}
@@ -95,6 +99,7 @@ function ItemsTable(props) {
                                         type="text"
                                         name="amount"
                                         placeholder="Enter amount"
+                                        onChange={(e)=>handleTableInputChange(e,index)}
                                         disabled={disable}
                                         defaultValue={_.isEmpty(data) ? [] : data[index].amount}
                                     />
@@ -114,7 +119,7 @@ function ItemsTable(props) {
                                         id={"unit_" + index}
                                         rowId={index}
                                         suggestionName="unitType"
-                                        handleTableChange={updateTableRow}
+                                        handleSuggestionChange={handleSuggestionChange}
                                         reduxReducer={setUnit}
                                         initialValue={_.isEmpty(data[index].unitType) ? [] : [data[index].unitType]}
                                         options={rUnitTypes}
@@ -139,6 +144,7 @@ function ItemsTable(props) {
                                         name="unitPrice"
                                         placeholder="Enter unit price"
                                         disabled={disable}
+                                        onChange={(e)=>handleTableInputChange(e,index)}
                                         defaultValue={_.isEmpty(data) ? [] : data[index].unitPrice}
                                     />
 
@@ -157,7 +163,7 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"itemCategory_" + index}
                                         rowId={index}
-                                        handleTableChange={updateTableRow}
+                                        handleSuggestionChange={handleSuggestionChange}
                                         suggestionName="itemCategory"
                                         reduxReducer={setItemCategory}
                                         initialValue={_.isEmpty(data[index].unitType) ? [] : [data[index].itemCategory]}
@@ -183,6 +189,7 @@ function ItemsTable(props) {
                                         name="price"
                                         placeholder="Enter price"
                                         disabled={disable}
+                                        onChange={(e)=>handleTableInputChange(e,index)}
                                         defaultValue={_.isEmpty(data) ? [] : data[index].price}
                                     />
                                 </InputGroup>
