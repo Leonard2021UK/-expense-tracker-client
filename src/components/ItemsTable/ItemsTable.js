@@ -17,14 +17,14 @@ const {useTable} = require("react-table");
 
 function ItemsTable(props) {
 
+    console.log(props)
     const rItemCategories = useSelector((state) => state.suggestions.itemCategory.response);
     const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
     const rItem = useSelector((state) => state.suggestions.item.response);
 
     const {
-        data,
+        tableData,
         disable,
-        initialValue,
         removeSelectedRow,
         updateTableRow,
         setNonExistingItemOption,
@@ -35,11 +35,11 @@ function ItemsTable(props) {
         nonExistingItemCategoryOptionIsValid
     } = props;
 
-    console.log(data)
     const dispatch = useDispatch();
 
 
 
+    const data = tableData.items;
 
     const columns = React.useMemo(
         () => [
@@ -74,7 +74,7 @@ function ItemsTable(props) {
                                         suggestionName="item"
                                         handleTableChange={updateTableRow}
                                         reduxReducer={setItemFormState}
-                                        initialValue={_.isUndefined(initialValue) ? []: initialValue.item}
+                                        initialValue={_.isEmpty(data) ? [] : data[index]}
                                         options={rItem}
                                         setNonExistingOption={setNonExistingItemOption}
                                         nonExistingOptionIsValid ={nonExistingItemOptionIsValid}
@@ -96,6 +96,7 @@ function ItemsTable(props) {
                                         name="amount"
                                         placeholder="Enter amount"
                                         disabled={disable}
+                                        defaultValue={_.isEmpty(data) ? [] : data[index].amount}
                                     />
 
                                 </Form.Group>
@@ -109,16 +110,18 @@ function ItemsTable(props) {
 
                             return(
                                 <Col lg={12}>
-                                    {/*<TableAutoSuggestion*/}
-                                    {/*    id={"unit_" + index}*/}
-                                    {/*    suggestionName="unitType"*/}
-                                    {/*    reduxReducer={setUnit}*/}
-                                    {/*    initialValue={_.isUndefined(initialValue) ? {}:initialValue.unit}*/}
-                                    {/*    options={rUnitTypes}*/}
-                                    {/*    setNonExistingOption={setNonExistingUnitOption}*/}
-                                    {/*    nonExistingOptionIsValid ={nonExistingUnitOptionIsValid}*/}
-                                    {/*    suggestionLabels={["name"]}*/}
-                                    {/*/>*/}
+                                    <TableAutoSuggestion
+                                        id={"unit_" + index}
+                                        rowId={index}
+                                        suggestionName="unitType"
+                                        handleTableChange={updateTableRow}
+                                        reduxReducer={setUnit}
+                                        initialValue={_.isEmpty(data) ? [] : data[index]['unitType']}
+                                        options={rUnitTypes}
+                                        setNonExistingOption={setNonExistingUnitOption}
+                                        nonExistingOptionIsValid ={nonExistingUnitOptionIsValid}
+                                        suggestionLabels={["name"]}
+                                    />
                                 </Col>
                             )}
                     },
@@ -136,6 +139,7 @@ function ItemsTable(props) {
                                         name="unitPrice"
                                         placeholder="Enter unit price"
                                         disabled={disable}
+                                        defaultValue={_.isEmpty(data) ? [] : data[index].unitPrice}
                                     />
 
                                 </Form.Group>
@@ -150,28 +154,37 @@ function ItemsTable(props) {
 
                             return(
                                 <Col lg={12}>
-                                    {/*<TableAutoSuggestion*/}
-                                    {/*    id={"itemCategory_" + index}*/}
-                                    {/*    suggestionName="itemCategory"*/}
-                                    {/*    reduxReducer={setItemCategory}*/}
-                                    {/*    initialValue={_.isUndefined(initialValue) ? {}:initialValue.itemCategory}*/}
-                                    {/*    options={rItemCategories}*/}
-                                    {/*    setNonExistingOption={setNonExistingCategoryOption}*/}
-                                    {/*    nonExistingOptionIsValid ={nonExistingItemCategoryOptionIsValid}*/}
-                                    {/*    suggestionLabels={["name"]}*/}
-                                    {/*/>*/}
+                                    <TableAutoSuggestion
+                                        id={"itemCategory_" + index}
+                                        rowId={index}
+                                        handleTableChange={updateTableRow}
+                                        suggestionName="itemCategory"
+                                        reduxReducer={setItemCategory}
+                                        initialValue={_.isUndefined(data) ? [] : data[index]["itemCategory"]}
+                                        options={rItemCategories}
+                                        setNonExistingOption={setNonExistingCategoryOption}
+                                        nonExistingOptionIsValid ={nonExistingItemCategoryOptionIsValid}
+                                        suggestionLabels={["name"]}
+                                    />
                                 </Col>
                             )}
                     },
                     {
-                        Header: <ItemsTableHeader id="totalPrice" name="totalPrice" title = "Total price"/>,
+                        Header: <ItemsTableHeader id="totalPrice" name="totalPrice" title = "Price"/>,
                         id:"id17",
                         accessor: 'totalPrice',
                         Cell:({row: {index}})=>{
 
                             return(
                                 <InputGroup>
-                                    <FormControl/>
+                                    <Form.Control
+                                        id={"price_" + index}
+                                        type="text"
+                                        name="price"
+                                        placeholder="Enter price"
+                                        disabled={disable}
+                                        defaultValue={_.isEmpty(data) ? [] : data[index].price}
+                                    />
                                 </InputGroup>
                             )}
                     }
