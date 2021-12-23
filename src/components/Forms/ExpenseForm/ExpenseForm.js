@@ -18,13 +18,14 @@ import RowAction from "../../RowAction/RowAction";
 import TableToolBar from "../../TableToolBars/TableToolBar";
 import CreateItemModal from "../../Modals/CreateItemModal/CreateItemModal";
 import {setExpenseTrackerCategory} from "../../../redux/features/domain/expenseTrackerFormSlice";
-import {setItemCategory} from "../../../redux/features/domain/itemFormSlice";
+import {setItemCategory} from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {useApiService} from "../../../services/useApiService";
 import {useDispatch, useSelector} from "react-redux";
 import {unitTypeThunk} from "../../../redux/features/suggestions/unitSuggestionSlice";
 import {itemCategoryThunk} from "../../../redux/features/suggestions/itemCategorySuggestionSlice";
 import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
+import {setItemTableState,addRow,removeRow,removeSelectedRow,clearTableState} from "../../../redux/features/domain/tables/itemsTableSlice"
 const ExpenseForm = (props) =>{
 
     const {initialValue,disabled} = props;
@@ -63,6 +64,7 @@ const ExpenseForm = (props) =>{
     const {getAllItemCategories,getAllUnitTypes,getAllItems,saveItem} = useApiService();
 
     const rItemForm = useSelector((state) => state.itemForm.formState)
+    const rTableData = useSelector((state) => state.itemsTable.tableState)
 
     const toggleCreateItemModal = ()=>{
         setCreateItemModalIsOpen(!createItemModalIsOpen);
@@ -76,55 +78,57 @@ const ExpenseForm = (props) =>{
 
     const addTableRow = ()=>{
         console.log('adding table row')
-        setItemTableData(prevState => ([...prevState,{
-            "name": "",
-            "unitType": "",
-            "itemCategory": "",
-            "rowId":"",
-            "itemId":"",
-            "amount":"",
-            "unitPrice":"",
-            "price":""
-        }]))
+
+        dispatch(addRow({row:{
+                "unitType": "",
+                "itemCategory": "",
+                "rowId":itemTableData.length,
+                "item":"",
+                "amount":"",
+                "unitPrice":"",
+                "price":""
+            }}))
+        // setItemTableData(prevState => ([...prevState,{
+        //     "unitType": "",
+        //     "itemCategory": "",
+        //     "rowId":itemTableData.length,
+        //     "item":"",
+        //     "amount":"",
+        //     "unitPrice":"",
+        //     "price":""
+        // }]))
     }
 
     const removeTableRow = ()=>{
-        const lastRow = itemTableData[itemTableData.length-1];
-        setItemTableData(itemTableData.filter(item => lastRow !== item))
+        dispatch(removeRow())
+        // const lastRow = itemTableData[itemTableData.length-1];
+        // setItemTableData(itemTableData.filter(item => lastRow !== item))
     }
 
     const removeSelectedTableRow = (id)=>{
-        const selectedRow = itemTableData[id];
-        setItemTableData(itemTableData.filter(item => item !== selectedRow));
+        dispatch(removeSelectedRow({id:id}))
+        // const selectedRow = itemTableData[id];
+        // setItemTableData(itemTableData.filter(item => item !== selectedRow));
     }
 
-    const updateTableRow = (selectedItem,rowId,suggestionName)=>{
 
+    const handleTableInputChange = (name,inputFieldValue,rowId) => {
 
-        let prevState = [...itemTableData];
-        prevState[rowId] = selectedItem[0];
+        // console.log(rowId)
+        // const inputType = inputFieldValue.target.type;
+        // let name = inputFieldValue.target.name;
+        // let value = inputFieldValue.target.value;
+        // let id = inputFieldValue.target.id;
 
-        setItemTableData(prevState)
-    }
-    const handleTableInputChange = (inputFieldValue,rowId) => {
-
-        console.log(rowId)
-        const inputType = inputFieldValue.target.type;
-        let name = inputFieldValue.target.name;
-        let value = inputFieldValue.target.value;
-        let id = inputFieldValue.target.id;
-
-        switch (true){
-            case (inputType === "text" ):
                 let prevState = [...itemTableData];
                 console.log(prevState[rowId])
 
-                prevState[rowId] = {...prevState[rowId],[name]:value};
+                prevState[rowId] = {...prevState[rowId],[name]:inputFieldValue};
                 console.log(prevState[rowId])
 
                 setItemTableData(prevState)
 
-        }
+
         // console.log(selectedItem)
         // console.log(rowId)
         // console.log(suggestionName)
@@ -142,7 +146,7 @@ const ExpenseForm = (props) =>{
         let prevState = [...itemTableData];
         console.log(prevState[rowId])
 
-        prevState[rowId] = {...prevState[rowId],[suggestionName]:selectedItem};
+        prevState[rowId][suggestionName]=selectedItem[0];
         console.log(prevState[rowId])
 
         setItemTableData(prevState)
@@ -324,14 +328,13 @@ const ExpenseForm = (props) =>{
                                         <TableToolBar add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal}/>
                                         <Row>
                                             <ItemsTable
-                                                data={_.isUndefined(initialValue) ? itemTableData : initialValue.expenseItems}
+                                                data={_.isUndefined(initialValue) ? rTableData : initialValue.expenseItems}
                                                 errors={errors}
                                                 touched={touched}
                                                 handleChange={handleChange}
                                                 handleBlur={handleBlur}
                                                 handleSuggestionChange={handleSuggestionChange}
                                                 handleTableInputChange={handleTableInputChange}
-                                                updateTableRow={updateTableRow}
                                                 setFieldValue={setFieldValue}
                                                 setFieldTouched={setFieldTouched}
                                                 removeSelectedTableRow={removeSelectedTableRow}

@@ -4,9 +4,10 @@ import registerFormSliceReducer from '../features/authentication/registerFormSli
 import expenseTrackerSliceReducer from "../features/domain/expenseTrackerSlice";
 import appInitDataSliceReducer from "../features/utility/appInitDataSlice";
 import expenseTrackerFormReducer from "../features/domain/expenseTrackerFormSlice";
-import suggestionsReducer from '../features/suggestions/suggestionsSliceCombiner';
-import itemFormReducer from "../features/domain/itemFormSlice";
+import itemFormReducer from "../features/domain/forms/itemFormSlice";
 import itemsTableReducer from "../features/domain/tables/itemsTableSlice";
+import expenseFormReducer from "../features/domain/forms/expenseFormSlice";
+import suggestionsReducer from '../features/suggestions/suggestionsSliceCombiner';
 
 export default combineReducers({
     registerForm:registerFormSliceReducer,
@@ -15,7 +16,8 @@ export default combineReducers({
     suggestions:suggestionsReducer,
     expenseTrackerForm:expenseTrackerFormReducer,
     itemForm:itemFormReducer,
-    itemsTable:itemsTableReducer
+    itemsTable:itemsTableReducer,
+    expenseForm:expenseFormReducer
 });
 
 

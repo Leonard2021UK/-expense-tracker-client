@@ -14,9 +14,19 @@ const itemsTableSlice = createSlice({
             const {row} = action.payload;
             state.tableState = [...state.tableState,row]
         },
+        updateSelectedRow(state,action){
+            const {rowId,fieldName,value} = action.payload;
+            console.log(value)
+            state.tableState = state.tableState.map(row => row.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
+        },
         removeRow(state,action){
-            const {row} = action.payload;
-            state.tableState = state.tableState.filter(existingRow => existingRow !== row);
+            const lastRow = state.tableState[state.tableState.length-1];
+            state.tableState = state.tableState.filter(existingRow => existingRow !== lastRow);
+        },
+        removeSelectedRow(state,action){
+            const {id} = action.payload;
+            const selectedRow = state.tableState[id];
+            state.tableState = state.tableState.filter(item => item !== selectedRow);
         },
         clearTableState(state,action){
             state.tableState = [];
@@ -25,5 +35,5 @@ const itemsTableSlice = createSlice({
 });
 
 
-export const { setItemTableState,clearTableState} = itemsTableSlice.actions;
+export const { setItemTableState,addRow,updateSelectedRow,removeRow,removeSelectedRow,clearTableState} = itemsTableSlice.actions;
 export default itemsTableSlice.reducer;

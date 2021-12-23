@@ -1,17 +1,17 @@
 import "./ItemsTableStyle.css";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ItemsTableHeader from "./ItemsTableHeader/ItemsTableHeader";
 import AutoSuggestion from "../AutoSuggestion/AutoSuggestion";
 import {Col, Form, FormControl, InputGroup} from "react-bootstrap";
-import {setItemCategory, setItemFormState, setUnit} from "../../redux/features/domain/itemFormSlice";
+import {setItemCategory, setItemFormState, setUnit} from "../../redux/features/domain/forms/itemFormSlice";
 import RowAction from "../RowAction/RowAction";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import _ from 'lodash';
 import {useDispatch, useSelector} from "react-redux";
 import TableAutoSuggestion from "../TableAutoSuggestion/TableAutoSuggestion";
-import {setItemTableState} from "../../redux/features/domain/tables/itemsTableSlice";
 import PropTypes from "prop-types";
 import exact from "prop-types-exact";
+import {setItemTableState,updateSelectedRow,addRow,removeRow,removeSelectedRow,clearTableState} from "../../redux/features/domain/tables/itemsTableSlice"
 
 const {useTable} = require("react-table");
 
@@ -22,13 +22,14 @@ function ItemsTable(props) {
     const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
     const rItem = useSelector((state) => state.suggestions.item.response);
 
+    const [inputField,setInputField] = useState({});
+
     const {
         data,
         disable,
         removeSelectedRow,
-        updateTableRow,
-        handleTableInputChange,
         handleSuggestionChange,
+        handleTableInputChange,
         setNonExistingItemOption,
         setNonExistingUnitOption,
         setNonExistingCategoryOption,
@@ -39,10 +40,71 @@ function ItemsTable(props) {
 
     const dispatch = useDispatch();
 
+    const handleInputFiledOnBlur = (e,rowId) => {
+        // let name = e.target.name;
+        console.log(inputField)
+        // dispatch(updateSelectedRow({
+        //     rowId:rowId,
+        //     fieldName:name,
+        //     value:[inputField[name]]
+        // }))
+        // setInputField({})
+    }
+
+    // useEffect(()=>{
     //
-    // const data = tableData.items;
+    //     // if (!_.isEmpty(inputField)){
+    //         const keys = Object.keys(inputField);
+    //         const name = keys[0];
+    //         const rowId = inputField.rowId
+    //         const value = inputField[name];
+    //         console.log(name)
+    //         console.log(rowId)
+    //
+    //         console.log(value)
+    //         dispatch(updateSelectedRow({
+    //             rowId:rowId,
+    //             fieldName:name,
+    //             value:value
+    //         }))
+    //
+    //     // }
+    //
+    // },[inputField])
 
 
+    const handleInputFiledChange = (e,rowId) =>{
+        console.log("INPUTFIELD")
+        const inputType = e.target.type;
+        let name = e.target.name;
+        let value = e.target.value;
+        console.log("VALUE ", value)
+
+        switch (true){
+            case (inputType === "text" ):
+                setInputField(prevState => ({...prevState,[name]:value,rowId:rowId}));
+
+        }
+    }
+
+    const updateTableRow = (selectedItem,rowId,suggestionName)=>{
+
+        dispatch(updateSelectedRow({
+            rowId:rowId,
+            fieldName:suggestionName,
+            value:selectedItem
+        }))
+        // let prevState = [...itemTableData];
+        // prevState[rowId] = selectedItem[0];
+        //
+        // setItemTableData(prevState)
+    }
+
+
+
+
+
+    console.log(data)
 
     const columns = React.useMemo(
         () => [
@@ -75,10 +137,10 @@ function ItemsTable(props) {
                                         id={"item_" + index}
                                         rowId={index}
                                         suggestionName="item"
-                                        handleSuggestionChange={handleSuggestionChange}
+                                        handleSuggestionChange={updateTableRow}
                                         reduxReducer={setItemFormState}
                                         // data[index].item - present when update or show | data[index] - when create
-                                        initialValue={_.isUndefined(data[index].item) ? [] : [data[index].item]}
+                                        initialValue={_.isEmpty(data[index].item) ? [] : [data[index].item]}
                                         options={rItem}
                                         setNonExistingOption={setNonExistingItemOption}
                                         nonExistingOptionIsValid ={nonExistingItemOptionIsValid}
@@ -99,7 +161,8 @@ function ItemsTable(props) {
                                         type="text"
                                         name="amount"
                                         placeholder="Enter amount"
-                                        onChange={(e)=>handleTableInputChange(e,index)}
+                                        onChange={(e)=>handleInputFiledChange(e,index)}
+                                        onBlur={(e) =>handleInputFiledOnBlur(e,index)}
                                         disabled={disable}
                                         defaultValue={_.isEmpty(data) ? [] : data[index].amount}
                                     />
@@ -119,7 +182,7 @@ function ItemsTable(props) {
                                         id={"unit_" + index}
                                         rowId={index}
                                         suggestionName="unitType"
-                                        handleSuggestionChange={handleSuggestionChange}
+                                        handleSuggestionChange={updateTableRow}
                                         reduxReducer={setUnit}
                                         initialValue={_.isEmpty(data[index].unitType) ? [] : [data[index].unitType]}
                                         options={rUnitTypes}
@@ -163,10 +226,10 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"itemCategory_" + index}
                                         rowId={index}
-                                        handleSuggestionChange={handleSuggestionChange}
+                                        handleSuggestionChange={updateTableRow}
                                         suggestionName="itemCategory"
                                         reduxReducer={setItemCategory}
-                                        initialValue={_.isEmpty(data[index].unitType) ? [] : [data[index].itemCategory]}
+                                        initialValue={_.isEmpty(data[index].itemCategory) ? [] : [data[index].itemCategory]}
                                         options={rItemCategories}
                                         setNonExistingOption={setNonExistingCategoryOption}
                                         nonExistingOptionIsValid ={nonExistingItemCategoryOptionIsValid}

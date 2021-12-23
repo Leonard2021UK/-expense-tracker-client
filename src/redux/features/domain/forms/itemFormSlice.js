@@ -37,5 +37,5 @@ const itemFormSlice = createSlice({
 });
 
 
-export const { setItemFormState,setUnit,setItemName,setUnitPrice,setAmount,setItemCategory,clearItemForm} = itemFormSlice.actions;
+export const { setItemFormState,setUnit,setItemName,setUnitPrice, setAmount,setItemCategory,clearItemForm} = itemFormSlice.actions;
 export default itemFormSlice.reducer;

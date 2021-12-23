@@ -47,18 +47,21 @@ const TableAutoSuggestion = (props) => {
             console.log(value)
             const cleanValue = _cleanValue(value);
             let isValidValue = _findAndSetSelectedOpt (cleanValue);
-            // if (!isValidValue){
-            //     alert("invalid value " + value)
-            // }
+            if (!isValidValue){
+                alert("invalid value " + value)
+            }else{
+                console.log("HANDLE BLUR")
+                console.log(currentSuggestionValue)
+                handleSuggestionChange(selectedItem,rowId,suggestionName)
+            }
+        }else{
+            handleSuggestionChange(selectedItem,rowId,suggestionName)
+
         }
 
         // // if(_.isArray(value)){
         // //     value = value[0].name;
-        // // }
-        console.log("HANDLE BLUR")
-        // //
-        console.log(currentSuggestionValue)
-        handleSuggestionChange(selectedItem,rowId,suggestionName)
+
         // setSelectedItem(value[0])
         //
         // // //Clean the string value received from the suggestion (remove white spaces)
@@ -144,8 +147,8 @@ const TableAutoSuggestion = (props) => {
 
 
                 // setSelectedItem({value:option, isValid: true})
-                // setSelectedItem(option)
-                handleSuggestionChange(option,rowId,suggestionName)
+                setSelectedItem(option)
+                // handleSuggestionChange(option,rowId,suggestionName)
 
                 return true;
                 // console.log(option)

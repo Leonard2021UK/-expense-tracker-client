@@ -68,7 +68,7 @@ const ExpensesTable = (props)=>{
                             <td>{expense.createdAt}</td>
                             <td>{expense.createdBy}</td>
                             <td>
-                                <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} onClick={handleShowExpenseDetails.bind(this,expense)} style={{margin:1+"vh",cursor:"pointer"}} />
+                                <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} onClick={() => handleShowExpenseDetails(expense)} style={{margin:1+"vh",cursor:"pointer"}} />
                                 <FontAwesomeIcon icon={faEdit} className="mr-2" color={"orange"} style={{margin:1+"vh",cursor:"pointer"}} />
                                 <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh",cursor:"pointer"}} />
                             </td>

@@ -22,7 +22,7 @@ import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
-import {setItemCategory, setItemName, setUnit} from "../../../redux/features/domain/itemFormSlice";
+import {setItemCategory, setItemName, setUnit} from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {itemThunk} from "../../../redux/features/domain/itemSlice";
 
