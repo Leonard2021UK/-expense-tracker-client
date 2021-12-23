@@ -11,36 +11,36 @@ const expenseFormSlice = createSlice({
             state.formState = formState;
         },
         setExpenseName(state,action) {
-            const {name} = action.payload;
-            state.formState.name = name;
+            const {expenseName} = action.payload;
+            state.formState.expenseName = expenseName;
         },
         setExpenseEmail(state,action) {
-            const {email} = action.payload;
-            state.formState.email = email;
+            const {expenseEmail} = action.payload;
+            state.formState.expenseEmail = expenseEmail;
         },
-        setPhone(state,action) {
-            const {phone} = action.payload;
-            state.formState.phone = phone;
+        setExpensePhone(state,action) {
+            const {expensePhone} = action.payload;
+            state.formState.expensePhone = expensePhone;
         },
-        setMobile(state,action) {
-            const {mobile} = action.payload;
-            state.formState.mobile = mobile;
+        setExpenseMobile(state,action) {
+            const {expenseMobile} = action.payload;
+            state.formState.expenseMobile = expenseMobile;
         },
-        setAddress(state,action) {
-            const {address} = action.payload;
-            state.formState.address = address;
+        setExpenseAddress(state,action) {
+            const {expenseAddress} = action.payload;
+            state.formState.expenseAddress = expenseAddress;
         },
-        setPaymentType(state,action) {
-            const {paymentType} = action.payload;
-            state.formState.paymentType = paymentType;
+        setExpensePaymentType(state,action) {
+            const {expensePaymentType} = action.payload;
+            state.formState.expensePaymentType = expensePaymentType;
         },
         setExpenseType(state,action) {
             const {expenseType} = action.payload;
             state.formState.expenseType = expenseType;
         },
-        setComment(state,action) {
-            const {comment} = action.payload;
-            state.formState.comment = comment;
+        setExpenseComment(state,action) {
+            const {expenseComment} = action.payload;
+            state.formState.expenseComment = expenseComment;
         },
         clearExpenseForm(state,action){
             state.formState = {};
@@ -49,5 +49,5 @@ const expenseFormSlice = createSlice({
 });
 
 
-export const {setExpenseFormState, setExpenseName, setExpenseEmail, setPhone, setMobile, setAddress, setPaymentType, setExpenseType, setComment, clearExpenseForm} = expenseFormSlice.actions;
+export const {setExpenseFormState, setExpenseName, setExpenseEmail, setExpensePhone, setExpenseMobile, setExpenseAddress, setExpensePaymentType, setExpenseType, setExpenseComment, clearExpenseForm} = expenseFormSlice.actions;
 export default expenseFormSlice.reducer;

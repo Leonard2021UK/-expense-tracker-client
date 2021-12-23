@@ -25,11 +25,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {unitTypeThunk} from "../../../redux/features/suggestions/unitSuggestionSlice";
 import {itemCategoryThunk} from "../../../redux/features/suggestions/itemCategorySuggestionSlice";
 import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
-import {setItemTableState,addRow,removeRow,removeSelectedRow,clearTableState} from "../../../redux/features/domain/tables/itemsTableSlice"
+import {expenseAddressThunk} from "../../../redux/features/suggestions/expenseAddressSuggestionSlice";
+import {expensePaymentTypeThunk} from "../../../redux/features/suggestions/expensePaymentTypeSuggestionSlice";
+import {expenseTypeThunk} from "../../../redux/features/suggestions/expenseTypeSuggestionSlice";
+import {setItemTableState,addRow,removeRow,removeSelectedRow,clearTableState} from "../../../redux/features/domain/tables/itemsTableSlice";
+import {setExpenseFormState, setExpenseName, setExpenseEmail, setExpensePhone, setExpenseMobile, setExpenseAddress, setExpensePaymentType, setExpenseType, setExpenseComment, clearExpenseForm} from "../../../redux/features/domain/forms/expenseFormSlice";
+
+
 const ExpenseForm = (props) =>{
 
     const {initialValue,disabled} = props;
-    console.log(initialValue);
     const dispatch = useDispatch();
 
     const categoryMinLength = 3;
@@ -66,6 +71,10 @@ const ExpenseForm = (props) =>{
     const rItemForm = useSelector((state) => state.itemForm.formState)
     const rTableData = useSelector((state) => state.itemsTable.tableState)
 
+    const rExpenseAddresses = useSelector((state) => state.suggestions.expenseAddress.response);
+    const rExpensePaymentType= useSelector((state) => state.suggestions.expensePaymentType.response);
+    const rExpenseType = useSelector((state) => state.suggestions.expenseType.response);
+
     const toggleCreateItemModal = ()=>{
         setCreateItemModalIsOpen(!createItemModalIsOpen);
     }
@@ -74,83 +83,65 @@ const ExpenseForm = (props) =>{
         dispatch(unitTypeThunk())
         dispatch(itemCategoryThunk())
         dispatch(itemThunk())
+        dispatch(expenseTypeThunk())
+        dispatch(expenseAddressThunk())
+        dispatch(expensePaymentTypeThunk())
     })
 
     const addTableRow = ()=>{
-        console.log('adding table row')
 
         dispatch(addRow({row:{
                 "unitType": "",
                 "itemCategory": "",
-                "rowId":itemTableData.length,
+                "rowId":rTableData.length,
                 "item":"",
                 "amount":"",
                 "unitPrice":"",
                 "price":""
             }}))
-        // setItemTableData(prevState => ([...prevState,{
-        //     "unitType": "",
-        //     "itemCategory": "",
-        //     "rowId":itemTableData.length,
-        //     "item":"",
-        //     "amount":"",
-        //     "unitPrice":"",
-        //     "price":""
-        // }]))
     }
 
     const removeTableRow = ()=>{
         dispatch(removeRow())
-        // const lastRow = itemTableData[itemTableData.length-1];
-        // setItemTableData(itemTableData.filter(item => lastRow !== item))
+
     }
 
     const removeSelectedTableRow = (id)=>{
         dispatch(removeSelectedRow({id:id}))
-        // const selectedRow = itemTableData[id];
-        // setItemTableData(itemTableData.filter(item => item !== selectedRow));
     }
 
+    const handleFormFieldOnBlur = (e) => {
+        const inputType = e.target.type;
+        let name = e.target.name;
+        let value = e.target.value;
+        console.log()
+        switch (true){
+            case (name === "expenseName" ):
+                dispatch(setExpenseName({[name]:value}))
+                break;
+            case (name === "expenseEmail" ):
+                dispatch(setExpenseEmail({[name]:value}))
+                break;
+            case (name === "expensePhone" ):
+                dispatch(setExpensePhone({[name]:value}))
+                break;
+            case (name === "expenseMobile" ):
+                dispatch(setExpenseMobile({[name]:value}))
+                break;
+            case (name === "expensePaymentType" ):
+                dispatch(setExpensePaymentType({[name]:value}))
+                break;
+            case (name === "expenseType" ):
+                dispatch(setExpenseType({[name]:value}))
+                break;
+            case (name === "expenseAddress" ):
+                dispatch(setExpenseAddress({[name]:value}))
+                break;
+            case (name === "expenseComment" ):
+                dispatch(setExpenseAddress({[name]:value}))
+                break;
 
-    const handleTableInputChange = (name,inputFieldValue,rowId) => {
-
-        // console.log(rowId)
-        // const inputType = inputFieldValue.target.type;
-        // let name = inputFieldValue.target.name;
-        // let value = inputFieldValue.target.value;
-        // let id = inputFieldValue.target.id;
-
-                let prevState = [...itemTableData];
-                console.log(prevState[rowId])
-
-                prevState[rowId] = {...prevState[rowId],[name]:inputFieldValue};
-                console.log(prevState[rowId])
-
-                setItemTableData(prevState)
-
-
-        // console.log(selectedItem)
-        // console.log(rowId)
-        // console.log(suggestionName)
-        console.log(inputFieldValue)
-        console.log(inputFieldValue.target.type)
-
-        // updateTableRow(selectedItem,rowId,suggestionName,e)
-    }
-
-    const handleSuggestionChange = (selectedItem,rowId,suggestionName) =>{
-        console.log(selectedItem)
-        console.log(rowId)
-        console.log(suggestionName)
-
-        let prevState = [...itemTableData];
-        console.log(prevState[rowId])
-
-        prevState[rowId][suggestionName]=selectedItem[0];
-        console.log(prevState[rowId])
-
-        setItemTableData(prevState)
-
+        }
     }
 
     const validationSchema = Yup.object().shape({
@@ -203,7 +194,7 @@ const ExpenseForm = (props) =>{
                                     name="expenseName"
                                     placeholder="Enter name"
                                     onChange={handleChange}
-                                    onBlur={handleBlur}
+                                    onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
                                     defaultValue={_.isUndefined(initialValue) ? "" : initialValue.name}
                                     value={values.name}
                                     disabled={disabled}
@@ -217,10 +208,11 @@ const ExpenseForm = (props) =>{
                                 <Form.Label>Email</Form.Label>
                                 <Form.Control
                                     type="email"
-                                    name="email"
+                                    name="expenseEmail"
                                     placeholder="Enter email"
                                     defaultValue={_.isUndefined(initialValue) ? "" : initialValue.email}
                                     disabled={disabled}
+                                    onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
 
                                 />
                             </Form.Group>
@@ -230,20 +222,24 @@ const ExpenseForm = (props) =>{
                                 <Form.Label>Phone</Form.Label>
                                 <Form.Control
                                     type="phone"
-                                    name="phone"
+                                    name="expensePhone"
                                     placeholder="Enter phone number"
                                     defaultValue={_.isUndefined(initialValue) ? "" : initialValue.phoneNumber}
                                     disabled={disabled}
+                                    onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+
                                 />
                             </Form.Group>
                             <Form.Group as={Col} controlId="formGridMobile">
                                 <Form.Label>Mobile</Form.Label>
                                 <Form.Control
                                     type="mobile"
-                                    name="mobile"
+                                    name="expenseMobile"
                                     placeholder="Enter mobile number"
                                     defaultValue={_.isUndefined(initialValue) ? "" : initialValue.mobileNumber}
                                     disabled={disabled}
+                                    onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+
                                 />
                             </Form.Group>
                         </Row>
@@ -253,12 +249,16 @@ const ExpenseForm = (props) =>{
                                     <Form.Select
                                         aria-label="Floating label select example"
                                         disabled={disabled}
+                                        name="expenseAddress"
+                                        onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+
                                     >
                                         <>
-                                            <option selected={!disabled}>{_.isUndefined(initialValue) ? "" : initialValue.expenseAddress.name }</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            {rExpenseAddresses.map((address)=>{
+                                                const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === address.name
+                                                return <option selected={isSelected} value={address.id}>{address.name}</option>
+
+                                            })}
                                         </>
 
                                     </Form.Select>
@@ -269,13 +269,17 @@ const ExpenseForm = (props) =>{
                                     <Form.Select
                                         aria-label="Floating label select example"
                                         disabled={disabled}
+                                        name="expensePaymentType"
+                                        onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+
                                     >
 
                                         <>
-                                            <option selected={!disabled}>{_.isUndefined(initialValue) ? "" : initialValue.expensePaymentType.name }</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            {rExpensePaymentType.map((expensePaymentType)=>{
+                                                const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === expensePaymentType.name
+                                                return <option selected={isSelected} value={expensePaymentType.id}>{expensePaymentType.name}</option>
+
+                                            })}
                                         </>
 
                                     </Form.Select>
@@ -288,14 +292,15 @@ const ExpenseForm = (props) =>{
                                     <Form.Select
                                         aria-label="Floating label select example"
                                         disabled={disabled}
+                                        name="expenseType"
+                                        onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
                                     >
-
-
                                         <>
-                                            <option selected={!disabled}>{_.isUndefined(initialValue) ? "" : initialValue.expenseType.name }</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            {rExpenseType.map((expenseType)=>{
+                                                const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === expenseType.name
+                                                return <option selected={isSelected} value={expenseType.id}>{expenseType.name}</option>
+
+                                            })}
                                         </>
 
                                     </Form.Select>
@@ -307,10 +312,11 @@ const ExpenseForm = (props) =>{
                                 <FloatingLabel controlId="floatingTextarea" label="Comments">
                                     <Form.Control
                                         as="textarea"
+                                        name={"expenseComment"}
                                         placeholder="Leave a comment here"
                                         disabled={disabled}
                                         defaultValue={_.isUndefined(initialValue) ? "" : initialValue.extraInfo}
-
+                                        onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
                                     />
                                 </FloatingLabel>
                             </Col>
@@ -333,8 +339,6 @@ const ExpenseForm = (props) =>{
                                                 touched={touched}
                                                 handleChange={handleChange}
                                                 handleBlur={handleBlur}
-                                                handleSuggestionChange={handleSuggestionChange}
-                                                handleTableInputChange={handleTableInputChange}
                                                 setFieldValue={setFieldValue}
                                                 setFieldTouched={setFieldTouched}
                                                 removeSelectedTableRow={removeSelectedTableRow}

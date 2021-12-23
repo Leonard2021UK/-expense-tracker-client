@@ -12,6 +12,7 @@ import TableAutoSuggestion from "../TableAutoSuggestion/TableAutoSuggestion";
 import PropTypes from "prop-types";
 import exact from "prop-types-exact";
 import {setItemTableState,updateSelectedRow,addRow,removeRow,removeSelectedRow,clearTableState} from "../../redux/features/domain/tables/itemsTableSlice"
+import CustomTableInputField from "../CustomTableInputField/CustomTableInputField";
 
 const {useTable} = require("react-table");
 
@@ -22,14 +23,11 @@ function ItemsTable(props) {
     const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
     const rItem = useSelector((state) => state.suggestions.item.response);
 
-    const [inputField,setInputField] = useState({});
 
     const {
         data,
         disable,
         removeSelectedRow,
-        handleSuggestionChange,
-        handleTableInputChange,
         setNonExistingItemOption,
         setNonExistingUnitOption,
         setNonExistingCategoryOption,
@@ -40,51 +38,18 @@ function ItemsTable(props) {
 
     const dispatch = useDispatch();
 
-    const handleInputFiledOnBlur = (e,rowId) => {
-        // let name = e.target.name;
-        console.log(inputField)
-        // dispatch(updateSelectedRow({
-        //     rowId:rowId,
-        //     fieldName:name,
-        //     value:[inputField[name]]
-        // }))
-        // setInputField({})
-    }
+    const handleInputFiledOnBlur = (inputField) => {
+        const keys = Object.keys(inputField);
 
-    // useEffect(()=>{
-    //
-    //     // if (!_.isEmpty(inputField)){
-    //         const keys = Object.keys(inputField);
-    //         const name = keys[0];
-    //         const rowId = inputField.rowId
-    //         const value = inputField[name];
-    //         console.log(name)
-    //         console.log(rowId)
-    //
-    //         console.log(value)
-    //         dispatch(updateSelectedRow({
-    //             rowId:rowId,
-    //             fieldName:name,
-    //             value:value
-    //         }))
-    //
-    //     // }
-    //
-    // },[inputField])
+        const name = keys[0];
+        const rowId = inputField.rowId
+        const value = inputField[name];
+        dispatch(updateSelectedRow({
+            rowId:rowId,
+            fieldName:name,
+            value:[value]
+        }))
 
-
-    const handleInputFiledChange = (e,rowId) =>{
-        console.log("INPUTFIELD")
-        const inputType = e.target.type;
-        let name = e.target.name;
-        let value = e.target.value;
-        console.log("VALUE ", value)
-
-        switch (true){
-            case (inputType === "text" ):
-                setInputField(prevState => ({...prevState,[name]:value,rowId:rowId}));
-
-        }
     }
 
     const updateTableRow = (selectedItem,rowId,suggestionName)=>{
@@ -94,17 +59,8 @@ function ItemsTable(props) {
             fieldName:suggestionName,
             value:selectedItem
         }))
-        // let prevState = [...itemTableData];
-        // prevState[rowId] = selectedItem[0];
-        //
-        // setItemTableData(prevState)
+
     }
-
-
-
-
-
-    console.log(data)
 
     const columns = React.useMemo(
         () => [
@@ -156,17 +112,16 @@ function ItemsTable(props) {
                         Cell:({row: {index}})=>{
                             return(
                                 <Form.Group as={Col} controlId="formGroupName">
-                                    <Form.Control
-                                        id={"amount_" + index}
-                                        type="text"
-                                        name="amount"
-                                        placeholder="Enter amount"
-                                        onChange={(e)=>handleInputFiledChange(e,index)}
-                                        onBlur={(e) =>handleInputFiledOnBlur(e,index)}
-                                        disabled={disable}
-                                        defaultValue={_.isEmpty(data) ? [] : data[index].amount}
+                                    <CustomTableInputField
+                                            id={"amount_" + index}
+                                            index={index}
+                                            type="number"
+                                            name="amount"
+                                            placeholder="Enter amount"
+                                            handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
+                                            disable={disable}
+                                            defaultValue={_.isEmpty(data) ? {} : data[index].amount}
                                     />
-
                                 </Form.Group>
                             )}
                     },
@@ -201,16 +156,16 @@ function ItemsTable(props) {
 
                             return(
                                 <Form.Group as={Col} controlId="formGroupName">
-                                    <Form.Control
+                                    <CustomTableInputField
                                         id={"unitPrice_" + index}
-                                        type="text"
+                                        index={index}
+                                        type="number"
                                         name="unitPrice"
-                                        placeholder="Enter unit price"
-                                        disabled={disable}
-                                        onChange={(e)=>handleTableInputChange(e,index)}
-                                        defaultValue={_.isEmpty(data) ? [] : data[index].unitPrice}
+                                        placeholder="Enter unitPrice"
+                                        handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
+                                        disable={disable}
+                                        defaultValue={_.isEmpty(data) ? {} : data[index].unitPrice}
                                     />
-
                                 </Form.Group>
                             )
                         }
@@ -246,14 +201,15 @@ function ItemsTable(props) {
 
                             return(
                                 <InputGroup>
-                                    <Form.Control
+                                    <CustomTableInputField
                                         id={"price_" + index}
-                                        type="text"
+                                        index={index}
+                                        type="number"
                                         name="price"
                                         placeholder="Enter price"
-                                        disabled={disable}
-                                        onChange={(e)=>handleTableInputChange(e,index)}
-                                        defaultValue={_.isEmpty(data) ? [] : data[index].price}
+                                        handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
+                                        disable={disable}
+                                        defaultValue={_.isEmpty(data) ? {} : data[index].price}
                                     />
                                 </InputGroup>
                             )}

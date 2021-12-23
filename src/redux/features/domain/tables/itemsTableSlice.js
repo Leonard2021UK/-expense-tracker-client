@@ -3,7 +3,17 @@ import {createSlice} from "@reduxjs/toolkit";
 const itemsTableSlice = createSlice({
     name:"itemsTable",
     initialState:{
-        tableState: [],
+        tableState: [
+            {
+                "unitType": "",
+                "itemCategory": "",
+                "rowId":0,
+                "item":"",
+                "amount":"",
+                "unitPrice":"",
+                "price":""
+            }
+        ],
     },
     reducers:{
         setItemTableState(state,action) {
@@ -20,16 +30,33 @@ const itemsTableSlice = createSlice({
             state.tableState = state.tableState.map(row => row.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
         },
         removeRow(state,action){
-            const lastRow = state.tableState[state.tableState.length-1];
-            state.tableState = state.tableState.filter(existingRow => existingRow !== lastRow);
+            //prevent delete the first line in the table
+            if(state.tableState.length > 1){
+                const lastRow = state.tableState[state.tableState.length-1];
+                state.tableState = state.tableState.filter(existingRow => existingRow !== lastRow);
+            }
         },
         removeSelectedRow(state,action){
-            const {id} = action.payload;
-            const selectedRow = state.tableState[id];
-            state.tableState = state.tableState.filter(item => item !== selectedRow);
+            //prevent delete the last line in the table
+            if(state.tableState.length > 1){
+                const {id} = action.payload;
+                const selectedRow = state.tableState[id];
+                state.tableState = state.tableState.filter(item => item !== selectedRow);
+            }
+
         },
         clearTableState(state,action){
-            state.tableState = [];
+            state.tableState = [
+                {
+                    "unitType": "",
+                    "itemCategory": "",
+                    "rowId":0,
+                    "item":"",
+                    "amount":"",
+                    "unitPrice":"",
+                    "price":""
+                }
+            ];
         }
     }
 });
