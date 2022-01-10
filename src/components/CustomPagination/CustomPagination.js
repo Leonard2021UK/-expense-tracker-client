@@ -6,7 +6,6 @@ import _ from "lodash";
 function CustomPagination(props) {
 
     const {data,setCurrentPageContent} = props;
-    console.log("PAGINATION DATA ",data)
     const [currentPage, setCurrentPage] = useState(1)
 
     let option = {

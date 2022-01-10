@@ -4,16 +4,16 @@ const itemsTableSlice = createSlice({
     name:"itemsTable",
     initialState:{
         tableState: [
-            {
-                "unitType": "",
-                "itemCategory": "",
-                "rowId":0,
-                "item":"",
-                "amount":"",
-                "unitPrice":"",
-                "price":""
-            }
-        ],
+            // {
+            //     "unitType": "",
+            //     "itemCategory": "",
+            //     "rowId":0,
+            //     "item":"",
+            //     "amount":"",
+            //     "unitPrice":"",
+            //     "price":""
+            // }
+        ]
     },
     reducers:{
         setItemTableState(state,action) {
@@ -26,15 +26,11 @@ const itemsTableSlice = createSlice({
         },
         updateSelectedRow(state,action){
             const {rowId,fieldName,value} = action.payload;
-            console.log(value)
             state.tableState = state.tableState.map(row => row.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
         },
         removeRow(state,action){
-            //prevent delete the first line in the table
-            if(state.tableState.length > 1){
-                const lastRow = state.tableState[state.tableState.length-1];
-                state.tableState = state.tableState.filter(existingRow => existingRow !== lastRow);
-            }
+            const lastRow = state.tableState[state.tableState.length-1];
+            state.tableState = state.tableState.filter(existingRow => existingRow !== lastRow);
         },
         removeSelectedRow(state,action){
             //prevent delete the last line in the table
@@ -45,22 +41,12 @@ const itemsTableSlice = createSlice({
             }
 
         },
-        clearTableState(state,action){
-            state.tableState = [
-                {
-                    "unitType": "",
-                    "itemCategory": "",
-                    "rowId":0,
-                    "item":"",
-                    "amount":"",
-                    "unitPrice":"",
-                    "price":""
-                }
-            ];
+        clearItemTableState(state,action){
+            state.tableState = [];
         }
     }
 });
 
 
-export const { setItemTableState,addRow,updateSelectedRow,removeRow,removeSelectedRow,clearTableState} = itemsTableSlice.actions;
+export const { setItemTableState,addRow,updateSelectedRow,removeRow,removeSelectedRow,clearItemTableState} = itemsTableSlice.actions;
 export default itemsTableSlice.reducer;

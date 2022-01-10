@@ -18,7 +18,6 @@ export function useApiService() {
             },
             "body": JSON.stringify(data)
         };
-        console.log(data)
         const url = process.env.REACT_APP_EXPENSES_TRACKER;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
@@ -36,7 +35,6 @@ export function useApiService() {
             },
             "body": JSON.stringify(data)
         };
-        console.log(data)
         const url = process.env.REACT_APP_ITEM;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
@@ -53,7 +51,6 @@ export function useApiService() {
                 "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
             }
         };
-        console.log(data)
         const url = process.env.REACT_APP_ITEM_CATEGORY;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
@@ -70,8 +67,7 @@ export function useApiService() {
             },
             "body": JSON.stringify(data)
         };
-        console.log(data)
-        const url = process.env.REACT_APP_ITEM;
+        const url = process.env.REACT_APP_ITEM_CATEGORY;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
                 return response;
@@ -87,7 +83,6 @@ export function useApiService() {
                 "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
             }
         };
-        console.log(data)
         const url = process.env.REACT_APP_ITEM;
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
@@ -95,6 +90,24 @@ export function useApiService() {
             })
     }
 
+    const saveUnitType = async (method,data = {})=>{
+        const fetchOption = {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            },
+            "body": JSON.stringify(data)
+
+        };
+
+        const url = process.env.REACT_APP_UNIT_TYPE;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
     const getAllUnitTypes = async ()=>{
         const fetchOption = {
             "method": "GET",
@@ -179,7 +192,6 @@ export function useApiService() {
     }
 
     const fetchMainCategory = async (method,data = {})=>{
-        console.log("INFECHT")
         const fetchOption = {
             "method": method,
             "headers": {
@@ -191,6 +203,24 @@ export function useApiService() {
         };
 
         const url = process.env.REACT_APP_MAIN_CATEGORY;
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+
+    const saveExpense = async (method,data = {})=>{
+        const fetchOption = {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            },
+            "body": JSON.stringify(data)
+        };
+
+        const url = process.env.REACT_APP_EXPENSE
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
                 return response;
@@ -358,7 +388,9 @@ export function useApiService() {
         getAllItems,
         saveItemCategory,
         getAllItemCategories,
-        saveItem
+        saveItem,
+        saveExpense,
+        saveUnitType
 
         // getJobRecordById,
         // getAllJobRegistration,

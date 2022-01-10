@@ -1,6 +1,6 @@
 import React, {useEffect,useRef} from "react";
 import {Button, OverlayTrigger, Tooltip} from "react-bootstrap";
-import {faPlusSquare,faMinusSquare} from "@fortawesome/free-solid-svg-icons";
+import {faPlusSquare,faMinusSquare,faSolarPanel} from "@fortawesome/free-solid-svg-icons";
 import "./TableToolBarStyle.css"
 import {useDispatch} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ const _ = require('lodash');
 
 const TableToolBar = (props)=>{
 
-    const {add,remove} = props;
+    const {add,remove,clear,disable} = props;
 
     //Redux dispatch hook
     const dispatch = useDispatch();
@@ -100,7 +100,7 @@ const TableToolBar = (props)=>{
                             name="add"
                             onClick={add}
                             icon={faPlusSquare}
-                            className="fas fa-2x"
+                            className={(disable) ? "fas fa-2x fa-disabled" : "fas fa-2x"}
                             color={"green"}
                             style={{margin: 1 + "vh", cursor: "pointer"}}
                         />
@@ -111,9 +111,20 @@ const TableToolBar = (props)=>{
                         name="add"
                         onClick={remove}
                         icon={faMinusSquare}
-                        className="fas fa-2x"
+                        className={(disable) ? "fas fa-2x fa-disabled" : "fas fa-2x"}
                         color={"red"}
                         style={{margin:1+"vh",cursor:"pointer"}}
+                        />
+                }
+                {
+                    _.isUndefined(clear) ? null:
+                        <FontAwesomeIcon
+                            name="add"
+                            onClick={clear}
+                            icon={faSolarPanel}
+                            className={(disable) ? "fas fa-2x fa-disabled" : "fas fa-2x"}
+                            color={"red"}
+                            style={{margin:1+"vh",cursor:"pointer"}}
                         />
                 }
             </>

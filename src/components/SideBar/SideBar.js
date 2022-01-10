@@ -9,7 +9,6 @@ import {Col} from "react-bootstrap";
 const SideBar = ()=>{
 
     const [activeSiteName,setActiveSiteName] = useState();
-    console.log(UserService.getToken())
     // const handleLogout = () => UserService.logout();
 
     return (

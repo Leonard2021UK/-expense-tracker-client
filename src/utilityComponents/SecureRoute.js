@@ -6,7 +6,6 @@ export function SecureRoute({ component: Component, pathHandler,roles, ...rest }
 
     return (
         <Route {...rest} render={props => {
-            console.log(props)
             return UserService.isLoggedIn()
                     ? <Component {...props} />
                     : <Redirect to={{ pathname: '/', }} />

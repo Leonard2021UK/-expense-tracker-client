@@ -25,7 +25,6 @@ const login = async (values) => {
 
             if(response['status'] === 200){
                 const parsedResponse = await response.json();
-                console.log(parsedResponse)
                 if(parsedResponse['accessToken']){
                     const jwt = parsedResponse['accessToken'];
                     inMemoryJWT.setToken(jwt)
@@ -38,7 +37,6 @@ const login = async (values) => {
 
 const syncLogout = (event) => {
     if (event.key === 'logout') {
-        console.log('logged out from storage!');
         window.location.replace("/");
     }
 
@@ -59,7 +57,6 @@ const register = async (values) => {
         "body": JSON.stringify(values),
 
     }
-    console.log(process.env.REACT_APP_SIGNUP)
     return await UseCustomFetch(process.env.REACT_APP_SIGNUP,fetchOption)
         .then(async (response)=>{
             return response;

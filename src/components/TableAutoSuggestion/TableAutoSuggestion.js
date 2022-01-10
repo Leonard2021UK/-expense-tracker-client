@@ -18,6 +18,9 @@ const TableAutoSuggestion = (props) => {
     const {
         id,
         rowId,
+        disable,
+        touched,
+        errors,
         suggestionLabels,
         handleSuggestionChange,
         handleTableChange,
@@ -30,28 +33,24 @@ const TableAutoSuggestion = (props) => {
         setNonExistingOption
     } = props;
 
-    console.log("TABLE SUGGESTION ",initialValue)
-
-    //if initial value was provided initialise the state with that value otherwise set to empty object
-    const [selectedItem,setSelectedItem] = useState(initialValue);
+    console.log("INITIAL VALUE IN TABLESUGGESTION ", initialValue)
+    //if initial value is an object wrap it in to an array
+    // typeHead uses array for it's selected item
+    const [selectedItem,setSelectedItem] = useState(_.isArray(initialValue) ? initialValue : [initialValue]);
     const [currentSuggestionValue,setCurrentSuggestionValue] = useState("");
 
     const handleOnBlur = (e)=>{
 
-        console.log("_.isEmpty(selectedItem) ",_.isEmpty(selectedItem))
 
         // when suggestion is typed then check weather the typed value is an existing suggestion
         // if yes set the selectedItem, if not keep it empty
         if(_.isEmpty(selectedItem)){
             let value = (_.isUndefined(e.target) ? e : e.target.value )
-            console.log(value)
             const cleanValue = _cleanValue(value);
             let isValidValue = _findAndSetSelectedOpt (cleanValue);
             if (!isValidValue){
                 alert("invalid value " + value)
             }else{
-                console.log("HANDLE BLUR")
-                console.log(currentSuggestionValue)
                 handleSuggestionChange(selectedItem,rowId,suggestionName)
             }
         }else{
@@ -81,8 +80,6 @@ const TableAutoSuggestion = (props) => {
     },[selectedItem])
 
     const handleOnChange = (selected) =>{
-        console.log("HANDLE CHANGE")
-        console.log(selected)
 
         if(_.isEmpty(selected)){
             setSelectedItem([])
@@ -96,8 +93,6 @@ const TableAutoSuggestion = (props) => {
     }
 
     const handleOnInputChange = (selected) =>{
-        console.log("HANDLE INPUT CHANGE")
-        console.log(selected)
         let value = (_.isUndefined(selected.target) ? selected : selected.target.value )
         // //
         setCurrentSuggestionValue(value)
@@ -169,8 +164,12 @@ const TableAutoSuggestion = (props) => {
                 options={options}
                 placeholder="Choose a state..."
                 selected={_.isEmpty(selectedItem)?"":selectedItem}
-                className={className}
+                className={(_.isUndefined(touched) && _.isUndefined(errors)) ? className : touched[suggestionName] && errors[suggestionName] ? "error" : className}
+                disabled={disable}
             />
+            {(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched[suggestionName] && errors[suggestionName] ? (
+                <div className="error-message">{errors[suggestionName] }</div>
+            ): null}
         </>
     );
 };

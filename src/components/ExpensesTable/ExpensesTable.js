@@ -6,11 +6,17 @@ import React, {useState} from "react";
 import TableToolBar from "../TableToolBars/TableToolBar";
 import CustomPagination from "../CustomPagination/CustomPagination";
 import CreateExpenseModal from "../Modals/CreateExpenseModal/CreateExpenseModal";
+import {clearItemForm} from "../../redux/features/domain/forms/itemFormSlice";
+import {clearExpenseForm} from "../../redux/features/domain/forms/expenseFormSlice";
+import {useDispatch} from "react-redux";
+import {clearItemTableState} from "../../redux/features/domain/tables/itemsTableSlice";
 
 const ExpensesTable = (props)=>{
-    const {expenses} = props;
-    console.log(expenses)
+    const dispatch = useDispatch();
+
+    const {currentExpenseTracker} = props;
     const [expenseDetailsModalIsOpen, setExpenseDetailsModalIsOpen] = useState(false);
+
     const [selectedExpense, setSelectedExpense] = useState({});
     const [disable, setDisable] = useState(true);
     const [currentPageContent, setCurrentPageContent] = useState([]);
@@ -18,17 +24,32 @@ const ExpensesTable = (props)=>{
 
     const toggleExpenseDetailsModal = ()=>{
         setExpenseDetailsModalIsOpen(!expenseDetailsModalIsOpen);
+            dispatch(clearExpenseForm())
+            dispatch(clearItemTableState())
+
+        // when we close the modal set form fields to disabled
+        // if(!expenseDetailsModalIsOpen)
+        //     setDisable(true);
     }
 
-    const toggleCreateExpenseModal = ()=>{
-        console.log("HELLO")
-        setCreateExpenseModalIsOpen(!createExpenseModalIsOpen);
-    }
+    // const toggleCreateExpenseModal = ()=>{
+    //     setCreateExpenseModalIsOpen(!createExpenseModalIsOpen);
+    //     dispatch(clearExpenseForm())
+    //     setDisable(false)
+    // }
     const handleShowExpenseDetails = (expense)=>{
+        setDisable(true)
         setSelectedExpense(expense)
         toggleExpenseDetailsModal();
 
-        console.log(expense)
+    }
+
+    const handleUpdateExpenseDetails = (expense)=>{
+        setSelectedExpense(expense)
+        dispatch(clearExpenseForm())
+        dispatch(clearItemTableState())
+        toggleExpenseDetailsModal();
+        setDisable(false)
     }
     return (
         <>
@@ -38,19 +59,19 @@ const ExpensesTable = (props)=>{
             {/*</div>*/}
             <ExpenseDetailsModal
                 show={expenseDetailsModalIsOpen}
-                expense={selectedExpense}
+                initialValue={selectedExpense}
                 toggleModal={toggleExpenseDetailsModal}
                 disable={disable}
+                title={"Expense details for" + selectedExpense.name}
             />
 
-            <TableToolBar toggleModal={toggleCreateExpenseModal} />
 
             <table className="table table-striped table-dark">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Nr. of items</th>
+                    <th scope="col">Nr.of items</th>
                     <th scope="col">Updated at</th>
                     <th scope="col">Created at</th>
                     <th scope="col">Created by</th>
@@ -59,17 +80,18 @@ const ExpensesTable = (props)=>{
                 </thead>
                 <tbody>
                 {currentPageContent.map((expense,index)=>{
+                    console.log(expense)
                     return <>
                         <tr>
                             <th scope="row">{index}</th>
-                            <td>{expense.name}</td>
+                            <td>{expense.expenseName}</td>
                             <td>{expense.expenseItems.length}</td>
                             <td>{expense.updatedAt}</td>
                             <td>{expense.createdAt}</td>
                             <td>{expense.createdBy}</td>
                             <td>
                                 <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"} onClick={() => handleShowExpenseDetails(expense)} style={{margin:1+"vh",cursor:"pointer"}} />
-                                <FontAwesomeIcon icon={faEdit} className="mr-2" color={"orange"} style={{margin:1+"vh",cursor:"pointer"}} />
+                                <FontAwesomeIcon icon={faEdit} className="mr-2" color={"orange"} onClick={() => handleUpdateExpenseDetails(expense)} style={{margin:1+"vh",cursor:"pointer"}} />
                                 <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"} style={{margin:1+"vh",cursor:"pointer"}} />
                             </td>
                         </tr>
@@ -78,7 +100,7 @@ const ExpensesTable = (props)=>{
                 })}
                 </tbody>
             </table>
-            <CustomPagination data={expenses} setCurrentPageContent={setCurrentPageContent}/>
+            <CustomPagination data={currentExpenseTracker.expenses} setCurrentPageContent={setCurrentPageContent}/>
 
         {/*// </main>*/}
             </>

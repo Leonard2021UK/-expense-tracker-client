@@ -11,14 +11,11 @@ const expenseTrackerFormSlice = createSlice({
             state.formState = formState;
         },
         setExpenseTrackerName(state,action) {
-            console.log(action.payload.data)
             const {mainCategoryName} = action.payload;
-            console.log(action.payload.data)
 
             state.formState.mainCategoryName = mainCategoryName;
         },
         setExpenseTrackerCategory(state,action) {
-            console.log(action)
 
             const {mainCategory} = action.payload;
             state.formState.mainCategory = mainCategory;

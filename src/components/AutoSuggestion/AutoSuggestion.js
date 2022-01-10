@@ -13,37 +13,50 @@ const AutoSuggestion = (props) => {
 
     const {
         id,
+        rowId,
+        disable,
+        touched,
+        errors,
         suggestionLabels,
+        updateCurrentRowItemFormState,
+        handleTableChange,
         initialValue,
         options,
         className,
-        setFieldValue,
-        setFieldTouched,
         reduxReducer,
         suggestionName,
         nonExistingOptionIsValid,
-        setNonExistingOption
+        setNonExistingOption,
+        setFieldValue,
+        setFieldTouched,
+        savedNewRecord
+
     } = props;
 
-
     //if initial value was provided initialise the state with that value otherwise set to empty array
-    const [selectedItem,setSelectedItem] = useState(_.isUndefined(initialValue) ? []:initialValue);
+    const [selectedItem,setSelectedItem] = useState(_.isUndefined(initialValue) ? _.isUndefined(savedNewRecord) ? [] : [savedNewRecord] : initialValue);
 
     useEffect(()=>{
-
         // setSelectedItem(initialValue);
 
-        // initial value is not empty set Yup validation for initial value
+        // if initial value is present and not empty, set Yup validation for initial value
         if(!_.isEmpty(initialValue) && !_.isUndefined(initialValue)){
             //TODO form appropriate value based on labels
-            console.log("initialValue ", initialValue[0].name)
             //this works when only one label is present
-            setFieldValue('category',initialValue[0].name)
+            setFieldValue(suggestionName,initialValue[0].name)
 
         }
+        if(!_.isUndefined(savedNewRecord)){
+            setFieldValue(suggestionName,savedNewRecord.name)
+        }
+    },[initialValue,savedNewRecord])
 
-
-    },[initialValue])
+    useEffect(()=>{
+        // set the newly created record as selected after options in redux store were updated
+        if(!_.isUndefined(savedNewRecord)){
+            setSelectedItem([savedNewRecord])
+        }
+    },[options])
 
     /**
      *  @function getLabelKey - returns data to be shown in the suggestion for each record
@@ -98,40 +111,72 @@ const AutoSuggestion = (props) => {
         <>
 
             <Typeahead
-                id={id}
+                id={suggestionName}
+                emptyLabel="Doesn't exists! Change or create as new!"
                 onBlur = {(e)=>{
+                    //sets target name attribute in React synthetic event
+                    e.target.name = suggestionName;
+                    // when no existing option was found (user types)
                     if (_.isEmpty(selectedItem) ){
+                        //sets formik state
                         setFieldValue(suggestionName,'')
+                        // stores the new value to be saved into DB
                         setNonExistingOption(e.target.value)
-
                     }else{
                         setNonExistingOption('')
+                        //if reduxReducer is not present store the field's state somewhere else
+
+                        if(_.isUndefined(reduxReducer)){
+                            // updates the ItemForm state
+                            updateCurrentRowItemFormState(e,selectedItem)
+                        }else{
+                            dispatch(reduxReducer({[suggestionName]:selectedItem}))
+                        }
+
                     }
-                    dispatch(reduxReducer({[suggestionName]:selectedItem}))
+                    //if reduxReducer is not present store the fields state somewhere else
+                    if(_.isUndefined(reduxReducer)){
+                    }else{
+                        dispatch(reduxReducer({[suggestionName]:selectedItem}))
+                    }
+                    // informs formik about the field change
                     setFieldTouched(suggestionName,true)
                 }}
                 labelKey={getLabelKey.bind(this,suggestionLabels)}
                 onInputChange={(text, event) => {
+                    // in case of typing
                     setNonExistingOption(text)
                     setFieldValue(suggestionName, text);
                     setSelectedItem([])
-                    dispatch(reduxReducer({[suggestionName]:[]}))
-
-
+                    //if reduxReducer is not present store the fields state somewhere else
+                    if(_.isUndefined(reduxReducer)){
+                        //TODO if no need negate the condition
+                    }else{
+                        dispatch(reduxReducer({[suggestionName]:[]}))
+                    }
                 }}
                 onChange={(selectedItem) =>{
-                    console.log(selectedItem)
+                    // in case of selecting from the list
                     const value = (selectedItem.length > 0) ? selectedItem[0].name:'';
                     setFieldValue(suggestionName,value)
+                    setFieldTouched(true)
                     setSelectedItem(selectedItem)
-                    dispatch(reduxReducer({[suggestionName]:selectedItem}))
+                    //if reduxReducer is not present store the fields state somewhere else
+                    if(_.isUndefined(reduxReducer)){
+                        //TODO if no need negate the condition
 
+                    }else{
+                        dispatch(reduxReducer({[suggestionName]:selectedItem}))
+                    }
                 }}
                 options={options}
                 placeholder="Choose a state..."
                 selected={selectedItem.name}
-                className={className}
+                className={(_.isUndefined(touched) && _.isUndefined(errors)) ? className : touched[suggestionName] && errors[suggestionName] ? "error" : className}
             />
+            {(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched[suggestionName] && errors[suggestionName] ? (
+                <div className="error-message">{errors[suggestionName] }</div>
+            ): null}
         </>
     );
 };

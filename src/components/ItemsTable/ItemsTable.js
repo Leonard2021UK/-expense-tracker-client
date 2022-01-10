@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import ItemsTableHeader from "./ItemsTableHeader/ItemsTableHeader";
 import AutoSuggestion from "../AutoSuggestion/AutoSuggestion";
 import {Col, Form, FormControl, InputGroup} from "react-bootstrap";
-import {setItemCategory, setItemFormState, setUnit} from "../../redux/features/domain/forms/itemFormSlice";
+import {setItemCategory, setItemFormState, setUnitType} from "../../redux/features/domain/forms/itemFormSlice";
 import RowAction from "../RowAction/RowAction";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import _ from 'lodash';
@@ -18,7 +18,6 @@ const {useTable} = require("react-table");
 
 function ItemsTable(props) {
 
-    console.log(props)
     const rItemCategories = useSelector((state) => state.suggestions.itemCategory.response);
     const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
     const rItem = useSelector((state) => state.suggestions.item.response);
@@ -26,8 +25,14 @@ function ItemsTable(props) {
 
     const {
         data,
+        errors,
+        touched,
         disable,
-        removeSelectedRow,
+        formikValues,
+        handleChange,
+        setFieldValue,
+        setFieldTouched,
+        removeSelectedTableRow,
         setNonExistingItemOption,
         setNonExistingUnitOption,
         setNonExistingCategoryOption,
@@ -35,6 +40,9 @@ function ItemsTable(props) {
         nonExistingItemOptionIsValid,
         nonExistingItemCategoryOptionIsValid
     } = props;
+
+    console.log("FORMIK ERROR VALUES IN ITEMS TABLE : ", errors)
+    console.log("INITIAL DATA IN ITEMS TABLE : ", data)
 
     const dispatch = useDispatch();
 
@@ -53,7 +61,7 @@ function ItemsTable(props) {
     }
 
     const updateTableRow = (selectedItem,rowId,suggestionName)=>{
-
+        setFieldValue(selectedItem)
         dispatch(updateSelectedRow({
             rowId:rowId,
             fieldName:suggestionName,
@@ -71,7 +79,7 @@ function ItemsTable(props) {
 
                     [
                     {
-                        Header: <ItemsTableHeader id="itemNr" name="itemNr" title = "Item Nr."/>,
+                        Header: <ItemsTableHeader id="itemNr" name="itemNr" title = "Item Nr." />,
                         id:"id11",
                         accessor: 'itemNr',
                         Cell:({row: {index}})=>{
@@ -82,9 +90,9 @@ function ItemsTable(props) {
                             )}
                     },
                     {
-                        Header: <ItemsTableHeader id="itemName" name="itemName" title = "Item name"/>,
+                        Header: <ItemsTableHeader id="item" name="item" title = "Item name"/>,
                         id:"id12",
-                        accessor: 'itemName',
+                        accessor: 'item',
                         Cell:({row: {index}})=>{
 
                             return(
@@ -92,15 +100,18 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"item_" + index}
                                         rowId={index}
+                                        disable={disable}
                                         suggestionName="item"
                                         handleSuggestionChange={updateTableRow}
                                         reduxReducer={setItemFormState}
                                         // data[index].item - present when update or show | data[index] - when create
-                                        initialValue={_.isEmpty(data[index].item) ? [] : [data[index].item]}
+                                        initialValue={_.isEmpty(data[index].item) ? [] : data[index].item}
                                         options={rItem}
                                         setNonExistingOption={setNonExistingItemOption}
                                         nonExistingOptionIsValid ={nonExistingItemOptionIsValid}
                                         suggestionLabels={["name"]}
+                                        errors={errors}
+                                        touched={touched}
                                     />
                                 </Col>
                             )}
@@ -111,7 +122,7 @@ function ItemsTable(props) {
                         accessor: 'amount',
                         Cell:({row: {index}})=>{
                             return(
-                                <Form.Group as={Col} controlId="formGroupName">
+                                <Form.Group as={Col}>
                                     <CustomTableInputField
                                             id={"amount_" + index}
                                             index={index}
@@ -121,14 +132,19 @@ function ItemsTable(props) {
                                             handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
                                             disable={disable}
                                             defaultValue={_.isEmpty(data) ? {} : data[index].amount}
+                                            handleChange={handleChange}
+                                            formikValues={formikValues}
+                                            errors={errors}
+                                            touched={touched}
                                     />
+
                                 </Form.Group>
                             )}
                     },
                     {
-                        Header: <ItemsTableHeader id="unit" name="unit" title = "Unit"/>,
+                        Header: <ItemsTableHeader id="unitType" name="unitType" title = "Unit"/>,
                         id:"id14",
-                        accessor: 'unit',
+                        accessor: 'unitType',
                         Cell:({row: {index}})=>{
 
                             return(
@@ -136,10 +152,11 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"unit_" + index}
                                         rowId={index}
+                                        disable={disable}
                                         suggestionName="unitType"
                                         handleSuggestionChange={updateTableRow}
-                                        reduxReducer={setUnit}
-                                        initialValue={_.isEmpty(data[index].unitType) ? [] : [data[index].unitType]}
+                                        reduxReducer={setUnitType}
+                                        initialValue={_.isEmpty(data[index].unitType) ? [] : data[index].unitType}
                                         options={rUnitTypes}
                                         setNonExistingOption={setNonExistingUnitOption}
                                         nonExistingOptionIsValid ={nonExistingUnitOptionIsValid}
@@ -155,7 +172,7 @@ function ItemsTable(props) {
                         Cell:({row: {index}})=>{
 
                             return(
-                                <Form.Group as={Col} controlId="formGroupName">
+                                <Form.Group as={Col}>
                                     <CustomTableInputField
                                         id={"unitPrice_" + index}
                                         index={index}
@@ -165,6 +182,10 @@ function ItemsTable(props) {
                                         handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
                                         disable={disable}
                                         defaultValue={_.isEmpty(data) ? {} : data[index].unitPrice}
+                                        handleChange={handleChange}
+                                        formikValues={formikValues}
+                                        errors={errors}
+                                        touched={touched}
                                     />
                                 </Form.Group>
                             )
@@ -181,10 +202,11 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"itemCategory_" + index}
                                         rowId={index}
+                                        disable={disable}
                                         handleSuggestionChange={updateTableRow}
                                         suggestionName="itemCategory"
                                         reduxReducer={setItemCategory}
-                                        initialValue={_.isEmpty(data[index].itemCategory) ? [] : [data[index].itemCategory]}
+                                        initialValue={_.isEmpty(data[index].itemCategory) ? [] : data[index].itemCategory}
                                         options={rItemCategories}
                                         setNonExistingOption={setNonExistingCategoryOption}
                                         nonExistingOptionIsValid ={nonExistingItemCategoryOptionIsValid}
@@ -210,6 +232,10 @@ function ItemsTable(props) {
                                         handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
                                         disable={disable}
                                         defaultValue={_.isEmpty(data) ? {} : data[index].price}
+                                        handleChange={handleChange}
+                                        formikValues={formikValues}
+                                        errors={errors}
+                                        touched={touched}
                                     />
                                 </InputGroup>
                             )}
@@ -227,14 +253,20 @@ function ItemsTable(props) {
                         accessor: 'visits',
                         Cell:({row: {index}})=>{
                             return(
-                                <RowAction rowId={index} icon={faTrash} color={"red"} onClickHandler={removeSelectedRow}/>
+                                <RowAction
+                                    disable={disable}
+                                    rowId={index}
+                                    icon={faTrash}
+                                    color="red"
+                                    onClickHandler={removeSelectedTableRow}
+                                />
                             )
                         }
                     }
                 ],
             },
         ],
-        [data]
+        [data,errors,touched]
     )
     const {
         getTableProps,

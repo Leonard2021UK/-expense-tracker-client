@@ -21,10 +21,8 @@ const Admin = (props) =>{
     const getRoutes = routes => {
         return routes.map((prop, key) => {
             if (prop.submenu.length !== 0) {
-                console.log("HAS SUB MENU")
                 return getRoutes(prop.submenu);
             }
-            console.log(UserService.hasRealmRole(prop.type))
             //prop.type is defined in the routes file
             if (UserService.hasRealmRole(prop.type)) {
                 return (

@@ -1,14 +1,11 @@
 import React from "react";
 import {Col, Container, Modal, Row, ToastContainer} from "react-bootstrap";
-import ExpensesTable from "../../ExpensesTable/ExpensesTable";
-import ExpenseTrackerForm from "../../Forms/ExpenseTrackerForm/ExpenseTrackerForm";
-import {useDispatch, useSelector} from "react-redux";
 import ExpenseForm from "../../Forms/ExpenseForm/ExpenseForm";
 
 function CreateExpenseModal(props){
 
 
-    const{show,toggleModal} = props;
+    const{show,toggleModal,currentExpenseTracker,disable} = props;
 
     return(
         <Modal
@@ -26,7 +23,11 @@ function CreateExpenseModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ExpenseForm disabled={false}/>
+                            <ExpenseForm
+                                disable={disable}
+                                currentExpenseTracker={currentExpenseTracker}
+                                toggleExpenseFormModal={toggleModal}
+                            />
                         </Col>
                     </Row>
                 </Container>

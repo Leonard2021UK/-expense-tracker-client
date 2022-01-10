@@ -97,7 +97,6 @@ const ExpenseTrackerForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        console.log(rExpenseTrackerForm)
 
 
                         // alert("SUBMITTING")
@@ -108,7 +107,6 @@ const ExpenseTrackerForm = (props) =>{
                         setFetchingNewExpenseTracker(true);
                         saveExpenseTracker(reqBody)
                             .then(async (response)=>{
-                                console.log(response)
                                 if(response.ok){
                                     toggleModal();
                                     handleNewExpenseTrackerResponse(response, "New expense-tracker was successfully created!")
@@ -160,7 +158,6 @@ const ExpenseTrackerForm = (props) =>{
                                         name="name"
                                         placeholder="Enter name"
                                         onChange={(e,event)=>{
-                                            console.log(e.target.value);
                                             setFieldValue('name', e.target.value);
                                             dispatch(setExpenseTrackerName({mainCategoryName:values.name}))
                                             return  handleChange("name")

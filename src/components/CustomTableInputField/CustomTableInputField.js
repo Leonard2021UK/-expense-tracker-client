@@ -8,12 +8,18 @@ export default function CustomTableInputField (props) {
         id,
         name,
         type,
+        touched,
+        errors,
         placeholder,
         defaultValue,
+        handleChange,
         index,
         handleInputFiledOnBlur,
         disable
     } = props;
+
+    console.log("FORMIK ERROR VALUES IN CUSTOMTABLE INPUT : ", errors)
+    console.log("DEFAULT VALUE IN CUSTOMTABLEINPUTFIELD : ", defaultValue)
 
     const [inputField,setInputField] = useState({});
 
@@ -42,15 +48,22 @@ export default function CustomTableInputField (props) {
 
 
     return (
-        <Form.Control
-            id={id}
-            type={type}
-            name={name}
-            placeholder={placeholder}
-            onBlur={(e) =>onBlur(e,index)}
-            disabled={disable}
-            defaultValue={_.isEmpty(defaultValue) ? [] : defaultValue}
-        />
+      <>
+          <Form.Control
+              id={id}
+              type={type}
+              name={name}
+              placeholder={placeholder}
+              onBlur={(e) =>onBlur(e,index)}
+              disabled={disable}
+              defaultValue={_.isUndefined(defaultValue) ? "" : defaultValue}
+              onChange={handleChange}
+              className={(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched[name] && errors[name] ? "error" : null}
+          />
+          {(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched[name] && errors[name] ? (
+              <div className="error-message">{errors[name] }</div>
+          ): null}
+      </>
     )
 
 }

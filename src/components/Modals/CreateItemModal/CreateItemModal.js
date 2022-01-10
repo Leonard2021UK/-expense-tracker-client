@@ -3,10 +3,11 @@ import {Col, Container, Modal, Row, ToastContainer} from "react-bootstrap";
 import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 import ExpenseTrackerForm from "../../Forms/ExpenseTrackerForm/ExpenseTrackerForm";
 import {useDispatch, useSelector} from "react-redux";
+import ItemForm from "../../Forms/ItemForm/ItemForm";
 
 function CreateItemModal(props){
 
-    const{show,toggleModal} = props;
+    const{show,toggleModal,setNewRowData,rTableData} = props;
 
 
     return(
@@ -25,7 +26,7 @@ function CreateItemModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <h1>hhhhh</h1>
+                            <ItemForm rTableData={rTableData} setNewRowData={setNewRowData} toggleModal={toggleModal}/>
 
                         </Col>
                     </Row>

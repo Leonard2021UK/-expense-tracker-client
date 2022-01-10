@@ -22,7 +22,7 @@ import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
-import {setItemCategory, setItemName, setUnit} from "../../../redux/features/domain/forms/itemFormSlice";
+import {setItemCategory, setitem, setUnitType} from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {itemThunk} from "../../../redux/features/domain/itemSlice";
 
@@ -62,7 +62,7 @@ const ItemForm = (props) =>{
     useEffect(()=>{
         dispatch(setItemCategory({"itemCategory":savedNewCategory}))
 
-        dispatch(setUnit({"unit":savedNewUnit}))
+        dispatch(setUnitType({"unitType":savedNewUnit}))
 
     },[savedNewCategory,savedNewUnit])
 
@@ -127,7 +127,7 @@ const ItemForm = (props) =>{
             .min(categoryMinLength,"Category must be at least " + categoryMinLength + " character")
             .max(50, "Category must be less than 50 characters")
             .required("Category doesn't exists! Change or create as new!"),
-        unit: Yup.string()
+        unitType: Yup.string()
             .min(unitMinLength,"Unit must be at least " + unitMinLength + " character")
             .max(50, "Unit must be less than 50 characters")
             .required("Unit doesn't exists! Change or create as new!"),
@@ -154,12 +154,11 @@ const ItemForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        console.log(rItemForm)
 
 
                         // alert("SUBMITTING")
                         const reqBody = {
-                            "name":rItemForm.itemName,
+                            "name":rItemForm.item,
                             "amount":rItemForm.amount,
                             "unitPrice":rItemForm.unitPrice,
                             "unitType":rItemForm.unitType[0].id,
@@ -168,7 +167,6 @@ const ItemForm = (props) =>{
                         setFetchingNewItem(true);
                         saveItem(reqBody)
                             .then(async (response)=>{
-                                console.log(response)
                                 if(response.ok){
                                     toggleModal();
                                     handleNewItemResponse(response, "New item was successfully created!")
@@ -218,9 +216,8 @@ const ItemForm = (props) =>{
                                         name="name"
                                         placeholder="Enter name"
                                         onChange={(e,event)=>{
-                                            console.log(e.target.value);
                                             setFieldValue('name', e.target.value);
-                                            dispatch(setItemName({itemName:values.name}))
+                                            dispatch(setItem({item:values.name}))
                                             return  handleChange("name")
                                         }}
                                         onBlur={handleBlur}
@@ -241,7 +238,7 @@ const ItemForm = (props) =>{
                                     <AutoSuggestion
                                         id="unit-type"
                                         suggestionName="unitType"
-                                        reduxReducer={setUnit}
+                                        reduxReducer={setUnitType}
                                         initialValue={savedNewUnit}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -251,12 +248,12 @@ const ItemForm = (props) =>{
                                         setNonExistingOption={setNonExistingUnitOption}
                                         nonExistingCategoryOptionIsValid ={nonExistingUnitOptionIsValid}
                                         suggestionLabels={["name"]}
-                                        className={touched.unit && errors.unit ? "error" : null}
+                                        className={touched.unitType && errors.unitType ? "error" : null}
                                     />
 
 
-                                    {touched.unit && errors.unit ? (
-                                        <div className="error-message ">{errors.unit}</div>
+                                    {touched.unitType && errors.unitType ? (
+                                        <div className="error-message ">{errors.unitType}</div>
                                     ): null}
                                 </Col>
 

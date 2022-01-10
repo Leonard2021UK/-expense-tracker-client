@@ -13,7 +13,6 @@ let suggestionActions = expenseTrackerSuggestionSlice.actions;
 let fetchUrl = process.env.REACT_APP_EXPENSES_TRACKER;
 
 export const expenseTrackerThunk = ()=> async (dispatch,getState) => {
-    console.log("CALLING THUNK GENERATOR")
 
     const prevState = getState();
     await thunkGenerator(expenseTrackerSliceName,suggestionActions,dispatch,prevState,rootTreeName,fetchUrl);

@@ -19,12 +19,11 @@ export function useResponse(setState,reset) {
      * @returns {boolean}
      */
     const handleResponse = async (response,customSuccessMessage = null, customErrorMessage = null )=>{
-        console.log("response in response ", response)
         if (!response.ok ) {
 
             // if(response && response.errorCauses.length > 0){
                 // response.errorCauses.forEach((error)=>{
-
+                        // TODO error handling when server timed out, use debug mode
                     notification(await response.json().message,"error");
                 // })
             // }else{
@@ -60,13 +59,11 @@ export function useResponse(setState,reset) {
         // }
         else{
             if (customSuccessMessage){
-                console.log("SUCCESSSSSSSSSS")
                 notification(customSuccessMessage,"success");
 
             }
             if(setState){
                 let r = await response.json()
-                console.log(r)
                 setState(r)
             }
             //resets form

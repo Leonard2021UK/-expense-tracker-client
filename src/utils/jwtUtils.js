@@ -16,7 +16,5 @@ const parseJwt = (token) =>{
 
 const isTokenExpired = (token) =>{
     const tokenPayload = parseJwt(token);
-    console.log("token payload");
-    console.log(tokenPayload);
 
 }

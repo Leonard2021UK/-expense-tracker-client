@@ -28,19 +28,24 @@ const expenseFormSlice = createSlice({
         },
         setExpenseAddress(state,action) {
             const {expenseAddress} = action.payload;
-            state.formState.expenseAddress = expenseAddress;
+            state.formState.expenseAddress = JSON.parse(expenseAddress);
         },
         setExpensePaymentType(state,action) {
             const {expensePaymentType} = action.payload;
-            state.formState.expensePaymentType = expensePaymentType;
+            state.formState.expensePaymentType = JSON.parse(expensePaymentType);
         },
         setExpenseType(state,action) {
             const {expenseType} = action.payload;
-            state.formState.expenseType = expenseType;
+            state.formState.expenseType = JSON.parse(expenseType);
         },
         setExpenseComment(state,action) {
             const {expenseComment} = action.payload;
             state.formState.expenseComment = expenseComment;
+        },
+        setOwnerExpenseTracker(state,action) {
+            const {expenseTracker} = action.payload;
+            console.log("OWNER EXPENSE TRACKER IN EXPENSE FORMSLICE, ", expenseTracker)
+            state.formState.expenseTracker = expenseTracker;
         },
         clearExpenseForm(state,action){
             state.formState = {};
@@ -49,5 +54,5 @@ const expenseFormSlice = createSlice({
 });
 
 
-export const {setExpenseFormState, setExpenseName, setExpenseEmail, setExpensePhone, setExpenseMobile, setExpenseAddress, setExpensePaymentType, setExpenseType, setExpenseComment, clearExpenseForm} = expenseFormSlice.actions;
+export const {setOwnerExpenseTracker,setExpenseFormState, setExpenseName, setExpenseEmail, setExpensePhone, setExpenseMobile, setExpenseAddress, setExpensePaymentType, setExpenseType, setExpenseComment, clearExpenseForm} = expenseFormSlice.actions;
 export default expenseFormSlice.reducer;

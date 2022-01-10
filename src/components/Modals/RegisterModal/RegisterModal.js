@@ -56,7 +56,6 @@ const RegisterModal = (props) =>{
                             onSubmit={(values, {setSubmitting, resetForm}) => {
                                 // When button submits form and form is in the process of submitting, submit button is disabled
                                 setSubmitting(true);
-                                console.log(values)
                                 UserService.register(values).then((response)=>{
                                     console.log(response)
                                 })

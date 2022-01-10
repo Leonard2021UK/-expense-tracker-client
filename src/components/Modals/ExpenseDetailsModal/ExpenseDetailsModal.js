@@ -7,7 +7,7 @@ import React from "react";
 import ExpenseForm from "../../Forms/ExpenseForm/ExpenseForm";
 
 const ExpenseDetailsModal = (props)=>{
-    const {toggleModal,show,expense,disable} = props;
+    const {toggleModal,show,initialValue,disable,title,ownerExpenseTracker} = props;
     const handleClose = () =>{
         toggleModal();
     }
@@ -21,14 +21,19 @@ const ExpenseDetailsModal = (props)=>{
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Expense details for {expense.name}</Modal.Title>
+                    <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {/*<div style={{width:"80%",margin:"auto"}}>*/}
                     <Container fluid style={{padding:1+"vw"}}>
                         <Row>
                             <Col>
-                                <ExpenseForm initialValue={expense} disable={disable}/>
+                                <ExpenseForm
+                                    initialValue={initialValue}
+                                    disable={disable}
+                                    toggleModal={toggleModal}
+                                    ownerExpenseTracker={ownerExpenseTracker}
+                                />
                             </Col>
                         </Row>
                     </Container>

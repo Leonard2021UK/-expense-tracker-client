@@ -10,9 +10,10 @@ const itemFormSlice = createSlice({
             const {formState} = action.payload;
             state.formState = formState;
         },
-        setItemName(state,action) {
-            const {itemName} = action.payload;
-            state.formState.itemName = itemName;
+        setItem(state,action) {
+            console.log(state.formState)
+            const {item} = action.payload;
+            state.formState.item = item;
         },
         setItemCategory(state,action) {
             const {itemCategory} = action.payload;
@@ -26,9 +27,17 @@ const itemFormSlice = createSlice({
             const {unitPrice} = action.payload;
             state.formState.unitPrice = unitPrice;
         },
-        setUnit(state,action) {
-            const {unit} = action.payload;
-            state.formState.unit = unit;
+        setUnitType(state,action) {
+            const {unitType} = action.payload;
+            state.formState.unitType = unitType;
+        },
+        setPrice(state,action) {
+            const {price} = action.payload;
+            state.formState.price = price;
+        },
+        setRowId(state,action) {
+            const {rowId} = action.payload;
+            state.formState.rowId = rowId;
         },
         clearItemForm(state,action){
             state.formState = {};
@@ -37,5 +46,5 @@ const itemFormSlice = createSlice({
 });
 
 
-export const { setItemFormState,setUnit,setItemName,setUnitPrice, setAmount,setItemCategory,clearItemForm} = itemFormSlice.actions;
+export const {setPrice, setItemFormState,setUnitType,setItem,setUnitPrice, setAmount,setItemCategory,clearItemForm,setRowId} = itemFormSlice.actions;
 export default itemFormSlice.reducer;

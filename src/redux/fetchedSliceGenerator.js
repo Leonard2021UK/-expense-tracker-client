@@ -9,14 +9,13 @@ const fetchedSliceGenerator = (name)=>{
             data:[],
             error:{},
             receivedAt: Date.now(),
-            response:null
+            response:[]
         },
         reducers:{
             [`${name}RequestFetching`]:(state,payload)=>{
                 state.isFetching = payload.payload.data;
             },
             [`${name}InValidate`]:(state,payload)=>{
-                console.log(payload)
                 state.didInvalidate = payload.payload.data;
             },
             [`${name}RequestFail`]:(state,payload)=>{
