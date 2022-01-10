@@ -7,7 +7,7 @@ import ItemForm from "../../Forms/ItemForm/ItemForm";
 
 function CreateItemModal(props){
 
-    const{show,toggleModal,setNewRowData,rTableData} = props;
+    const{show,toggleModal,setNewRowData,rItemTableData} = props;
 
 
     return(
@@ -26,7 +26,7 @@ function CreateItemModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ItemForm rTableData={rTableData} setNewRowData={setNewRowData} toggleModal={toggleModal}/>
+                            <ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal}/>
 
                         </Col>
                     </Row>

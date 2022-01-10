@@ -54,7 +54,7 @@ const ItemForm = (props) =>{
     let nonExistingUnitOptionIsValid = false;
     let nonExistingItemOptionIsValid = false;
 
-    const {disable,rTableData,setNewRowData,itemCategories,unitTypes,toggleModal} = props;
+    const {disable,rItemTableData,setNewRowData,itemCategories,unitTypes,toggleModal} = props;
 
     const [nonExistingUnitOption,setNonExistingUnitOption] = useState('');
     const [nonExistingItemCategoryOption,setNonExistingItemCategoryOption] = useState('');
@@ -113,8 +113,8 @@ const ItemForm = (props) =>{
 
     // if item is used as a table row initialize rowId
     useEffect(() => {
-        if (!_.isUndefined(rTableData)) {
-            dispatch(setRowId({"rowId": rTableData.length}))
+        if (!_.isUndefined(rItemTableData)) {
+            dispatch(setRowId({"rowId": rItemTableData.length}))
         }
     }
     )

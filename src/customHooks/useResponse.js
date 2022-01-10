@@ -25,7 +25,10 @@ export function useResponse(setState,reset) {
             if(response && response.errorCauses.length > 0){
                 response.errorCauses.forEach((error)=>{
                         // TODO error handling when server timed out, use debug mode
-                    notification(response.json().message,"error");
+                    // notification(response.json().message,"error");
+                    notification(error,"error");
+
+
                 })
             }else{
             //     // use custom error message

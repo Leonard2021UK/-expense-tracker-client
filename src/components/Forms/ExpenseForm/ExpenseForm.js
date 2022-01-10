@@ -186,7 +186,7 @@ const ExpenseForm = (props) =>{
 
     return (
         <>
-            <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} setNewRowData={setNewRowData}/>
+            <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} setNewRowData={setNewRowData} rItemTableData={rItemTableData}/>
             <div style={{width:"80%",margin:"auto"}}>
             <Formik
                 initialValues={{
@@ -195,19 +195,19 @@ const ExpenseForm = (props) =>{
                 validationSchema={validationSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     // When button submits form and form is in the process of submitting, submit button is disabled
-                    setSubmitting(true);
+                    // setSubmitting(true);
 
                     console.log("SUBMIT")
 
                     // rExpenseForm["expenseItems"] = "HELLO";
-                    let reqBody = {};
-                    reqBody["expenseForm"] = _.clone(rExpenseForm);
-                    reqBody["expenseForm"]['expenseItems'] = _.clone(rItemTableData)
-                    console.log(reqBody)
-                    // const reqBody = {
-                    //     "expenseForm":rExpenseForm,
-                    //     "items":rItemTableData,
-                    // }
+                    // let reqBody = {};
+                    // reqBody["expenseForm"] = _.clone(rExpenseForm);
+                    // reqBody["expenseForm"]['expenseItems'] = _.clone(rItemTableData)
+                    // console.log(reqBody)
+                    const reqBody = {
+                        "expenseForm":rExpenseForm,
+                        "items":rItemTableData,
+                    }
 
                     setFetchingExpense(true);
                     const method = _.isUndefined(initialValue) ? "PATCH" : "POST"
@@ -215,6 +215,7 @@ const ExpenseForm = (props) =>{
                     saveExpense("POST",reqBody)
                         .then(async (response) =>{
                             console.log("SUBMIT")
+                            console.log(response)
                             if(response.ok){
                                 toggleModal();
                                 handleExpenseResponse(response,"New expense was successfully created!")
