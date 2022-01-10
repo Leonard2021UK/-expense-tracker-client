@@ -19,14 +19,15 @@ export function useResponse(setState,reset) {
      * @returns {boolean}
      */
     const handleResponse = async (response,customSuccessMessage = null, customErrorMessage = null )=>{
+        console.log("RESPONSE IN USE RESPONSE ", response)
         if (!response.ok ) {
 
-            // if(response && response.errorCauses.length > 0){
-                // response.errorCauses.forEach((error)=>{
+            if(response && response.errorCauses.length > 0){
+                response.errorCauses.forEach((error)=>{
                         // TODO error handling when server timed out, use debug mode
-                    notification(await response.json().message,"error");
-                // })
-            // }else{
+                    notification(response.json().message,"error");
+                })
+            }else{
             //     // use custom error message
             //     if (customErrorMessage){
             //         notification(customErrorMessage,"error");
@@ -39,7 +40,7 @@ export function useResponse(setState,reset) {
             //
             //         }
             //
-            //     }
+                }
 
             }
             // error

@@ -197,10 +197,18 @@ const ExpenseForm = (props) =>{
                     // When button submits form and form is in the process of submitting, submit button is disabled
                     setSubmitting(true);
 
-                    const reqBody = {
-                        "expenseForm":rExpenseForm,
-                        "items":rItemTableData,
-                    }
+                    console.log("SUBMIT")
+
+                    // rExpenseForm["expenseItems"] = "HELLO";
+                    let reqBody = {};
+                    reqBody["expenseForm"] = _.clone(rExpenseForm);
+                    reqBody["expenseForm"]['expenseItems'] = _.clone(rItemTableData)
+                    console.log(reqBody)
+                    // const reqBody = {
+                    //     "expenseForm":rExpenseForm,
+                    //     "items":rItemTableData,
+                    // }
+
                     setFetchingExpense(true);
                     const method = _.isUndefined(initialValue) ? "PATCH" : "POST"
 

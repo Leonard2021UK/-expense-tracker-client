@@ -128,16 +128,16 @@ const AutoSuggestion = (props) => {
 
                         if(_.isUndefined(reduxReducer)){
                             // updates the ItemForm state
-                            updateCurrentRowItemFormState(e,selectedItem)
+                            updateCurrentRowItemFormState(e,selectedItem[0])
                         }else{
-                            dispatch(reduxReducer({[suggestionName]:selectedItem}))
+                            dispatch(reduxReducer({[suggestionName]:selectedItem[0]}))
                         }
 
                     }
                     //if reduxReducer is not present store the fields state somewhere else
                     if(_.isUndefined(reduxReducer)){
                     }else{
-                        dispatch(reduxReducer({[suggestionName]:selectedItem}))
+                        dispatch(reduxReducer({[suggestionName]:selectedItem[0]}))
                     }
                     // informs formik about the field change
                     setFieldTouched(suggestionName,true)
