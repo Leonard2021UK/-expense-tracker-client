@@ -22,13 +22,14 @@ export function useResponse(setState,reset) {
         console.log("RESPONSE IN USE RESPONSE ", response)
         if (!response.ok ) {
 
-            if(response && response.errorCauses.length > 0){
+            if (_.isUndefined(response.errorCauses)){
+                notification(response.json(),"error");
+
+            }else if(response && response.errorCauses.length > 0){
                 response.errorCauses.forEach((error)=>{
                         // TODO error handling when server timed out, use debug mode
                     // notification(response.json().message,"error");
                     notification(error,"error");
-
-
                 })
             }else{
             //     // use custom error message

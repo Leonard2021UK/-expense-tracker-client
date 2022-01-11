@@ -10,12 +10,21 @@ import {
     PURGE,
     REGISTER
 } from "redux-persist";
-import rootReducer from "../reducers/index";
+import appReducer from "../reducers/index";
+
+const rootReducer = (state,action) =>{
+
+    if(action.type === "LOGOUT"){
+       return appReducer(undefined,action)
+    }
+
+    return appReducer(state, action);
+}
 
 const persistConfig = { // configuration object for redux-persist
     key: 'root',
     storage, // define which storage to use
-    blacklist: [] // jobRecordStore will not be persisted
+    blacklist: [] // stores listed will not be persisted
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer); // create a persisted reducer

@@ -7,22 +7,26 @@ function CustomPagination(props) {
 
     const {data,setCurrentPageContent} = props;
     const [currentPage, setCurrentPage] = useState(1)
+    console.log("PAGINATION DATA ", data)
 
     let option = {
-        total: _.isNull(data) ? 10 : data.length,
+        total: (_.isNull(data) || _.isUndefined(data)) ? 10 : data.length,
         pageSize: 10,
         currentPage:currentPage,
         maxNumberOfTiles:16
     }
+    console.log("PAGINATION OPTION ", option)
 
     let paginationRange = usePagination(option);
-
+    console.log("PAGINATION RANGE ", paginationRange)
     const getCurrenPageData = ()=>{
 
         let start, end;
         if(currentPage === 1) {
-
-            return data.slice(currentPage - 1, currentPage - 1 + option.pageSize);
+            if ((!_.isNull(data) && _.isUndefined(data))){
+                return data.slice(currentPage - 1, currentPage - 1 + option.pageSize);
+            }
+            return null;
         }
         else if(currentPage > 1){
 

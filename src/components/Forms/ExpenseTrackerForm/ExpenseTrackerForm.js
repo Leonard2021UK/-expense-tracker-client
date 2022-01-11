@@ -22,7 +22,7 @@ import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
-import {setExpenseTrackerCategory,setExpenseTrackerName,clearExpenseTrackerForm} from "../../../redux/features/domain/expenseTrackerFormSlice";
+import {setExpenseTrackerCategory,setExpenseTrackerName,clearExpenseTrackerForm} from "../../../redux/features/domain/forms/expenseTrackerFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 
 const ExpenseTrackerForm = (props) =>{
@@ -96,15 +96,14 @@ const ExpenseTrackerForm = (props) =>{
                     validationSchema={validationSchema}
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
-                        setSubmitting(true);
+                        // setSubmitting(true);
 
-
-                        // alert("SUBMITTING")
+                        console.log(rExpenseTrackerForm);
                         const reqBody = {
                             "name":rExpenseTrackerForm.mainCategoryName,
-                            "mainCategoryId":rExpenseTrackerForm.mainCategory[0].id
+                            "mainCategory":rExpenseTrackerForm.mainCategory
                         }
-                        setFetchingNewExpenseTracker(true);
+                        // setFetchingNewExpenseTracker(true);
                         saveExpenseTracker(reqBody)
                             .then(async (response)=>{
                                 if(response.ok){

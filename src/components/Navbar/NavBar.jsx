@@ -3,12 +3,15 @@ import UserService from "../../services/UserService";
 import PublicRenderer from "../../utilityComponents/PublicRenderer";
 import AuthRenderer from "../../utilityComponents/AuthRenderer";
 import {useHistory} from "react-router-dom";
-
-
+import storage from 'redux-persist/lib/storage'
+import store from '../../redux/store/index';
 import './navbar.css';
 import {Container} from "react-bootstrap";
+import {useDispatch} from "react-redux";
 const NavBar = (props)=>{
 
+
+    const dispatch = useDispatch();
     let history = useHistory();
 
     const {toggleLoginModal,toggleRegisterModal} = props;
@@ -24,6 +27,10 @@ const NavBar = (props)=>{
     }
 
     const handleLogout = () => {
+        console.log('Initial state: ', store.getState())
+
+        store.dispatch({ type: 'LOGOUT' })
+        storage.removeItem('persist:root')
         UserService.logout(history);
         history.push("/");
     }

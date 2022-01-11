@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-
+import _ from 'lodash'
 const expenseTrackerFormSlice = createSlice({
     name:"expenseTrackerForm",
     initialState:{
@@ -18,7 +18,7 @@ const expenseTrackerFormSlice = createSlice({
         setExpenseTrackerCategory(state,action) {
 
             const {mainCategory} = action.payload;
-            state.formState.mainCategory = mainCategory;
+            state.formState.mainCategory = (_.isArray(mainCategory) ? mainCategory[0] : mainCategory);
         },
         clearExpenseTrackerForm(state,action){
             state.formState = {};

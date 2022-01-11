@@ -11,6 +11,7 @@ import CreateExpenseTrackerModal from "../../components/Modals/CreateExpenseTrac
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
+import {clearExpenseTrackerForm} from "../../redux/features/domain/forms/expenseTrackerFormSlice";
 
 const ExpenseTrackerView = ()=>{
 
@@ -26,6 +27,7 @@ const ExpenseTrackerView = ()=>{
 
     const toggleExpenseTrackerModal = ()=>{
         setExpenseTrackerModalIsOpen(!expenseTrackerModalIsOpen);
+        dispatch(clearExpenseTrackerForm())
     }
 
     return (

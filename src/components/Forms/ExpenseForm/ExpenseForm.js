@@ -17,7 +17,7 @@ import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import RowAction from "../../RowAction/RowAction";
 import TableToolBar from "../../TableToolBars/TableToolBar";
 import CreateItemModal from "../../Modals/CreateItemModal/CreateItemModal";
-import {setExpenseTrackerCategory} from "../../../redux/features/domain/expenseTrackerFormSlice";
+import {setExpenseTrackerCategory} from "../../../redux/features/domain/forms/expenseTrackerFormSlice";
 import {clearItemForm, setItemCategory} from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {useApiService} from "../../../services/useApiService";
@@ -224,7 +224,7 @@ const ExpenseForm = (props) =>{
                                 dispatch(clearExpenseForm())
                                 dispatch(clearItemTableState())
                             }else{
-                                handleNewItemResponse(response, null,"New expense couldn't be created!")
+                                handleExpenseResponse(response, null,"New expense couldn't be created!")
                             }
                             //TODO error handling
                         }).then(()=>{

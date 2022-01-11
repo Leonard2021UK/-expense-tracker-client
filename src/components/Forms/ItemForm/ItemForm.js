@@ -89,27 +89,17 @@ const ItemForm = (props) =>{
 
         if (preventFirstRenderRef.current){
             dispatch(setItemCategory({"itemCategory":savedNewItemCategory}))
-        }
-        preventFirstRenderRef.current = true;
-
-    },[savedNewItemCategory])
-
-    useEffect(()=>{
-
-        if (preventFirstRenderRef.current){
             dispatch(setItem({"item":savedNewItem}))
-        }
-        preventFirstRenderRef.current = true;
-
-    },[savedNewUnit])
-
-    useEffect(()=>{
-        if (preventFirstRenderRef.current){
             dispatch(setUnitType({"unitType":savedNewUnit}))
+
         }
         preventFirstRenderRef.current = true;
 
-    },[savedNewItem])
+    },[savedNewItemCategory,savedNewItem,savedNewUnit])
+
+
+
+
 
     // if item is used as a table row initialize rowId
     useEffect(() => {

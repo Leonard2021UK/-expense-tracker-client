@@ -21,7 +21,7 @@ import ExpenseDetailsModal from "../Modals/ExpenseDetailsModal/ExpenseDetailsMod
 import {clearExpenseForm} from "../../redux/features/domain/forms/expenseFormSlice";
 import {useDispatch} from "react-redux";
 import {clearItemTableState} from "../../redux/features/domain/tables/itemsTableSlice";
-
+import _ from 'lodash';
 const ExpenseTrackerTable = (props) => {
 
     const dispatch = useDispatch();
@@ -97,29 +97,34 @@ const ExpenseTrackerTable = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                {currentPageContent.map((expenseTracker, index) => {
-                    return <>
-                        <tr key={index}>
-                            <th scope="row">{index}</th>
-                            <td>{expenseTracker.name}</td>
-                            <td>{expenseTracker.mainCategory.name}</td>
-                            <td>{expenseTracker.expenses.length}</td>
-                            <td>{expenseTracker.updatedAt}</td>
-                            <td>{expenseTracker.createdAt}</td>
-                            <td>{expenseTracker.createdBy}</td>
-                            <td>
-                                <FontAwesomeIcon icon={faPlusSquare} className="mr-2" color={"red"}
-                                                 style={{margin: 1 + "vh", cursor: "pointer"}}
-                                                 onClick={() => handleCreateExpense(expenseTracker)}/>
-                                <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"}
-                                                 style={{margin: 1 + "vh", cursor: "pointer"}}
-                                                 onClick={() => handleShowExpenses(expenseTracker)}/>
-                                <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"}
-                                                 style={{margin: 1 + "vh", cursor: "pointer"}}/>
-                            </td>
-                        </tr>
-                    </>
-                })}
+                {
+                    (!_.isNull(currentPageContent)) ?
+
+                    currentPageContent.map((expenseTracker, index) => {
+                        console.log(expenseTracker)
+                        return <>
+                            <tr key={index}>
+                                <th scope="row">{index}</th>
+                                <td>{expenseTracker.name}</td>
+                                <td>{expenseTracker.mainCategory.name}</td>
+                                <td>{expenseTracker.expenses.length}</td>
+                                <td>{expenseTracker.updatedAt}</td>
+                                <td>{expenseTracker.createdAt}</td>
+                                <td>{expenseTracker.createdBy}</td>
+                                <td>
+                                    <FontAwesomeIcon icon={faPlusSquare} className="mr-2" color={"red"}
+                                                     style={{margin: 1 + "vh", cursor: "pointer"}}
+                                                     onClick={() => handleCreateExpense(expenseTracker)}/>
+                                    <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"}
+                                                     style={{margin: 1 + "vh", cursor: "pointer"}}
+                                                     onClick={() => handleShowExpenses(expenseTracker)}/>
+                                    <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"}
+                                                     style={{margin: 1 + "vh", cursor: "pointer"}}/>
+                                </td>
+                            </tr>
+                        </>
+                }) : null
+                }
                 </tbody>
             </table>
             <CustomPagination data={rExpenseTrackers} setCurrentPageContent={setCurrentPageContent}/>

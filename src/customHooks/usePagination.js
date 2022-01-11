@@ -25,9 +25,10 @@ export const usePagination = (
     return useMemo(() => {
         // represents the gap in the array
         const GAP = "GAP"
-
+        let totalPageCount = 1;
         // total number of pages
-        const totalPageCount = Math.ceil(total / pageSize);
+        totalPageCount = Math.ceil(total / pageSize);
+
 
         // size of the left and right size of the gap
         const sideSize = Math.floor(maxNumberOfTiles/2);
