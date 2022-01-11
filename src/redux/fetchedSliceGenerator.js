@@ -19,8 +19,8 @@ const fetchedSliceGenerator = (name)=>{
                 state.didInvalidate = payload.payload.data;
             },
             [`${name}RequestFail`]:(state,payload)=>{
-                state.error = payload.payload.data.data;
-                state.response = payload.payload.data;
+                state.error = payload.payload.data;
+                // state.response = payload.payload.data;
                 state.isFetching = false;
                 state.receivedAt = Date.now();
             },

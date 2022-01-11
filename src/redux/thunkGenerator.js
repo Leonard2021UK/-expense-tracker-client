@@ -53,7 +53,7 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
             } else {
                 const data = await response.json();
                 dispatch(actions[`${sliceName}RequestFail`]({data: data}));
-                dispatch(actions[`${sliceName}InValidate`]({data: true}));
+                // dispatch(actions[`${sliceName}InValidate`]({data: true}));
             }
             //End fetch
             dispatch(actions[`${sliceName}RequestFetching`]({data: false}));
