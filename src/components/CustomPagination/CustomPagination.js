@@ -24,7 +24,7 @@ function CustomPagination(props) {
         let start, end;
         // if we are on the first page
         if(currentPage === 1) {
-            if ((!_.isNull(data) && _.isUndefined(data))){
+            if ((!_.isNull(data) || _.isUndefined(data))){
                 return data.slice(currentPage - 1, currentPage - 1 + option.pageSize);
             }
             return null;
