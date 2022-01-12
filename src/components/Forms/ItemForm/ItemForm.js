@@ -30,7 +30,7 @@ import {
     setUnitType, setUnitPrice
 } from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
-import {itemThunk} from "../../../redux/features/domain/itemSlice";
+import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
 import TableAutoSuggestion from "../../TableAutoSuggestion/TableAutoSuggestion";
 import CustomTableInputField from "../../CustomTableInputField/CustomTableInputField";
 import {addRow, updateSelectedRow} from "../../../redux/features/domain/tables/itemsTableSlice";

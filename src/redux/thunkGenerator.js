@@ -17,7 +17,8 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
     //validates two level deep in the redux store
     const requestedReduxSliceIsValid = (((prevState || {})[`${reduxRootDirName}`] || {})[`${sliceName}`] || {}).didInvalidate;
 
-
+    console.log("requestedReduxFieldIsValid ", requestedReduxFieldIsValid)
+    console.log("requestedReduxSliceIsValid ", requestedReduxSliceIsValid)
 
     // if (prevState && ((prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`].didInvalidate) || (prevState[`${reduxRootDirName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`] && prevState[`${reduxRootDirName}`][`${sliceName}`].didInvalidate)))
         if (requestedReduxFieldIsValid || requestedReduxSliceIsValid)

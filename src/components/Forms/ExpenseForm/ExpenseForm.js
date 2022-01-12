@@ -35,7 +35,7 @@ import {expenseTrackersInValidate, expenseTrackerThunk} from "../../../redux/fea
 
 const ExpenseForm = (props) =>{
 
-    const {initialValue,ownerExpenseTracker,disable,toggleModal} = props;
+    const {initialValue,ownerExpenseTracker,disable,toggleModal,update} = props;
     console.log("INITIAL VALUE IN EXPENSE FORM: ",initialValue)
 
     const dispatch = useDispatch();
@@ -210,9 +210,9 @@ const ExpenseForm = (props) =>{
                     }
 
                     setFetchingExpense(true);
-                    const method = _.isUndefined(initialValue) ? "PATCH" : "POST"
+                    const method = (update) ? "PATCH" : "POST"
 
-                    saveExpense("POST",reqBody)
+                    saveExpense(method,reqBody)
                         .then(async (response) =>{
                             console.log("SUBMIT")
                             console.log(response)
@@ -445,7 +445,7 @@ const ExpenseForm = (props) =>{
                                             {
                                                 (!disable) ?
                                                     <Col md={1}>
-                                                        <Button variant="primary" type="submit" disabled={isSubmitting}>Submit</Button>
+                                                        <Button variant="primary" type="submit" disabled={isSubmitting}>{(update ? "Update" : "Submit")}</Button>
                                                     </Col> : null
                                             }
 

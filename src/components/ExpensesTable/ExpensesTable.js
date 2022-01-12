@@ -19,6 +19,7 @@ const ExpensesTable = (props)=>{
 
     const [selectedExpense, setSelectedExpense] = useState({});
     const [disable, setDisable] = useState(true);
+    const [update, setUpdate] = useState(false);
     const [currentPageContent, setCurrentPageContent] = useState([]);
     const [createExpenseModalIsOpen, setCreateExpenseModalIsOpen] = useState(false);
 
@@ -26,6 +27,7 @@ const ExpensesTable = (props)=>{
         setExpenseDetailsModalIsOpen(!expenseDetailsModalIsOpen);
             dispatch(clearExpenseForm())
             dispatch(clearItemTableState())
+            setUpdate(false)
 
         // when we close the modal set form fields to disabled
         // if(!expenseDetailsModalIsOpen)
@@ -45,11 +47,13 @@ const ExpensesTable = (props)=>{
     }
 
     const handleUpdateExpenseDetails = (expense)=>{
+        console.log("SELECTED EXPENSE IN EXPENSE TABLE ", expense)
         setSelectedExpense(expense)
         dispatch(clearExpenseForm())
         dispatch(clearItemTableState())
         toggleExpenseDetailsModal();
         setDisable(false)
+        setUpdate(true)
     }
 
 
@@ -65,6 +69,7 @@ const ExpensesTable = (props)=>{
                 toggleModal={toggleExpenseDetailsModal}
                 disable={disable}
                 title={"Expense details for" + selectedExpense.name}
+                update={update}
             />
 
 
