@@ -26,14 +26,13 @@ import {
     setAmount,
     setItemCategory,
     setItemFormState,
-    setItem, setPrice, setRowId,
-    setUnitType, setUnitPrice
+    setItem, setPrice, setUnitType, setUnitPrice
 } from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
 import TableAutoSuggestion from "../../TableAutoSuggestion/TableAutoSuggestion";
 import CustomTableInputField from "../../CustomTableInputField/CustomTableInputField";
-import {addRow, updateSelectedRow} from "../../../redux/features/domain/tables/itemsTableSlice";
+import {addRow,setRowId, updateSelectedRow} from "../../../redux/features/domain/tables/itemsTableSlice";
 import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
 
 const ItemForm = (props) =>{

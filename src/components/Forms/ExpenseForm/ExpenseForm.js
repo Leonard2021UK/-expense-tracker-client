@@ -102,10 +102,11 @@ const ExpenseForm = (props) =>{
         console.log("ownerExpenseTracker VALUE IN EXPENSE FORM: ",ownerExpenseTracker)
 
         // when ownerExpenseTracker is present and no initial value was provided then initialize the form owner with the ownerExpenseTracker data
-        if(!_.isUndefined(ownerExpenseTracker && _.isUndefined(initialValue)) ){
+        if(!_.isUndefined(ownerExpenseTracker) && _.isUndefined(initialValue) ){
             dispatch(setOwnerExpenseTracker({expenseTracker:ownerExpenseTracker}))
         }else {
             dispatch(setExpenseFormState({formState:initialValue}))
+            dispatch(setItemTableState({tableState:initialValue.expenseItems}))
         }
 
     },[])

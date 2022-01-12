@@ -2,19 +2,19 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const itemsTableSlice = createSlice({
     name:"itemsTable",
-    initialState:{
-        tableState: [
-            // {
+    initialState:
+         [
+            {
             //     "unitType": "",
             //     "itemCategory": "",
-            //     "rowId":0,
+                "id":0,
             //     "item":"",
             //     "amount":"",
             //     "unitPrice":"",
             //     "price":""
-            // }
+            }
         ]
-    },
+    ,
     reducers:{
         setItemTableState(state,action) {
             const {tableState} = action.payload;
@@ -26,11 +26,15 @@ const itemsTableSlice = createSlice({
         },
         updateSelectedRow(state,action){
             const {rowId,fieldName,value} = action.payload;
-            state.tableState = state.tableState.map(row => row.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
+            state.tableState = state.tableState.map(row => row.id.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
         },
         removeRow(state,action){
             const lastRow = state.tableState[state.tableState.length-1];
             state.tableState = state.tableState.filter(existingRow => existingRow !== lastRow);
+        },
+        setRowId(state,action) {
+            const {rowId} = action.payload;
+            // state.tableState.id = {rowId:rowId};
         },
         removeSelectedRow(state,action){
             //prevent delete the last line in the table
@@ -48,5 +52,5 @@ const itemsTableSlice = createSlice({
 });
 
 
-export const { setItemTableState,addRow,updateSelectedRow,removeRow,removeSelectedRow,clearItemTableState} = itemsTableSlice.actions;
+export const { setItemTableState,setRowId,addRow,updateSelectedRow,removeRow,removeSelectedRow,clearItemTableState} = itemsTableSlice.actions;
 export default itemsTableSlice.reducer;

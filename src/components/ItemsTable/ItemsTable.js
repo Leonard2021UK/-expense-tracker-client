@@ -94,7 +94,6 @@ function ItemsTable(props) {
                         id:"id12",
                         accessor: 'item',
                         Cell:({row: {index}})=>{
-
                             return(
                                 <Col lg={12}>
                                     <TableAutoSuggestion

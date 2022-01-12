@@ -60,9 +60,6 @@ const ExpenseTrackerTable = (props) => {
         setDisabledFields(true)
     }
 
-    console.log(rExpenseTrackers)
-    console.log(currentPageContent)
-
     return (
         <>
             <ExpenseListModal show={expensesModalIsOpen} currentExpenseTracker={currentExpenseTracker} toggleModal={toggleExpenseListModal}/>
