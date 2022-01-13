@@ -32,7 +32,7 @@ import {useResponse} from "../../../customHooks/useResponse";
 import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
 import TableAutoSuggestion from "../../TableAutoSuggestion/TableAutoSuggestion";
 import CustomTableInputField from "../../CustomTableInputField/CustomTableInputField";
-import {addRow,setRowId, updateSelectedRow} from "../../../redux/features/domain/tables/itemsTableSlice";
+import {addRow,setRowId, updateSelectedRow} from "../../../redux/features/domain/forms/expenseFormSlice";
 import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
 
 const ItemForm = (props) =>{
@@ -105,8 +105,7 @@ const ItemForm = (props) =>{
         if (!_.isUndefined(rItemTableData)) {
             dispatch(setRowId({"rowId": rItemTableData.length}))
         }
-    }
-    )
+    },[rItemTableData.expenseItems])
     //
     const handleCreateNewCategory = ()=>{
         const reqBody = {
@@ -270,6 +269,7 @@ const ItemForm = (props) =>{
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
                         alert("SUBMITTING")
+                        console.log(rItemForm)
                         dispatch(addRow({
                             row:rItemForm
                         }))

@@ -7,9 +7,9 @@ import TableToolBar from "../TableToolBars/TableToolBar";
 import CustomPagination from "../CustomPagination/CustomPagination";
 import CreateExpenseModal from "../Modals/CreateExpenseModal/CreateExpenseModal";
 import {clearItemForm} from "../../redux/features/domain/forms/itemFormSlice";
-import {clearExpenseForm} from "../../redux/features/domain/forms/expenseFormSlice";
+import {clearExpenseForm,clearItemTableState} from "../../redux/features/domain/forms/expenseFormSlice";
 import {useDispatch} from "react-redux";
-import {clearItemTableState} from "../../redux/features/domain/tables/itemsTableSlice";
+// import {clearItemTableState} from "../../redux/features/domain/tables/itemsTableSlice";
 
 const ExpensesTable = (props)=>{
     const dispatch = useDispatch();

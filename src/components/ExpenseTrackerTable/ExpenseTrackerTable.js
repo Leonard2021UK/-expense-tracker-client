@@ -18,9 +18,8 @@ import TableToolBar from "../TableToolBars/TableToolBar";
 import CustomPagination from "../CustomPagination/CustomPagination";
 import CreateExpenseModal from "../Modals/CreateExpenseModal/CreateExpenseModal";
 import ExpenseDetailsModal from "../Modals/ExpenseDetailsModal/ExpenseDetailsModal";
-import {clearExpenseForm} from "../../redux/features/domain/forms/expenseFormSlice";
 import {useDispatch} from "react-redux";
-import {clearItemTableState} from "../../redux/features/domain/tables/itemsTableSlice";
+import {clearItemTableState,clearExpenseForm} from "../../redux/features/domain/forms/expenseFormSlice";
 import _ from 'lodash';
 const ExpenseTrackerTable = (props) => {
 

@@ -28,7 +28,7 @@ import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice
 import {expenseAddressThunk} from "../../../redux/features/suggestions/expenseAddressSuggestionSlice";
 import {expensePaymentTypeThunk} from "../../../redux/features/suggestions/expensePaymentTypeSuggestionSlice";
 import {expenseTypeThunk} from "../../../redux/features/suggestions/expenseTypeSuggestionSlice";
-import {setItemTableState,addRow,removeRow,removeSelectedRow,clearItemTableState} from "../../../redux/features/domain/tables/itemsTableSlice";
+import {setItemTableState,addRow,removeRow,removeSelectedRow,clearItemTableState} from "../../../redux/features/domain/forms/expenseFormSlice";
 import {setOwnerExpenseTracker,setExpenseFormState, setExpenseName, setExpenseEmail, setExpensePhone, setExpenseMobile, setExpenseAddress, setExpensePaymentType, setExpenseType, setExpenseComment, clearExpenseForm} from "../../../redux/features/domain/forms/expenseFormSlice";
 import {expenseTrackersInValidate, expenseTrackerThunk} from "../../../redux/features/domain/expenseTrackerSlice";
 
@@ -76,8 +76,8 @@ const ExpenseForm = (props) =>{
     const {saveExpense,getAllItemCategories,getAllUnitTypes,getAllItems,saveItem} = useApiService();
 
     const rItemForm = useSelector((state) => state.itemForm.formState)
-    const rItemTableData = useSelector((state) => state.itemsTable.tableState)
-    const rExpenseForm = useSelector((state) => state.expenseForm.formState);
+    const rItemTableData = useSelector((state) => state.itemsTable)
+    const rExpenseForm = useSelector((state) => state.expenseForm);
 
     const rExpenseAddresses = useSelector((state) => state.suggestions.expenseAddress.response);
     const rExpensePaymentType= useSelector((state) => state.suggestions.expensePaymentType.response);
@@ -105,8 +105,10 @@ const ExpenseForm = (props) =>{
         if(!_.isUndefined(ownerExpenseTracker) && _.isUndefined(initialValue) ){
             dispatch(setOwnerExpenseTracker({expenseTracker:ownerExpenseTracker}))
         }else {
+            console.log("INITIAL VALUE IN EXPENSE FORM", initialValue)
+
             dispatch(setExpenseFormState({formState:initialValue}))
-            dispatch(setItemTableState({tableState:initialValue.expenseItems}))
+            // dispatch(setItemTableState({tableState:initialValue.expenseItems}))
         }
 
     },[])
@@ -115,7 +117,7 @@ const ExpenseForm = (props) =>{
 
     }
 
-    console.log("rITEM TABLE DATA VALUE IN EXPENSEFORM ", rItemTableData)
+    console.log("rExpenseForm DATA VALUE IN EXPENSEFORM ", rExpenseForm)
     const addTableRow = ()=>{
 
         setCreateItemModalIsOpen(true)
@@ -187,7 +189,7 @@ const ExpenseForm = (props) =>{
 
     return (
         <>
-            <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} setNewRowData={setNewRowData} rItemTableData={rItemTableData}/>
+            <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} setNewRowData={setNewRowData} rItemTableData={rExpenseForm.expenseItems}/>
             <div style={{width:"80%",margin:"auto"}}>
             <Formik
                 initialValues={{
@@ -412,7 +414,7 @@ const ExpenseForm = (props) =>{
                                                 <TableToolBar clear= {clearTable} add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal} disable={disable}/>
                                                 <Row>
                                                     <ItemsTable
-                                                        data={_.isUndefined(initialValue) ? rItemTableData : initialValue.expenseItems}
+                                                        data={_.isUndefined(initialValue) ? rExpenseForm.expenseItems : initialValue.expenseItems}
                                                         errors={errors}
                                                         formikValues={values}
                                                         disable={disable}
