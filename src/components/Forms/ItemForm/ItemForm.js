@@ -26,13 +26,18 @@ import {
     setAmount,
     setItemCategory,
     setItemFormState,
+    clearItemForm,
     setItem, setPrice, setUnitType, setUnitPrice
 } from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
 import TableAutoSuggestion from "../../TableAutoSuggestion/TableAutoSuggestion";
 import CustomTableInputField from "../../CustomTableInputField/CustomTableInputField";
-import {addRow,setRowId, updateSelectedRow} from "../../../redux/features/domain/forms/expenseFormSlice";
+import {
+    addRow,
+    setRowId,
+    updateSelectedRow
+} from "../../../redux/features/domain/forms/expenseFormSlice";
 import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
 
 const ItemForm = (props) =>{
@@ -270,9 +275,14 @@ const ItemForm = (props) =>{
                         setSubmitting(true);
                         alert("SUBMITTING")
                         console.log(rItemTableData.length)
+
+                        // dispatch(setRowId({"rowId": rItemTableData.length}))
+
                         dispatch(addRow({
                             row:rItemForm,rowId:rItemTableData.length
                         }))
+
+                        // dispatch(clearItemForm())
                         // const reqBody = {
                         //     "name":rItemForm.item,
                         //     "amount":rItemForm.amount,
