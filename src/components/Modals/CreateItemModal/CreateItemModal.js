@@ -26,7 +26,7 @@ function CreateItemModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal}/>
+                            <ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal} />
 
                         </Col>
                     </Row>

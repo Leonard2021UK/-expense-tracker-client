@@ -7,7 +7,7 @@ const itemsTableSlice = createSlice({
             {
             //     "unitType": "",
             //     "itemCategory": "",
-                "id":0,
+                "id":-1,
             //     "item":"",
             //     "amount":"",
             //     "unitPrice":"",

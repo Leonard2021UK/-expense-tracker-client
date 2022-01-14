@@ -95,8 +95,9 @@ const expenseFormSlice = createSlice({
             state.expenseItems = tableState;
         },
         addRow(state,action){
-            const {row} = action.payload;
-            state.expenseItems = [...state.expenseItems,row]
+            const {row,rowId} = action.payload;
+            console.log(row,rowId)
+            state.expenseItems[rowId-1] = [...state.expenseItems[rowId-1],row]
         },
         updateSelectedRow(state,action){
             const {rowId,fieldName,value} = action.payload;

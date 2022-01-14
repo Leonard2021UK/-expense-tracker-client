@@ -269,9 +269,9 @@ const ItemForm = (props) =>{
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
                         alert("SUBMITTING")
-                        console.log(rItemForm)
+                        console.log(rItemTableData.length)
                         dispatch(addRow({
-                            row:rItemForm
+                            row:rItemForm,rowId:rItemTableData.length
                         }))
                         // const reqBody = {
                         //     "name":rItemForm.item,
@@ -307,7 +307,7 @@ const ItemForm = (props) =>{
                         // resetForm();
 
                         // Sets setSubmitting to false after form is reset
-                        // setSubmitting(false);
+                        setSubmitting(false);
                     }}
                 >
                     {(
