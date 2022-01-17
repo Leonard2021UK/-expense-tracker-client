@@ -23,7 +23,10 @@ export function useResponse(setState,reset) {
         if (!response.ok ) {
 
             if (_.isUndefined(response.errorCauses)){
-                notification(response.json(),"error");
+                let parsedResponse = await response.json();
+                console.log("PARSED RESPONSE IN USE RESPONSE ", parsedResponse)
+
+                notification(parsedResponse[0].message,"error");
 
             }else if(response && response.errorCauses.length > 0){
                 response.errorCauses.forEach((error)=>{

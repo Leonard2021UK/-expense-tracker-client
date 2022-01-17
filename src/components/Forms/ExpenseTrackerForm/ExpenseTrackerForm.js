@@ -156,12 +156,12 @@ const ExpenseTrackerForm = (props) =>{
                                         type="text"
                                         name="name"
                                         placeholder="Enter name"
-                                        onChange={(e,event)=>{
+                                        onChange={handleChange}
+                                        onBlur={(e,event)=>{
                                             setFieldValue('name', e.target.value);
                                             dispatch(setExpenseTrackerName({mainCategoryName:values.name}))
                                             return  handleChange("name")
                                         }}
-                                        onBlur={handleBlur}
                                         value={values.name}
                                         disabled={disable}
                                         className={touched.name && errors.name ? "error" : null}
