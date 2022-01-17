@@ -25,9 +25,9 @@ const ExpensesTable = (props)=>{
 
     const toggleExpenseDetailsModal = ()=>{
         setExpenseDetailsModalIsOpen(!expenseDetailsModalIsOpen);
-            dispatch(clearExpenseForm())
-            dispatch(clearItemTableState())
-            setUpdate(false)
+        dispatch(clearExpenseForm())
+        dispatch(clearItemTableState())
+        setUpdate(false)
 
         // when we close the modal set form fields to disabled
         // if(!expenseDetailsModalIsOpen)
@@ -65,6 +65,7 @@ const ExpensesTable = (props)=>{
             {/*</div>*/}
             <ExpenseDetailsModal
                 show={expenseDetailsModalIsOpen}
+                ownerExpenseTracker={currentExpenseTracker}
                 initialValue={selectedExpense}
                 toggleModal={toggleExpenseDetailsModal}
                 disable={disable}

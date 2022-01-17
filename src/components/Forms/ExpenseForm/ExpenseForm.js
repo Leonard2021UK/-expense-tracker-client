@@ -77,7 +77,7 @@ const ExpenseForm = (props) =>{
 
     const rItemForm = useSelector((state) => state.itemForm.formState)
     const rItemTableData = useSelector((state) => state.itemsTable)
-    const rExpenseForm = useSelector((state) => state.expenseForm);
+    const rExpenseForm = useSelector((state) => state.expenseForm.formState);
 
     const rExpenseAddresses = useSelector((state) => state.suggestions.expenseAddress.response);
     const rExpensePaymentType= useSelector((state) => state.suggestions.expensePaymentType.response);
@@ -102,14 +102,17 @@ const ExpenseForm = (props) =>{
         console.log("ownerExpenseTracker VALUE IN EXPENSE FORM: ",ownerExpenseTracker)
 
         // when ownerExpenseTracker is present and no initial value was provided then initialize the form owner with the ownerExpenseTracker data
-        if(!_.isUndefined(ownerExpenseTracker) && _.isUndefined(initialValue) ){
-            dispatch(setOwnerExpenseTracker({expenseTracker:ownerExpenseTracker}))
-        }else {
+        // if(!_.isUndefined(ownerExpenseTracker) && _.isUndefined(initialValue) ){
+        //     dispatch(setOwnerExpenseTracker({expenseTracker:ownerExpenseTracker}))
+        // }else {
             console.log("INITIAL VALUE IN EXPENSE FORM", initialValue)
+            console.log("SETTING EXPENSE FORM")
 
             dispatch(setExpenseFormState({formState:initialValue}))
+            dispatch(setOwnerExpenseTracker({expenseTracker:ownerExpenseTracker}))
+
             // dispatch(setItemTableState({tableState:initialValue.expenseItems}))
-        }
+        // }
 
     },[])
 

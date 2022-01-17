@@ -2,80 +2,84 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const expenseFormSlice = createSlice({
     name:"expenseForm",
-    initialState:{
-        id:"",
-        expenseAddress: null,
-        expenseComment: null,
-        expenseEmail: null,
-        expenseItems: [],
-        expenseMobile: null,
-        expenseName: "",
-        expensePaymentType: null,
-        expensePhone: null,
-        expenseTracker: null,
-        expenseType: null,
-        createdAt: null,
-        createdBy: null,
-    },
+    initialState:
+        {
+            formState:{
+                id:"",
+                expenseAddress: null,
+                expenseComment: null,
+                expenseEmail: null,
+                expenseItems: [],
+                expenseMobile: null,
+                expenseName: "",
+                expensePaymentType: null,
+                expensePhone: null,
+                expenseTracker: null,
+                expenseType: null,
+                createdAt: null,
+                createdBy: null,
+            }
+        },
     reducers:{
         setExpenseFormState(state,action) {
             const {formState} = action.payload;
             console.log(formState)
-            state = {
-                id:formState.id,
-                expenseAddress: formState.expenseAddress,
-                expenseComment: formState.expenseComment,
-                expenseEmail: formState.expenseEmail,
-                expenseItems: [],
-                expenseMobile: formState.expenseMobile,
-                expenseName: formState.expenseName,
-                expensePaymentType: formState.expensePaymentType,
-                expensePhone: formState.expensePhone,
-                expenseType: formState.expenseType,
-                createdAt: formState.createdAt,
-                createdBy: formState.createdBy
-            }
-            state = formState;
+            // let prevState = {...state.formState.formState};
+            // // state = {
+            // prevState.id = formState.id;
+            // prevState.expenseAddress = formState.expenseAddress;
+            // prevState.expenseComment = formState.expenseComment;
+            // prevState.expenseEmail = formState.expenseEmail;
+            // prevState.expenseItems = [];
+            // prevState.expenseMobile = formState.expenseMobile;
+            // prevState.expenseName = formState.expenseName;
+            // prevState.expensePaymentType = formState.expensePaymentType;
+            // prevState.expensePhone = formState.expensePhone;
+            // prevState.expenseType = formState.expenseType;
+            // prevState.createdAt = formState.createdAt;
+            // prevState.createdBy = formState.createdBy;
+            // }
+            state.formState = {...formState};
         },
         setExpenseName(state,action) {
             const {expenseName} = action.payload;
-            state.expenseName = expenseName;
+            state.formState.expenseName = expenseName;
         },
         setExpenseEmail(state,action) {
             const {expenseEmail} = action.payload;
-            state.expenseEmail = expenseEmail;
+            state.formState.expenseEmail = expenseEmail;
         },
         setExpensePhone(state,action) {
             const {expensePhone} = action.payload;
-            state.expensePhone = expensePhone;
+            state.formState.expensePhone = expensePhone;
         },
         setExpenseMobile(state,action) {
             const {expenseMobile} = action.payload;
-            state.expenseMobile = expenseMobile;
+            state.formState.expenseMobile = expenseMobile;
         },
         setExpenseAddress(state,action) {
             const {expenseAddress} = action.payload;
-            state.expenseAddress = JSON.parse(expenseAddress);
+            state.formState.expenseAddress = JSON.parse(expenseAddress);
         },
         setExpensePaymentType(state,action) {
             const {expensePaymentType} = action.payload;
-            state.expensePaymentType = JSON.parse(expensePaymentType);
+            state.formState.expensePaymentType = JSON.parse(expensePaymentType);
         },
         setExpenseType(state,action) {
             const {expenseType} = action.payload;
-            state.expenseType = JSON.parse(expenseType);
+            state.formState.expenseType = JSON.parse(expenseType);
         },
         setExpenseComment(state,action) {
             const {expenseComment} = action.payload;
-            state.expenseComment = expenseComment;
+            state.formState.expenseComment = expenseComment;
         },
         setOwnerExpenseTracker(state,action) {
             const {expenseTracker} = action.payload;
             console.log("OWNER EXPENSE TRACKER IN EXPENSE FORMSLICE, ", expenseTracker)
-            state.expenseTracker = expenseTracker;
+            state.formState.expenseTracker = expenseTracker;
         },
         clearExpenseForm(state,action){
-            state = {
+            state.formState = {
                 id:"",
                 expenseAddress: null,
                 expenseComment: null,
@@ -92,39 +96,39 @@ const expenseFormSlice = createSlice({
         //***************************************************************
         setItemTableState(state,action) {
             const {tableState} = action.payload;
-            state.expenseItems = tableState;
+            state.formState.expenseItems = tableState;
         },
         addRow(state,action){
             const {row,rowId} = action.payload;
             // minus one because the id already in the array
-            state.expenseItems[rowId-1] = {...state.expenseItems[rowId-1],...row}
+            state.formState.expenseItems[rowId-1] = {...state.formState.expenseItems[rowId-1],...row}
         },
         updateSelectedRow(state,action){
             const {rowId,fieldName,value} = action.payload;
             console.log(rowId,fieldName,value)
-            state.expenseItems = state.expenseItems.map(row => row.id.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
+            state.formState.expenseItems = state.formState.expenseItems.map(row => row.id.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
         },
         removeRow(state,action){
-            const lastRow = state.expenseItems[state.expenseItems.length-1];
-            state.expenseItems = state.expenseItems.filter(existingRow => existingRow !== lastRow);
+            const lastRow = state.formState.expenseItems[state.formState.expenseItems.length-1];
+            state.formState.expenseItems = state.formState.expenseItems.filter(existingRow => existingRow !== lastRow);
         },
         setRowId(state,action) {
             const {rowId} = action.payload;
             const itemId = {};
             itemId.rowId = rowId;
-           state.expenseItems[rowId] = {...state.expenseItems[rowId],id:itemId};
+           state.formState.expenseItems[rowId] = {...state.formState.expenseItems[rowId],id:itemId};
         },
         removeSelectedRow(state,action){
             //prevent delete the last line in the table
-            if(state.expenseItems.length > 1){
+            if(state.formState.expenseItems.length > 1){
                 const {id} = action.payload;
-                const selectedRow = state.expenseItems[id];
-                state.expenseItems = state.expenseItems.filter(item => item !== selectedRow);
+                const selectedRow = state.formState.expenseItems[id];
+                state.formState.expenseItems = state.formState.expenseItems.filter(item => item !== selectedRow);
             }
 
         },
         clearItemTableState(state,action){
-            state.expenseItems = [];
+            state.formState.expenseItems = [];
         }
     }
 });
