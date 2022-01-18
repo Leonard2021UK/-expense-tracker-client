@@ -417,7 +417,12 @@ const ExpenseForm = (props) =>{
                                                 <TableToolBar clear= {clearTable} add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal} disable={disable}/>
                                                 <Row>
                                                     <ItemsTable
-                                                        data={_.isUndefined(initialValue) ? rExpenseForm.expenseItems : initialValue.expenseItems}
+                                                        data={
+                                                            _.isUndefined(initialValue) ?
+                                                                _.isUndefined(rExpenseForm.expenseItems) ? []
+                                                                    : rExpenseForm.expenseItems
+                                                            : initialValue.expenseItems
+                                                        }
                                                         errors={errors}
                                                         formikValues={values}
                                                         disable={disable}
