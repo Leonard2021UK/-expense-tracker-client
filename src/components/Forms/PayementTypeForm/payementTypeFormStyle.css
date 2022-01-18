@@ -1,0 +1,36 @@
+.fa-disabled {
+    opacity: 0.3;
+    cursor:  not-allowed !important;
+}
+
+.error-message {
+    position: relative !important;
+
+}
+.error{
+    border-radius: 0.25rem !important;
+
+}
+
+.input-addon-button{
+    font-size: x-small;
+    margin-left: -1px !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.hide-spinner{
+    visibility:hidden ;
+}
+
+.show-spinner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.category-align{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

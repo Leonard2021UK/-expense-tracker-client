@@ -127,7 +127,7 @@ const AutoSuggestion = (props) => {
                         //if reduxReducer is not present store the field's state somewhere else
 
                         if(_.isUndefined(reduxReducer)){
-                            // updates the ItemForm state
+                            // updates the ExpenseAddressForm state
                             updateCurrentRowItemFormState(e,selectedItem[0])
                         }else{
                             dispatch(reduxReducer({[suggestionName]:selectedItem[0]}))
