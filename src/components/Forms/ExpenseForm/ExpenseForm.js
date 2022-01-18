@@ -192,7 +192,7 @@ const ExpenseForm = (props) =>{
 
     return (
         <>
-            <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} setNewRowData={setNewRowData} rItemTableData={rExpenseForm.expenseItems} />
+            <CreateItemModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} setNewRowData={setNewRowData} rItemTableData={_.isUndefined(rExpenseForm.expenseItems)?[]:rExpenseForm.expenseItems} />
             <div style={{width:"80%",margin:"auto"}}>
             <Formik
                 initialValues={{
