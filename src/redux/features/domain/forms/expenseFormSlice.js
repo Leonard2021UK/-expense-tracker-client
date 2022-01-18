@@ -23,22 +23,6 @@ const expenseFormSlice = createSlice({
     reducers:{
         setExpenseFormState(state,action) {
             const {formState} = action.payload;
-            console.log(formState)
-            // let prevState = {...state.formState.formState};
-            // // state = {
-            // prevState.id = formState.id;
-            // prevState.expenseAddress = formState.expenseAddress;
-            // prevState.expenseComment = formState.expenseComment;
-            // prevState.expenseEmail = formState.expenseEmail;
-            // prevState.expenseItems = [];
-            // prevState.expenseMobile = formState.expenseMobile;
-            // prevState.expenseName = formState.expenseName;
-            // prevState.expensePaymentType = formState.expensePaymentType;
-            // prevState.expensePhone = formState.expensePhone;
-            // prevState.expenseType = formState.expenseType;
-            // prevState.createdAt = formState.createdAt;
-            // prevState.createdBy = formState.createdBy;
-            // }
             state.formState = {...formState};
         },
         setExpenseName(state,action) {
@@ -96,7 +80,7 @@ const expenseFormSlice = createSlice({
         //***************************************************************
         setItemTableState(state,action) {
             const {tableState} = action.payload;
-            state.formState.expenseItems = tableState;
+            state.formState.expenseItems = [...tableState];
         },
         addRow(state,action){
             const {row,rowId} = action.payload;
