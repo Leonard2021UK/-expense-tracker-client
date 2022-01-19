@@ -39,6 +39,10 @@ import {
     updateSelectedRow
 } from "../../../redux/features/domain/forms/expenseFormSlice";
 import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
+import {
+    expenseAddressInValidate,
+    expenseAddressThunk
+} from "../../../redux/features/suggestions/expenseAddressSuggestionSlice";
 
 const ExpenseAddressForm = (props) =>{
 
@@ -50,13 +54,10 @@ const ExpenseAddressForm = (props) =>{
 
     const {toggleModal} = props;
 
-    const [expenseAddress,setExpenseAddress] = useState({});
+    const [fetchingExpenseAddress,setFetchingExpenseAddress] = useState(false);
+    const [savedExpenseAddress,setSavedExpenseAddress] = useState({});
 
-    const [fetchingNewItemCategory,setFetchingNewItemCategory] = useState(false);
-    const [fetchingNewUnit,setFetchingNewUnit] = useState(false);
-    const [fetchingNewItem,setFetchingNewItem] = useState(false);
-
-    // const [handleNewExpenseAddressResponse] = useResponse(setSavedNewCategory);
+    const [handleNewExpenseAddressResponse] = useResponse(setSavedExpenseAddress);
 
     const {saveExpenseAddress} = useApiService();
 
@@ -143,7 +144,7 @@ const ExpenseAddressForm = (props) =>{
             .min(itemMinLength,"Name must be at least " + itemMinLength + " characters")
             .max(50, "Name must be less than 50 characters")
             .required("Name is required!"),
-        postcode: Yup.string()
+        postCode: Yup.string()
             .min(postCodeMinLength,"Name must be at least " + postCodeMinLength + " characters")
             .max(50, "Name must be less than 50 characters")
             .required("Name is required!")
@@ -207,18 +208,16 @@ const ExpenseAddressForm = (props) =>{
                 <Formik
                     initialValues={{
                         name:"",
-                        itemCategory:"",
-                        amount:"",
-                        price:"",
-                        unitType:"",
-                        unitPrice:""
+                        postCode:"",
+                        address_line1:"",
+                        address_line2:"",
+                        city:"",
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        alert("SUBMITTING")
-
+                        console.log(values)
                         // dispatch(setRowId({"rowId": rItemTableData.length}))
 
                         // dispatch(addRow({
@@ -233,26 +232,26 @@ const ExpenseAddressForm = (props) =>{
                         //     "unitType":rItemForm.unitType[0].id,
                         //     "mainCategoryId":rItemForm.itemCategory[0].id
                         // }
-                        // setFetchingNewItem(true);
-                        // saveItem(reqBody)
-                        //     .then(async (response)=>{
-                        //         if(response.ok){
-                        //             toggleModal();
-                        //             handleNewItemResponse(response, "New item was successfully created!")
+                        setFetchingExpenseAddress(true);
+                        saveExpenseAddress("POST",values)
+                            .then(async (response)=>{
+                                if(response.ok){
+                                    toggleModal();
+                                    handleNewExpenseAddressResponse(response, "New address was successfully created!")
                         //             // let parsedResponse = await response.json();
                         //             // setSavedNewMainCategory( [parsedResponse]);
-                        //             dispatch(itemCategoryInValidate({data:true}));
-                        //             dispatch(itemThunk());
-                        //         }else{
-                        //             toggleModal();
-                        //             handleNewItemResponse(response, null,"New item couldn't be created!")
+                                    dispatch(expenseAddressInValidate({data:true}));
+                                    dispatch(expenseAddressThunk());
+                                }else{
+                                    toggleModal();
+                                    handleNewExpenseAddressResponse(response, null,"New item couldn't be created!")
                         //
-                        //         }
+                                }
                         //         //TODO error handling
-                        //     }).then(()=>{
-                        //     setFetchingNewItem(false);
-                        //
-                        // })
+                            }).then(()=>{
+                            setFetchingExpenseAddress(false);
+                        //setFetchingExpenseAddress
+                        })
                         // UserService.register(values).then((response)=>{
                         //     console.log(response)
                         // })
@@ -386,7 +385,7 @@ const ExpenseAddressForm = (props) =>{
                                             </Button>
                                         </Col>
                                         <Col md={3}>
-                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Register</Button>
+                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Submit</Button>
                                         </Col>
                                     </Row>
                                 </Form.Group>

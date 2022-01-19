@@ -201,8 +201,10 @@ const ExpenseForm = (props) =>{
             case (name === "expenseAddress" ):
                 if(value === "CREATE"){
                     toggleCreateExpenseAddressModal();
+                }else{
+                    dispatch(setExpenseAddress({[name]:value}))
                 }
-                dispatch(setExpenseAddress({[name]:value}))
+
                 break;
             case (name === "expenseComment" ):
                 dispatch(setExpenseComment({[name]:value}))
