@@ -375,7 +375,9 @@ const ExpenseForm = (props) =>{
                                                     <option value="CREATE">Create new ...</option>
                                                     {
                                                         rExpenseAddresses.map((address)=>{
-                                                            const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === address.name
+                                                            console.log(initialValue)
+                                                            console.log(address)
+                                                            const isSelected = _.isUndefined(initialValue)  ? false : _.isNull(initialValue.expenseAddress) ? false :initialValue.expenseAddress.name === address.name
                                                             return <option selected={isSelected} value={JSON.stringify(address)}>{address.name}</option>
 
                                                         })

@@ -209,8 +209,8 @@ const ExpenseAddressForm = (props) =>{
                     initialValues={{
                         name:"",
                         postCode:"",
-                        address_line1:"",
-                        address_line2:"",
+                        addressLine1:"",
+                        addressLine2:"",
                         city:"",
                     }}
                     validationSchema={validationSchema}
@@ -301,7 +301,7 @@ const ExpenseAddressForm = (props) =>{
                                     <Form.Label>Address line 1.</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        name="address_line1"
+                                        name="addressLine1"
                                         placeholder="Enter address line 1"
                                         // onBlur={(e)=>{
                                         //     // handleBlur(e)
@@ -321,7 +321,7 @@ const ExpenseAddressForm = (props) =>{
                                     <Form.Label>Address line 2.</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        name="address_line2"
+                                        name="addressLine2"
                                         placeholder="Enter address line 2"
                                         // onBlur={(e)=>{
                                         //     // handleBlur(e)
