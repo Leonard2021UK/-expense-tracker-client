@@ -32,6 +32,8 @@ import {setItemTableState,addRow,removeRow,removeSelectedRow,clearItemTableState
 import {setOwnerExpenseTracker,setExpenseFormState, setExpenseName, setExpenseEmail, setExpensePhone, setExpenseMobile, setExpenseAddress, setExpensePaymentType, setExpenseType, setExpenseComment, clearExpenseForm} from "../../../redux/features/domain/forms/expenseFormSlice";
 import {expenseTrackersInValidate, expenseTrackerThunk} from "../../../redux/features/domain/expenseTrackerSlice";
 import CreateExpenseAddressModal from "../../Modals/CreateExpenseAddressModal/CreateExpenseAddressModal";
+import CreateExpenseTypeModal from "../../Modals/CreateExpenseTypeModal/CreateExpenseTypeModal";
+import CreatePaymentTypeModal from "../../Modals/CreatePaymentTypeModal/CreatePaymentTypeModal";
 
 
 const ExpenseForm = (props) =>{
@@ -179,6 +181,7 @@ const ExpenseForm = (props) =>{
         const inputType = e.target.type;
         let name = e.target.name;
         let value = e.target.value;
+        console.log(name)
         switch (true){
             case (name === "expenseName" ):
                 dispatch(setExpenseName({[name]:value}))
@@ -193,10 +196,18 @@ const ExpenseForm = (props) =>{
                 dispatch(setExpenseMobile({[name]:value}))
                 break;
             case (name === "expensePaymentType" ):
-                dispatch(setExpensePaymentType({[name]:value}))
+                if(value === "CREATE"){
+                    toggleCreatePaymentTypeModal();
+                }else{
+                    dispatch(setExpensePaymentType({[name]:value}))
+                }
                 break;
             case (name === "expenseType" ):
-                dispatch(setExpenseType({[name]:value}))
+                if(value === "CREATE"){
+                    toggleCreateExpenseTypeModal();
+                }else{
+                    dispatch(setExpenseType({[name]:value}))
+                }
                 break;
             case (name === "expenseAddress" ):
                 if(value === "CREATE"){
@@ -220,8 +231,17 @@ const ExpenseForm = (props) =>{
             .required("Name is required")
     });
 
+
     return (
         <>
+            <CreatePaymentTypeModal
+                show={createPaymentTypeModalIsOpen}
+                toggleModal={toggleCreatePaymentTypeModal}
+            />
+            <CreateExpenseTypeModal
+                show={createExpenseTypeModalIsOpen}
+                toggleModal={toggleCreateExpenseTypeModal}
+            />
             <CreateExpenseAddressModal
                 show={createExpenseAddressModalIsOpen}
                 toggleModal={toggleCreateExpenseAddressModal}
@@ -368,15 +388,13 @@ const ExpenseForm = (props) =>{
                                                 aria-label="Floating label select example"
                                                 disabled={disable}
                                                 name="expenseAddress"
-                                                onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+                                                onChange={(e)=>handleFormFieldOnBlur(e,values.name)}
                                             >
                                                 <>
                                                     <option >Choose an address</option>
-                                                    <option value="CREATE">Create new ...</option>
+                                                    <option value="CREATE" >Create new ...</option>
                                                     {
                                                         rExpenseAddresses.map((address)=>{
-                                                            console.log(initialValue)
-                                                            console.log(address)
                                                             const isSelected = _.isUndefined(initialValue)  ? false : _.isNull(initialValue.expenseAddress) ? false :initialValue.expenseAddress.name === address.name
                                                             return <option selected={isSelected} value={JSON.stringify(address)}>{address.name}</option>
 
@@ -393,14 +411,14 @@ const ExpenseForm = (props) =>{
                                                 aria-label="Floating label select example"
                                                 disabled={disable}
                                                 name="expensePaymentType"
-                                                onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+                                                onChange={(e)=>handleFormFieldOnBlur(e,values.name)}
 
                                             >
                                                 <>
                                                     <option >Choose an payment type</option>
-                                                    <option >Create new ...</option>
+                                                    <option value="CREATE" >Create new ...</option>
                                                     {rExpensePaymentType.map((expensePaymentType)=>{
-                                                        const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === expensePaymentType.name
+                                                        const isSelected = _.isUndefined(initialValue) ? false : _.isNull(initialValue.expensePaymentType) ? false : initialValue.expensePaymentType.name === expensePaymentType.name
                                                         return <option selected={isSelected} value={JSON.stringify(expensePaymentType)}>{expensePaymentType.name}</option>
 
                                                     })}
@@ -416,14 +434,14 @@ const ExpenseForm = (props) =>{
                                                 aria-label="Floating label select example"
                                                 disabled={disable}
                                                 name="expenseType"
-                                                onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+                                                onChange={(e)=>handleFormFieldOnBlur(e,values.name)}
                                             >
                                                 <>
                                                     <option >Choose an expense type</option>
-                                                    <option >Create new ...</option>
+                                                    <option value="CREATE" >Create new ...</option>
                                                     {
                                                         rExpenseType.map((expenseType)=>{
-                                                            const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === expenseType.name
+                                                            const isSelected = _.isUndefined(initialValue) ? false : _.isNull(initialValue.expenseType) ? false : initialValue.expenseType.name === expenseType.name
                                                             return <option selected={isSelected} value={JSON.stringify(expenseType)}>{expenseType.name}</option>
                                                         })
                                                     }

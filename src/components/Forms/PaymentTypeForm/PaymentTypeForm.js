@@ -17,7 +17,7 @@ import {itemCategoryThunk,itemCategoryInValidate} from "../../../redux/features/
 import {unitTypeThunk,unitTypeInValidate} from "../../../redux/features/suggestions/unitSuggestionSlice";
 import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
-import './expenseTypeFormStyle.css';
+import './paymentTypeFormStyle.css';
 import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
@@ -39,23 +39,27 @@ import {
     updateSelectedRow
 } from "../../../redux/features/domain/forms/expenseFormSlice";
 import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
-import {expenseTypeInValidate, expenseTypeThunk} from "../../../redux/features/suggestions/expenseTypeSuggestionSlice";
+import {
+    expensePaymentTypeInValidate,
+    expensePaymentTypeThunk
+} from "../../../redux/features/suggestions/expensePaymentTypeSuggestionSlice";
 
-const ExpenseTypeForm = (props) =>{
+const PaymentTypeForm = (props) =>{
 
 
     const dispatch = useDispatch();
 
     const nameMinLength = 3;
 
+
     const {toggleModal} = props;
 
-    const [fetchingNewExpenseType,setFetchingNewExpenseType] = useState(false);
-    const [savedNewExpenseType,setSavedNewExpenseType] = useState({});
+    const [fetchingNewPaymentType,setFetchingNewPaymentType] = useState(false);
+    const [savedNewPaymentType,setSavedNewPaymentType] = useState([]);
 
-    const [handleNewExpenseTypeResponse] = useResponse(setSavedNewExpenseType);
+    const [handleNewPaymentType] = useResponse(setSavedNewPaymentType);
 
-    const {saveExpenseType} = useApiService();
+    const {savePaymentType} = useApiService();
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -69,31 +73,31 @@ const ExpenseTypeForm = (props) =>{
             <div style={{width:"80%",margin:"auto"}}>
                 <Formik
                     initialValues={{
-                        name:""
+                        item:"",
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
 
-                        setFetchingNewExpenseType(true);
-                        saveExpenseType("POST",values)
+                        setFetchingNewPaymentType(true);
+                        savePaymentType("POST",values)
                             .then(async (response)=>{
                                 if(response.ok){
                                     toggleModal();
-                                    handleNewExpenseTypeResponse(response, "New item was successfully created!")
+                                    handleNewPaymentType(response, "New item was successfully created!")
                                     // let parsedResponse = await response.json();
                                     // setSavedNewMainCategory( [parsedResponse]);
-                                    dispatch(expenseTypeInValidate({data:true}));
-                                    dispatch(expenseTypeThunk());
+                                    dispatch(expensePaymentTypeInValidate({data:true}));
+                                    dispatch(expensePaymentTypeThunk());
                                 }else{
                                     toggleModal();
-                                    handleNewExpenseTypeResponse(response, null,"New item couldn't be created!")
+                                    handleNewPaymentType(response, null,"New item couldn't be created!")
 
                                 }
                         //         //TODO error handling
                             }).then(()=>{
-                            setFetchingNewExpenseType(false);
+                            setFetchingNewPaymentType(false);
                         //
                         })
                         // UserService.register(values).then((response)=>{
@@ -140,6 +144,7 @@ const ExpenseTypeForm = (props) =>{
                                     ): null}
                                 </Form.Group>
                             </Row>
+
                             <Row className="mb-3" >
                                 <Form.Group>
                                     <Row>
@@ -149,7 +154,7 @@ const ExpenseTypeForm = (props) =>{
                                             </Button>
                                         </Col>
                                         <Col md={3}>
-                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Submit </Button>
+                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Register</Button>
                                         </Col>
                                     </Row>
                                 </Form.Group>
@@ -174,6 +179,6 @@ const ExpenseTypeForm = (props) =>{
     )
 }
 
-export default ExpenseTypeForm;
+export default PaymentTypeForm;
 
 

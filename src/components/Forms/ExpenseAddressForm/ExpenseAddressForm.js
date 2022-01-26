@@ -49,7 +49,7 @@ const ExpenseAddressForm = (props) =>{
 
     const dispatch = useDispatch();
 
-    const itemMinLength = 3;
+    const nameMinLength = 3;
     const postCodeMinLength = 2;
 
     const {toggleModal} = props;
@@ -141,7 +141,7 @@ const ExpenseAddressForm = (props) =>{
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
-            .min(itemMinLength,"Name must be at least " + itemMinLength + " characters")
+            .min(nameMinLength,"Name must be at least " + nameMinLength + " characters")
             .max(50, "Name must be less than 50 characters")
             .required("Name is required!"),
         postCode: Yup.string()
