@@ -75,7 +75,6 @@ const ExpenseTypeForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-
                         setFetchingNewExpenseType(true);
                         saveExpenseType("POST",values)
                             .then(async (response)=>{

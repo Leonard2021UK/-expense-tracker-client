@@ -277,7 +277,7 @@ export function useApiService() {
             "body": JSON.stringify(data)
         };
 
-        const url = process.env.REACT_APP_EXPENSE_TYPE
+        const url = process.env.REACT_APP_PAYMENT_TYPE
         return await UseCustomFetch(url,fetchOption)
             .then( (response)=>{
                 return response;

@@ -61,11 +61,6 @@ const ExpenseAddressForm = (props) =>{
 
     const {saveExpenseAddress} = useApiService();
 
-
-
-
-
-
     // if item is used as a table row initialize rowId
     // useEffect(() => {
     //     if (!_.isUndefined(rItemTableData)) {
@@ -150,12 +145,12 @@ const ExpenseAddressForm = (props) =>{
             .required("Name is required!")
     });
     //
-    useEffect(()=>{
-        //TODO check lodash is necessary
-        // if(!_.isEmpty(nonExistingItemCategoryOption) && nonExistingItemCategoryOption.length >= itemCategoryMinLength ){
-        //     nonExistingItemCategoryOptionIsValid = true;
-        // }
-    })
+    // useEffect(()=>{
+    //     //TODO check lodash is necessary
+    //     // if(!_.isEmpty(nonExistingItemCategoryOption) && nonExistingItemCategoryOption.length >= itemCategoryMinLength ){
+    //     //     nonExistingItemCategoryOptionIsValid = true;
+    //     // }
+    // })
     // const handleSuggestionChange = (selectedItem,rowId,suggestionName) =>{
     //         setFieldValue(selectedItem)
     //         dispatch(updateSelectedRow({

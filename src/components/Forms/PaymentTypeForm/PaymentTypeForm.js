@@ -57,7 +57,7 @@ const PaymentTypeForm = (props) =>{
     const [fetchingNewPaymentType,setFetchingNewPaymentType] = useState(false);
     const [savedNewPaymentType,setSavedNewPaymentType] = useState([]);
 
-    const [handleNewPaymentType] = useResponse(setSavedNewPaymentType);
+    const [handleNewPaymentTypeResponse] = useResponse(setSavedNewPaymentType);
 
     const {savePaymentType} = useApiService();
 
@@ -73,26 +73,27 @@ const PaymentTypeForm = (props) =>{
             <div style={{width:"80%",margin:"auto"}}>
                 <Formik
                     initialValues={{
-                        item:"",
+                        name:"",
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
+                        console.log(values)
 
                         setFetchingNewPaymentType(true);
                         savePaymentType("POST",values)
                             .then(async (response)=>{
                                 if(response.ok){
                                     toggleModal();
-                                    handleNewPaymentType(response, "New item was successfully created!")
+                                    handleNewPaymentTypeResponse(response, "New item was successfully created!")
                                     // let parsedResponse = await response.json();
                                     // setSavedNewMainCategory( [parsedResponse]);
                                     dispatch(expensePaymentTypeInValidate({data:true}));
                                     dispatch(expensePaymentTypeThunk());
                                 }else{
                                     toggleModal();
-                                    handleNewPaymentType(response, null,"New item couldn't be created!")
+                                    handleNewPaymentTypeResponse(response, null,"New item couldn't be created!")
 
                                 }
                         //         //TODO error handling
