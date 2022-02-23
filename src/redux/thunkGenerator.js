@@ -44,7 +44,7 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
         try {
             // dispatch(actions[`${sliceName}RequestFetching`]({data: true}));
             const response = await fetch(fetchUrl, fetchOption);
-            // console.log(response)
+            console.log("RESPONSE IN SUGGESTION FETCHING: ",response)
             // Suggestion fetching is successful
             if (response.status === 200) {
                 const data = await response.json();
@@ -59,6 +59,8 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
             //End fetch
             dispatch(actions[`${sliceName}RequestFetching`]({data: false}));
         } catch (e){
+            console.log("EXCEPTION IN SUGGESTION FETCHING: ",e)
+
             dispatch(actions[`${sliceName}RequestException`]({data: []}));
             //End fetch
             dispatch(dispatch(actions[`${sliceName}RequestFetching`]({data: false})));

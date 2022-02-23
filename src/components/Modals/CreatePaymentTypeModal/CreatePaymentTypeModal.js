@@ -4,8 +4,9 @@ import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 import ExpenseTrackerForm from "../../Forms/ExpenseTrackerForm/ExpenseTrackerForm";
 import {useDispatch, useSelector} from "react-redux";
 import ItemForm from "../../Forms/ItemForm/ItemForm";
+import PaymentTypeForm from "../../Forms/PaymentTypeForm/PaymentTypeForm";
 
-function CreatePayementTypeModal(props){
+function CreatePaymentTypeModal(props){
 
     const{show,toggleModal,setNewRowData,rItemTableData} = props;
 
@@ -26,8 +27,8 @@ function CreatePayementTypeModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal} />
-
+                            {/*<ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal} />*/}
+                            <PaymentTypeForm toggleModal={toggleModal}/>
                         </Col>
                     </Row>
                 </Container>
@@ -44,4 +45,4 @@ function CreatePayementTypeModal(props){
     )
 }
 
-export default CreatePayementTypeModal;
+export default CreatePaymentTypeModal;

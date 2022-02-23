@@ -247,6 +247,42 @@ export function useApiService() {
                 return response;
             })
     }
+
+    const saveExpenseType = async (method,data = {})=>{
+        const fetchOption = {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            },
+            "body": JSON.stringify(data)
+        };
+
+        const url = process.env.REACT_APP_EXPENSE_TYPE
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
+
+    const savePaymentType = async (method,data = {})=>{
+        const fetchOption = {
+            "method": method,
+            "headers": {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + inMemoryJWT.getToken(),
+            },
+            "body": JSON.stringify(data)
+        };
+
+        const url = process.env.REACT_APP_PAYMENT_TYPE
+        return await UseCustomFetch(url,fetchOption)
+            .then( (response)=>{
+                return response;
+            })
+    }
     // const getJobRecordById = async (jobRecord)=>{
     //     console.log("jobrecord to update ", jobRecord);
     //     const fetchOption = {
@@ -399,6 +435,7 @@ export function useApiService() {
 
 
     return {
+        savePaymentType,
         saveExpenseTracker,
         getAllUnitTypes,
         getAllPaymentTypes,
@@ -412,7 +449,8 @@ export function useApiService() {
         saveItem,
         saveExpense,
         saveUnitType,
-        saveExpenseAddress
+        saveExpenseAddress,
+        saveExpenseType
 
         // getJobRecordById,
         // getAllJobRegistration,

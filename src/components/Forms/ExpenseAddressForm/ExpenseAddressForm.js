@@ -49,7 +49,7 @@ const ExpenseAddressForm = (props) =>{
 
     const dispatch = useDispatch();
 
-    const itemMinLength = 3;
+    const nameMinLength = 3;
     const postCodeMinLength = 2;
 
     const {toggleModal} = props;
@@ -60,11 +60,6 @@ const ExpenseAddressForm = (props) =>{
     const [handleNewExpenseAddressResponse] = useResponse(setSavedExpenseAddress);
 
     const {saveExpenseAddress} = useApiService();
-
-
-
-
-
 
     // if item is used as a table row initialize rowId
     // useEffect(() => {
@@ -141,7 +136,7 @@ const ExpenseAddressForm = (props) =>{
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
-            .min(itemMinLength,"Name must be at least " + itemMinLength + " characters")
+            .min(nameMinLength,"Name must be at least " + nameMinLength + " characters")
             .max(50, "Name must be less than 50 characters")
             .required("Name is required!"),
         postCode: Yup.string()
@@ -150,12 +145,12 @@ const ExpenseAddressForm = (props) =>{
             .required("Name is required!")
     });
     //
-    useEffect(()=>{
-        //TODO check lodash is necessary
-        // if(!_.isEmpty(nonExistingItemCategoryOption) && nonExistingItemCategoryOption.length >= itemCategoryMinLength ){
-        //     nonExistingItemCategoryOptionIsValid = true;
-        // }
-    })
+    // useEffect(()=>{
+    //     //TODO check lodash is necessary
+    //     // if(!_.isEmpty(nonExistingItemCategoryOption) && nonExistingItemCategoryOption.length >= itemCategoryMinLength ){
+    //     //     nonExistingItemCategoryOptionIsValid = true;
+    //     // }
+    // })
     // const handleSuggestionChange = (selectedItem,rowId,suggestionName) =>{
     //         setFieldValue(selectedItem)
     //         dispatch(updateSelectedRow({
@@ -209,8 +204,8 @@ const ExpenseAddressForm = (props) =>{
                     initialValues={{
                         name:"",
                         postCode:"",
-                        address_line1:"",
-                        address_line2:"",
+                        addressLine1:"",
+                        addressLine2:"",
                         city:"",
                     }}
                     validationSchema={validationSchema}
@@ -301,7 +296,7 @@ const ExpenseAddressForm = (props) =>{
                                     <Form.Label>Address line 1.</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        name="address_line1"
+                                        name="addressLine1"
                                         placeholder="Enter address line 1"
                                         // onBlur={(e)=>{
                                         //     // handleBlur(e)
@@ -321,7 +316,7 @@ const ExpenseAddressForm = (props) =>{
                                     <Form.Label>Address line 2.</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        name="address_line2"
+                                        name="addressLine2"
                                         placeholder="Enter address line 2"
                                         // onBlur={(e)=>{
                                         //     // handleBlur(e)

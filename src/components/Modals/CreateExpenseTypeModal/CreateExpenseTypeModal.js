@@ -4,6 +4,7 @@ import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 import ExpenseTrackerForm from "../../Forms/ExpenseTrackerForm/ExpenseTrackerForm";
 import {useDispatch, useSelector} from "react-redux";
 import ItemForm from "../../Forms/ItemForm/ItemForm";
+import ExpenseTypeForm from "../../Forms/ExpenseTypeForm/ExpenseTypeForm";
 
 function CreateExpenseTypeModal(props){
 
@@ -26,8 +27,8 @@ function CreateExpenseTypeModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal} />
-
+                            {/*<ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal} />*/}
+                            <ExpenseTypeForm toggleModal={toggleModal} />
                         </Col>
                     </Row>
                 </Container>
