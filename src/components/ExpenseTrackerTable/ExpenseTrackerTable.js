@@ -87,7 +87,7 @@ const ExpenseTrackerTable = (props) => {
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Category</th>
-                    <th scope="col">Nr. of expenses</th>
+                    <th scope="col">Nr.of expenses</th>
                     <th scope="col">Updated at</th>
                     <th scope="col">Created at</th>
                     <th scope="col">Created by</th>

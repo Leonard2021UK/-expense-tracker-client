@@ -47,7 +47,7 @@ const ExpensesTable = (props)=>{
     }
 
     const handleUpdateExpenseDetails = (expense)=>{
-        console.log("SELECTED EXPENSE IN EXPENSE TABLE ", expense)
+        console.log("SELECTED EXPENSE IN EXPENSE TABLE TO BE UPDATED ", expense)
         setSelectedExpense(expense)
         dispatch(clearExpenseForm())
         dispatch(clearItemTableState())
@@ -67,9 +67,10 @@ const ExpensesTable = (props)=>{
                 show={expenseDetailsModalIsOpen}
                 ownerExpenseTracker={currentExpenseTracker}
                 initialValue={selectedExpense}
+                setSelectedExpense={setSelectedExpense}
                 toggleModal={toggleExpenseDetailsModal}
                 disable={disable}
-                title={"Expense details for" + selectedExpense.name}
+                title={"Expense details for " + selectedExpense.expenseName}
                 update={update}
             />
 

@@ -28,12 +28,17 @@ import {useResponse} from "../../../customHooks/useResponse";
 const ExpenseTrackerForm = (props) =>{
 
     const categoryMinLength = 3;
+
     let nonExistingOptionIsValid = false;
+    let typedOptionAlreadyExists = false;
+
     const {disable,mainCategories,toggleModal} = props;
+
     const [nonExistingOption,setNonExistingOption] = useState('');
     const [savedNewMainCategory,setSavedNewMainCategory] = useState([]);
     const [fetchingNewCategory,setFetchingNewCategory] = useState(false);
     const [fetchingNewExpenseTracker,setFetchingNewExpenseTracker] = useState(false);
+
     const [handleNewMainCategoryResponse] = useResponse(setSavedNewMainCategory);
     const [handleNewExpenseTrackerResponse] = useResponse();
 
@@ -47,26 +52,32 @@ const ExpenseTrackerForm = (props) =>{
         dispatch(setExpenseTrackerCategory({"mainCategory":savedNewMainCategory}))
 
     },[savedNewMainCategory])
+
     const handleCreateNewCategory = ()=>{
-        const reqBody = {
-            "name":nonExistingOption
+
+        if(nonExistingOptionIsValid && !typedOptionAlreadyExists){
+
+            const reqBody = {
+                "name":nonExistingOption
+            }
+
+            setFetchingNewCategory(true);
+
+            fetchMainCategory("POST",reqBody)
+                .then(async (response)=>{
+                    if(response.ok){
+                        handleNewMainCategoryResponse(response, "New category was successfully created!")
+                        // setSavedNewMainCategory( [parsedResponse]);
+                        dispatch(mainCategoryInValidate({data:true}));
+                        dispatch(mainCategoryThunk());
+
+                    }else {
+                        handleNewMainCategoryResponse(response, null,"New category couldn't be created!")
+                    }
+                    setFetchingNewCategory(false);
+
+                })
         }
-        setFetchingNewCategory(true);
-
-        fetchMainCategory("POST",reqBody)
-            .then(async (response)=>{
-                if(response.ok){
-                    handleNewMainCategoryResponse(response, "New category was successfully created!")
-                    // setSavedNewMainCategory( [parsedResponse]);
-                    dispatch(mainCategoryInValidate({data:true}));
-                    dispatch(mainCategoryThunk());
-
-                }else {
-                    handleNewMainCategoryResponse(response, null,"New category couldn't be created!")
-                }
-                setFetchingNewCategory(false);
-
-            })
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -84,15 +95,26 @@ const ExpenseTrackerForm = (props) =>{
         if(!_.isEmpty(nonExistingOption) && nonExistingOption.length >= categoryMinLength ){
             nonExistingOptionIsValid = true;
         }
+
+        // if the typed option already exists then disable create icon
+        let result = [];
+        result = mainCategories.filter((option) => option.name === nonExistingOption )
+        if(result.length > 0){
+            typedOptionAlreadyExists = true;
+        }
+
     })
 
+    useEffect(()=>{
+
+    },[mainCategories])
 
 
     return (
         <>
             <div style={{width:"80%",margin:"auto"}}>
                 <Formik
-                    initialValues={{name:"", category:""}}
+                    initialValues={{name:"", mainCategory:""}}
                     validationSchema={validationSchema}
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
@@ -207,7 +229,8 @@ const ExpenseTrackerForm = (props) =>{
                                             {/*>*/}
                                                 <FontAwesomeIcon
                                                     icon={faFolderPlus}
-                                                    className={(nonExistingOption === '' || nonExistingOption.length < categoryMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                                    // className={(nonExistingOption === '' || nonExistingOption.length < categoryMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                                    className={(nonExistingOptionIsValid && !typedOptionAlreadyExists) ? "fas fa-2x" : "fas fa-2x fa-disabled" }
                                                     color={"green"}
                                                     style={{margin:1+"vh",cursor:"pointer"}}
                                                     onClick={handleCreateNewCategory}

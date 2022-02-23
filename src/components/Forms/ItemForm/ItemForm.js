@@ -45,20 +45,24 @@ const ItemForm = (props) =>{
 
     const dispatch = useDispatch();
 
-    const preventFirstRenderRef = useRef(false);
-    const rItemCategories = useSelector((state) => state.suggestions.itemCategory.response);
-    const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
-    const rItem = useSelector((state) => state.suggestions.item.response);
+    const preventFirstRenderRef = useRef({"item":false,"itemCategory":false,"unitType":false});
 
     const itemCategoryMinLength = 3;
     const unitMinLength = 3;
     const itemMinLength = 3;
 
     let nonExistingItemCategoryOptionIsValid = false;
-    let nonExistingUnitOptionIsValid = false;
-    let nonExistingItemOptionIsValid = false;
+    let typedOptionItemCategoryAlreadyExists = false;
 
-    const {disable,rItemTableData,setNewRowData,itemCategories,unitTypes,toggleModal} = props;
+    let nonExistingUnitOptionIsValid = false;
+    let typedOptionUnitAlreadyExists = false;
+
+    let nonExistingItemOptionIsValid = false;
+    let typedOptionItemAlreadyExists = false;
+
+    const {disable,rItemTableData,itemCategories,unitTypes,toggleModal,rItemCategories,rUnitTypes,rItem} = props;
+
+    const [newRowData,setNewRowData] = useState({});
 
     const [nonExistingUnitOption,setNonExistingUnitOption] = useState('');
     const [nonExistingItemCategoryOption,setNonExistingItemCategoryOption] = useState('');
@@ -76,105 +80,134 @@ const ItemForm = (props) =>{
     const [handleNewUnitResponse] = useResponse(setSavedNewUnit);
     const [handleNewItemResponse] = useResponse(setSavedNewItem);
 
-    const [currentRowState  ,setCurrentRowState] = useState({
-                "unitType": "",
-                "itemCategory": "",
-                "item":"",
-                "amount":"",
-                "unitPrice":"",
-                "price":""
-            });
-
     const {saveItemCategory,saveUnitType,saveItem} = useApiService();
 
     const rItemForm = useSelector((state) => state.itemForm.formState)
 
     useEffect(()=>{
 
-        if (preventFirstRenderRef.current){
+        if (preventFirstRenderRef.current.itemCategory){
             dispatch(setItemCategory({"itemCategory":savedNewItemCategory}))
-            dispatch(setItem({"item":savedNewItem}))
-            dispatch(setUnitType({"unitType":savedNewUnit}))
-
+            setNewRowData(prevState => ({...prevState,"itemCategory":savedNewItemCategory}))
         }
-        preventFirstRenderRef.current = true;
+        preventFirstRenderRef.current["itemCategory"] = true;
 
-    },[savedNewItemCategory,savedNewItem,savedNewUnit])
+    },[savedNewItemCategory])
 
+    useEffect(()=>{
 
+        if (preventFirstRenderRef.current.item){
+            dispatch(setItem({"item":savedNewItem}))
+            setNewRowData(prevState => ({...prevState,"item":savedNewItem}))
+        }
+        preventFirstRenderRef.current["item"] = true;
+
+    },[savedNewItem])
+
+    useEffect(()=>{
+
+        if (preventFirstRenderRef.current.unitType){
+            dispatch(setUnitType({"unitType":savedNewUnit}))
+            setNewRowData(prevState => ({...prevState,"unitType":savedNewUnit}))
+        }
+        preventFirstRenderRef.current["unitType"] = true;
+
+    },[savedNewUnit])
 
 
 
     // if item is used as a table row initialize rowId
     useEffect(() => {
         if (!_.isUndefined(rItemTableData)) {
-            dispatch(setRowId({"rowId": rItemTableData.length}))
+            // dispatch(setRowId({"rowId": rItemTableData.length}))
         }
     },[rItemTableData.expenseItems])
     //
     const handleCreateNewCategory = ()=>{
-        const reqBody = {
-            "name":nonExistingItemCategoryOption
-        }
-        setFetchingNewItemCategory(true);
 
-        saveItemCategory(reqBody)
-            .then(async (response)=>{
-                if(response.ok){
-                    handleNewItemCategoryResponse(response, "New category was successfully created!")
-                    // setSavedNewMainCategory( [parsedResponse]);
-                    dispatch(itemCategoryInValidate({data:true}));
-                    dispatch(itemCategoryThunk());
+        if(nonExistingItemCategoryOption && !typedOptionItemCategoryAlreadyExists){
 
-                }else {
-                    handleNewItemCategoryResponse(response, null,"New category couldn't be created!")
-                }
-                setFetchingNewItemCategory(false);
+            const reqBody = {
+                "name":nonExistingItemCategoryOption
+            }
+            setFetchingNewItemCategory(true);
 
+            saveItemCategory(reqBody)
+                .then(async (response)=>{
+                    if(response.ok){
+                        // updates the new row data
+                        handleNewItemCategoryResponse(response, "New category was successfully created!")
+                        // setSavedNewMainCategory( [parsedResponse]);
+                        dispatch(itemCategoryInValidate({data:true}));
+                        dispatch(itemCategoryThunk());
+
+                    }else {
+                        handleNewItemCategoryResponse(response, null,"New category couldn't be created!")
+                    }
+                    setFetchingNewItemCategory(false);
+
+                }).then(()=>{
+                    // updates the new row data
+                    // setNewRowData(prevState => ({...prevState,"itemCategory":savedNewItemCategory}))
             })
+        }
     }
     //
     const handleCreateNewUnit = ()=>{
-        const reqBody = {
-            "name":nonExistingUnitOption
-        }
-        setFetchingNewUnit(true);
 
-        saveUnitType("POST",reqBody)
-            .then(async (response)=>{
-                if(response.ok){
-                    handleNewUnitResponse(response, "New unit type was successfully created!")
-                    // setSavedNewMainCategory( [parsedResponse]);
-                    dispatch(unitTypeInValidate({data:true}));
-                    dispatch(unitTypeThunk());
+        if(nonExistingUnitOptionIsValid && !typedOptionUnitAlreadyExists) {
+            const reqBody = {
+                "name": nonExistingUnitOption
+            }
+            setFetchingNewUnit(true);
 
-                }else {
-                    handleNewUnitResponse(response, null,"New unit type couldn't be created!")
-                }
-                setFetchingNewUnit(false);
+            saveUnitType("POST", reqBody)
+                .then(async (response) => {
+                    if (response.ok) {
+                        // updates the new row data
+                        handleNewUnitResponse(response, "New unit type was successfully created!")
+                        // setSavedNewMainCategory( [parsedResponse]);
+                        dispatch(unitTypeInValidate({data: true}));
+                        dispatch(unitTypeThunk());
 
+                    } else {
+                        handleNewUnitResponse(response, null, "New unit type couldn't be created!")
+                    }
+                    setFetchingNewUnit(false);
+
+                }).then(()=>{
+                    // updates the new row data
+                    // setNewRowData(prevState => ({...prevState,"unitType":setSavedNewUnit}))
             })
+        }
     }
 
     const handleCreateNewItem = ()=>{
-        const reqBody = {
-            "name":nonExistingItemOption
-        }
-        setFetchingNewItem(true);
+        if(nonExistingItemOption && !typedOptionItemAlreadyExists) {
 
-        saveItem(reqBody)
-            .then(async (response)=>{
-                if(response.ok){
-                    handleNewItemResponse(response, "New item was successfully created!")
-                    // setSavedNewMainCategory( [parsedResponse]);
-                    dispatch(itemInValidate({data:true}));
-                    dispatch(itemThunk());
+            const reqBody = {
+                "name": nonExistingItemOption
+            }
+            setFetchingNewItem(true);
 
-                }else {
-                    handleNewItemResponse(response, null,"New item couldn't be created!")
-                }
-                setFetchingNewItem(false);
+            saveItem(reqBody)
+                .then(async (response) => {
+                    if (response.ok) {
+                        handleNewItemResponse(response, "New item was successfully created!")
+                        // setSavedNewMainCategory( [parsedResponse]);
+                        dispatch(itemInValidate({data: true}));
+                        dispatch(itemThunk());
+
+                    } else {
+                        handleNewItemResponse(response, null, "New item couldn't be created!")
+                    }
+
+                    setFetchingNewItem(false);
+                }).then(()=>{
+                    // updates the new row data
+                    // setNewRowData(prevState => ({...prevState,"item":savedNewItem}))
             })
+        }
     }
     //
     const validationSchema = Yup.object().shape({
@@ -201,16 +234,50 @@ const ItemForm = (props) =>{
     //
     useEffect(()=>{
         //TODO check lodash is necessary
+        // if(!_.isEmpty(nonExistingItemCategoryOption) && nonExistingItemCategoryOption.length >= itemCategoryMinLength ){
+        //     nonExistingItemCategoryOptionIsValid = true;
+        // }
+        // if(!_.isEmpty(nonExistingUnitOption) && nonExistingUnitOption.length >= unitMinLength ){
+        //     nonExistingUnitOptionIsValid = true;
+        // }
+        // if(!_.isEmpty(nonExistingItemOption) && nonExistingItemOption.length >= itemMinLength ){
+        //     nonExistingItemOptionIsValid = true;
+        // }
+
+    })
+
+    useEffect(()=>{
+        // if the typed category name already exists then disable create icon
+        let result = [];
+        result = rItemCategories.filter((option) => option.name === nonExistingItemCategoryOption )
+        typedOptionItemCategoryAlreadyExists = result.length > 0;
+
         if(!_.isEmpty(nonExistingItemCategoryOption) && nonExistingItemCategoryOption.length >= itemCategoryMinLength ){
             nonExistingItemCategoryOptionIsValid = true;
         }
+    },[nonExistingItemCategoryOption])
+
+    useEffect(()=>{
+        // if the typed unitType name already exists then disable create icon
+        let result = [];
+        result = rUnitTypes.filter((option) => option.name === nonExistingUnitOptionIsValid )
+        typedOptionUnitAlreadyExists = result.length > 0;
+
         if(!_.isEmpty(nonExistingUnitOption) && nonExistingUnitOption.length >= unitMinLength ){
             nonExistingUnitOptionIsValid = true;
         }
+    },[nonExistingUnitOption])
+
+    useEffect(()=>{
+        // if the typed item name already exists then disable create icon
+        let result = [];
+        result = rItem.filter((option) => option.name === nonExistingItemOption )
+        typedOptionItemAlreadyExists = result.length > 0;
+
         if(!_.isEmpty(nonExistingItemOption) && nonExistingItemOption.length >= itemMinLength ){
             nonExistingItemOptionIsValid = true;
         }
-    })
+    },[nonExistingItemOption])
     // const handleSuggestionChange = (selectedItem,rowId,suggestionName) =>{
     //         setFieldValue(selectedItem)
     //         dispatch(updateSelectedRow({
@@ -226,22 +293,28 @@ const ItemForm = (props) =>{
         const name = event.target.name;
         switch(name){
             case("item"):
-                dispatch(setItem({"item":value}));
+                // dispatch(setItem({"item":value}));
+                setNewRowData(prevState => ({...prevState,[name]:value}))
                 break;
             case("itemCategory"):
-                dispatch(setItemCategory({"itemCategory":value}))
+                // dispatch(setItemCategory({"itemCategory":value}))
+                setNewRowData(prevState => ({...prevState,[name]:value}))
                 break;
             case("unitType"):
-                dispatch(setUnitType({"unitType":value}));
+                // dispatch(setUnitType({"unitType":value}));
+                setNewRowData(prevState => ({...prevState,[name]:value}))
                 break;
             case("amount"):
-                dispatch(setAmount({"amount":value}));
+                // dispatch(setAmount({"amount":value}));
+                setNewRowData(prevState => ({...prevState,[name]:value}))
                 break;
             case("unitPrice"):
-                dispatch(setUnitPrice({"unitPrice":value}));
+                // dispatch(setUnitPrice({"unitPrice":value}));
+                setNewRowData(prevState => ({...prevState,[name]:value}))
                 break;
             case("price"):
-                dispatch(setPrice({"price":value}));
+                // dispatch(setPrice({"price":value}));
+                setNewRowData(prevState => ({...prevState,[name]:value}))
                 break;
         }
         console.log("EVENT TARGET NAME VALUE IN ITEM FORM ",event)
@@ -273,13 +346,13 @@ const ItemForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        alert("SUBMITTING")
                         console.log(rItemTableData.length)
 
                         // dispatch(setRowId({"rowId": rItemTableData.length}))
+                        dispatch(setRowId({"rowId": rItemTableData.length}))
 
                         dispatch(addRow({
-                            row:rItemForm,rowId:rItemTableData.length
+                            row:newRowData,rowId:rItemTableData.length
                         }))
 
                         // dispatch(clearItemForm())
@@ -318,6 +391,7 @@ const ItemForm = (props) =>{
 
                         // Sets setSubmitting to false after form is reset
                         setSubmitting(false);
+                        toggleModal()
                     }}
                 >
                     {(
@@ -334,11 +408,12 @@ const ItemForm = (props) =>{
                         }
                     )=>(
                         <Form onSubmit={handleSubmit}>
-                            <Row className={"category-align"}>
+                            <Row className="category-align">
                                 <Form.Group as={Col}>
                                     <Form.Label>Name</Form.Label>
                                     <Col md={12} lg={12}>
                                         <AutoSuggestion
+                                            newRowData={newRowData}
                                             disable={disable}
                                             suggestionName="item"
                                             setFieldValue={setFieldValue}
@@ -356,7 +431,9 @@ const ItemForm = (props) =>{
                                     <Col md={2} lg={2}>
                                         <FontAwesomeIcon
                                             icon={faFolderPlus}
-                                            className={(nonExistingItemOption === '' || nonExistingItemOption.length < itemMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                            // className={(nonExistingItemOption === '' || nonExistingItemOption.length < itemMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                            className={(nonExistingItemOptionIsValid && !typedOptionItemAlreadyExists) ? "fas fa-2x" : "fas fa-2x fa-disabled" }
+
                                             color={"green"}
                                             style={{margin:1+"vh",cursor:"pointer"}}
                                             onClick={handleCreateNewItem}
@@ -371,9 +448,9 @@ const ItemForm = (props) =>{
                                 <Form.Group as={Col}>
                                     <Form.Label>Amount</Form.Label>
                                     <Form.Control
-                                        type={"number"}
-                                        name={"amount"}
-                                        placeholder={"Enter amount"}
+                                        type="number"
+                                        name="amount"
+                                        placeholder="Enter amount"
                                         onBlur={(e)=>{
                                             // handleBlur(e)
                                             return updateCurrentRowItemFormState(e,e.target.value);
@@ -410,7 +487,8 @@ const ItemForm = (props) =>{
                                     <Col lg={2}>
                                         <FontAwesomeIcon
                                             icon={faFolderPlus}
-                                            className={(nonExistingUnitOption === '' || nonExistingUnitOption.length < unitMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                            // className={(nonExistingUnitOption === '' || nonExistingUnitOption.length < unitMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                            className={(nonExistingUnitOptionIsValid && !typedOptionUnitAlreadyExists) ? "fas fa-2x" : "fas fa-2x fa-disabled" }
                                             color={"green"}
                                             style={{margin:1+"vh",cursor:"pointer"}}
                                             onClick={handleCreateNewUnit}
@@ -464,7 +542,8 @@ const ItemForm = (props) =>{
                                     <Col lg={2}>
                                         <FontAwesomeIcon
                                             icon={faFolderPlus}
-                                            className={(nonExistingItemCategoryOption === '' || nonExistingItemCategoryOption.length < itemCategoryMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                            // className={(nonExistingItemCategoryOption === '' || nonExistingItemCategoryOption.length < itemCategoryMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
+                                            className={(nonExistingItemCategoryOptionIsValid && !typedOptionItemCategoryAlreadyExists) ? "fas fa-2x" : "fas fa-2x fa-disabled" }
                                             color={"green"}
                                             style={{margin:1+"vh",cursor:"pointer"}}
                                             onClick={handleCreateNewCategory}

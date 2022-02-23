@@ -29,7 +29,8 @@ const AutoSuggestion = (props) => {
         setNonExistingOption,
         setFieldValue,
         setFieldTouched,
-        savedNewRecord
+        savedNewRecord,
+
 
     } = props;
 
@@ -46,7 +47,8 @@ const AutoSuggestion = (props) => {
             setFieldValue(suggestionName,initialValue[0].name)
 
         }
-        if(!_.isUndefined(savedNewRecord)){
+        // if a newly created record was created then set Formik state accordingly
+        if(!_.isEmpty(savedNewRecord)){
             setFieldValue(suggestionName,savedNewRecord.name)
         }
     },[initialValue,savedNewRecord])
@@ -116,25 +118,41 @@ const AutoSuggestion = (props) => {
                 onBlur = {(e)=>{
                     //sets target name attribute in React synthetic event
                     e.target.name = suggestionName;
-                    // when no existing option was found (user types)
+
+                    let value = e.target.value;
+                    // when no existing option was found (user types non existing)
+                    // or a user types an existing option but does not click on it in the dropdown
                     if (_.isEmpty(selectedItem) ){
-                        //sets formik state
-                        setFieldValue(suggestionName,'')
-                        // stores the new value to be saved into DB
-                        setNonExistingOption(e.target.value)
+
+                        let result = options.filter(option => option.name === value);
+
+                        // in case when user typed an existing option
+                        if(result.length > 0){
+                            //sets formik state
+                            setFieldValue(suggestionName,value);
+                            // updates the form's react state
+                            updateCurrentRowItemFormState(e,result[0])
+                        }else{
+                            //sets formik state
+                            setFieldValue(suggestionName,'')
+                            // stores the new value to be saved into DB
+                            setNonExistingOption(e.target.value)
+                        }
+
+
                     }else{
                         setNonExistingOption('')
                         //if reduxReducer is not present store the field's state somewhere else
 
                         if(_.isUndefined(reduxReducer)){
-                            // updates the ExpenseAddressForm state
+                            // updates the form's react state
                             updateCurrentRowItemFormState(e,selectedItem[0])
                         }else{
                             dispatch(reduxReducer({[suggestionName]:selectedItem[0]}))
                         }
 
                     }
-                    //if reduxReducer is not present store the fields state somewhere else
+                    //if reduxReducer is not present, store the fields state somewhere else
                     if(_.isUndefined(reduxReducer)){
                     }else{
                         dispatch(reduxReducer({[suggestionName]:selectedItem[0]}))
@@ -173,6 +191,8 @@ const AutoSuggestion = (props) => {
                 placeholder="Choose a state..."
                 selected={selectedItem.name}
                 className={(_.isUndefined(touched) && _.isUndefined(errors)) ? className : touched[suggestionName] && errors[suggestionName] ? "error" : className}
+                // className={(formikValues[suggestionName] !== formikInitialValues[suggestionName]) ? className :  "error" }
+
             />
             {(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched[suggestionName] && errors[suggestionName] ? (
                 <div className="error-message">{errors[suggestionName] }</div>

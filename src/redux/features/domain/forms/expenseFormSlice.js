@@ -85,7 +85,8 @@ const expenseFormSlice = createSlice({
         addRow(state,action){
             const {row,rowId} = action.payload;
             // minus one because the id already in the array
-            state.formState.expenseItems[rowId-1] = {...state.formState.expenseItems[rowId-1],...row}
+            // state.formState.expenseItems[rowId-1] = {...state.formState.expenseItems[rowId-1],...row}
+            state.formState.expenseItems = state.formState.expenseItems.map(element => element.id.rowId === (rowId) ? {...element,...row} : element)
         },
         updateSelectedRow(state,action){
             const {rowId,fieldName,value} = action.payload;
@@ -104,11 +105,11 @@ const expenseFormSlice = createSlice({
         },
         removeSelectedRow(state,action){
             //prevent delete the last line in the table
-            if(state.formState.expenseItems.length > 1){
+            // if(state.formState.expenseItems.length > 1){
                 const {id} = action.payload;
                 const selectedRow = state.formState.expenseItems[id];
                 state.formState.expenseItems = state.formState.expenseItems.filter(item => item !== selectedRow);
-            }
+            // }
 
         },
         clearItemTableState(state,action){

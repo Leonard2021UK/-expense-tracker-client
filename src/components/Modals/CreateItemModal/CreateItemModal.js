@@ -9,6 +9,9 @@ function CreateItemModal(props){
 
     const{show,toggleModal,setNewRowData,rItemTableData} = props;
 
+    const rItemCategories = useSelector((state) => state.suggestions.itemCategory.response);
+    const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
+    const rItem = useSelector((state) => state.suggestions.item.response);
 
     return(
         <Modal
@@ -26,7 +29,14 @@ function CreateItemModal(props){
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
-                            <ItemForm rItemTableData={rItemTableData} setNewRowData={setNewRowData} toggleModal={toggleModal} />
+                            <ItemForm
+                                rItemTableData={rItemTableData}
+                                setNewRowData={setNewRowData}
+                                toggleModal={toggleModal}
+                                rItemCategories={rItemCategories}
+                                rUnitTypes={rUnitTypes}
+                                rItem={rItem}
+                            />
 
                         </Col>
                     </Row>

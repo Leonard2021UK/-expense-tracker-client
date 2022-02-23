@@ -36,7 +36,7 @@ import CreateExpenseAddressModal from "../../Modals/CreateExpenseAddressModal/Cr
 
 const ExpenseForm = (props) =>{
 
-    const {initialValue,ownerExpenseTracker,disable,toggleModal,update} = props;
+    const {initialValue,ownerExpenseTracker,disable,toggleModal,update,setSelectedExpense} = props;
     console.log("INITIAL VALUE IN EXPENSE FORM: ",initialValue)
 
     const dispatch = useDispatch();
@@ -167,8 +167,11 @@ const ExpenseForm = (props) =>{
         dispatch(clearItemTableState())
     }
 
-    const removeSelectedTableRow = (id)=>{
-        dispatch(removeSelectedRow({id:id}))
+    const removeSelectedTableRow = (index)=>{
+        let updatedItemTable = initialValue.expenseItems.filter((row)=> row.id.rowId !== index);
+        let updatedInitialValue = {...initialValue,expenseItems : updatedItemTable}
+        setSelectedExpense(updatedInitialValue)
+        dispatch(removeSelectedRow({id:index}))
     }
 
     const handleOnSelect = ()=>{
@@ -204,7 +207,6 @@ const ExpenseForm = (props) =>{
                 }else{
                     dispatch(setExpenseAddress({[name]:value}))
                 }
-
                 break;
             case (name === "expenseComment" ):
                 dispatch(setExpenseComment({[name]:value}))
@@ -375,7 +377,7 @@ const ExpenseForm = (props) =>{
                                                     <option value="CREATE">Create new ...</option>
                                                     {
                                                         rExpenseAddresses.map((address)=>{
-                                                            const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === address.name
+                                                            const isSelected = _.isUndefined(initialValue) ? false : _.isNull(initialValue.expenseAddress) ? false : initialValue.expenseAddress.name === address.name
                                                             return <option selected={isSelected} value={JSON.stringify(address)}>{address.name}</option>
 
                                                         })
@@ -398,7 +400,7 @@ const ExpenseForm = (props) =>{
                                                     <option >Choose an payment type</option>
                                                     <option >Create new ...</option>
                                                     {rExpensePaymentType.map((expensePaymentType)=>{
-                                                        const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === expensePaymentType.name
+                                                        const isSelected = _.isUndefined(initialValue) ? false : _.isNull(initialValue.expensePaymentType) ? false : initialValue.expensePaymentType.name === expensePaymentType.name
                                                         return <option selected={isSelected} value={JSON.stringify(expensePaymentType)}>{expensePaymentType.name}</option>
 
                                                     })}
@@ -421,7 +423,7 @@ const ExpenseForm = (props) =>{
                                                     <option >Create new ...</option>
                                                     {
                                                         rExpenseType.map((expenseType)=>{
-                                                            const isSelected = _.isUndefined(initialValue) ? false : initialValue.expenseAddress.name === expenseType.name
+                                                            const isSelected = _.isUndefined(initialValue) ? false : _.isNull(initialValue.expenseType) ? false : initialValue.expenseType.name === expenseType.name
                                                             return <option selected={isSelected} value={JSON.stringify(expenseType)}>{expenseType.name}</option>
                                                         })
                                                     }
@@ -458,7 +460,8 @@ const ExpenseForm = (props) =>{
                                                 <TableToolBar clear= {clearTable} add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal} disable={disable}/>
                                                 <Row>
                                                     <ItemsTable
-                                                        data={_.isUndefined(initialValue) ?rExpenseForm.expenseItems : initialValue.expenseItems}
+                                                        // data={_.isUndefined(initialValue) ?rExpenseForm.expenseItems : initialValue.expenseItems}
+                                                        data={rExpenseForm.expenseItems}
                                                         errors={errors}
                                                         formikValues={values}
                                                         disable={disable}
@@ -467,6 +470,7 @@ const ExpenseForm = (props) =>{
                                                         handleBlur={handleBlur}
                                                         setFieldValue={setFieldValue}
                                                         setFieldTouched={setFieldTouched}
+                                                        setSelectedExpense={setSelectedExpense}
                                                         removeSelectedTableRow={removeSelectedTableRow}
                                                         setNonExistingUnitOption={setNonExistingUnitOption}
                                                         setNonExistingCategoryOption={setNonExistingCategoryOption}

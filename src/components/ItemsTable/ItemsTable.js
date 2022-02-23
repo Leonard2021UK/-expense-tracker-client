@@ -21,6 +21,7 @@ function ItemsTable(props) {
     const rItemCategories = useSelector((state) => state.suggestions.itemCategory.response);
     const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
     const rItem = useSelector((state) => state.suggestions.item.response);
+    const {itemsTableState,setItemsTableState} = useState({})
 
 
     const {
@@ -32,6 +33,7 @@ function ItemsTable(props) {
         handleChange,
         setFieldValue,
         setFieldTouched,
+        setSelectedExpense,
         removeSelectedTableRow,
         setNonExistingItemOption,
         setNonExistingUnitOption,
@@ -263,7 +265,7 @@ function ItemsTable(props) {
                                     rowId={index}
                                     icon={faTrash}
                                     color="red"
-                                    onClickHandler={removeSelectedTableRow}
+                                    onClickHandler={() => removeSelectedTableRow(index)}
                                 />
                             )
                         }
