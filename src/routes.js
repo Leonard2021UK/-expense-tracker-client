@@ -1,11 +1,12 @@
 import Admin from "./layout/admin/Admin";
 import ExpenseTrackerView from "./views/ExpenseTracker/ExpenseTrackerView";
+import DashboardGridCards from "./components/DashboardGridCards/DashboardGridCards";
 const routes = [
     {
         path: "/dashboard",
         name: "Dashboard",
         icon: "#home",
-        component: Admin,
+        component: DashboardGridCards,
         layout: "/admin",
         type: ["ROLE_ADMIN","ROLE_USER"],
         submenu: []
@@ -14,7 +15,8 @@ const routes = [
         path: "/budgeting",
         name: "Budgeting",
         icon: "#geo-fill",
-        component: null,
+        component:null
+        ,
         layout: "/admin",
         type: ["ROLE_ADMIN","ROLE_USER"],
         submenu:[]

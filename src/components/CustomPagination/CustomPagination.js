@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {usePagination} from "../../customHooks/usePagination";
 import _ from "lodash";
+import {logDOM} from "@testing-library/react";
 function CustomPagination(props) {
 
     const {data,setCurrentPageContent} = props;
@@ -39,6 +40,7 @@ function CustomPagination(props) {
     }
 
     useEffect(()=>{
+        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
         setCurrentPageContent(getCurrenPageData())
     },[currentPage,data])
 

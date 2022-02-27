@@ -8,7 +8,7 @@ import UserService from "../../../services/UserService";
 import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 const ExpenseListModal = (props) =>{
 
-    const {toggleModal,show,currentExpenseTracker} = props;
+    const {toggleModal,show,currentExpenseTracker,setCurrentExpenseTracker} = props;
 
     const handleClose = () =>{
         toggleModal();
@@ -31,7 +31,7 @@ const ExpenseListModal = (props) =>{
                         <Container fluid style={{padding:1+"vw"}}>
                             <Row>
                                 <Col>
-                                    <ExpensesTable currentExpenseTracker={currentExpenseTracker}/>
+                                    <ExpensesTable currentExpenseTracker={currentExpenseTracker} setCurrentExpenseTracker={setCurrentExpenseTracker}/>
                                 </Col>
                             </Row>
                         </Container>

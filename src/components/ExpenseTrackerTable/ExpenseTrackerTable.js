@@ -59,9 +59,25 @@ const ExpenseTrackerTable = (props) => {
         setDisabledFields(true)
     }
 
+    useEffect(()=>{
+        console.log(rExpenseTrackers)
+        console.log(currentPageContent)
+        if(!_.isUndefined(currentExpenseTracker)){
+            setCurrentExpenseTracker(rExpenseTrackers.find((expenseTracker)=>
+                expenseTracker.id === currentExpenseTracker.id
+            ))
+        }
+
+    },[rExpenseTrackers])
+
     return (
         <>
-            <ExpenseListModal show={expensesModalIsOpen} currentExpenseTracker={currentExpenseTracker} toggleModal={toggleExpenseListModal}/>
+            <ExpenseListModal
+                show={expensesModalIsOpen}
+                currentExpenseTracker={currentExpenseTracker}
+                toggleModal={toggleExpenseListModal}
+                setCurrentExpenseTracker={setCurrentExpenseTracker}
+            />
             <ExpenseDetailsModal
                 show={createExpenseModalIsOpen}
                 toggleModal={toggleExpenseDetailsModal}

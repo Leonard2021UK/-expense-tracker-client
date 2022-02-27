@@ -7,6 +7,7 @@ import {Route, Switch} from "react-router-dom";
 import UserService from "../../services/UserService";
 import routes from "../../routes";
 import {Col, Container, Row} from "react-bootstrap";
+import DashboardGridCards from "../../components/DashboardGridCards/DashboardGridCards";
 const Admin = (props) =>{
 
     const {path,pathHandler} = props;

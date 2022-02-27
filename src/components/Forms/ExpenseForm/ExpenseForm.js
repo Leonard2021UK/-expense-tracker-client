@@ -265,7 +265,7 @@ const ExpenseForm = (props) =>{
                             console.log(response)
                             if(response.ok){
                                 toggleModal();
-                                handleExpenseResponse(response,"New expense was successfully created!")
+                                handleExpenseResponse(response,"New expense was successfully " + (update) ? "updated!" : "created!")
                                 dispatch(expenseTrackersInValidate({data:true}))
                                 dispatch(expenseTrackerThunk())
                                 dispatch(clearExpenseForm())

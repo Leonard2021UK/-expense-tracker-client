@@ -2,20 +2,21 @@ import "./expensesTableStyle.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBookOpen, faEdit, faMailBulk, faTrash, faArrowUp,faCheck,faTimes,faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import ExpenseDetailsModal from "../Modals/ExpenseDetailsModal/ExpenseDetailsModal";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TableToolBar from "../TableToolBars/TableToolBar";
 import CustomPagination from "../CustomPagination/CustomPagination";
 import CreateExpenseModal from "../Modals/CreateExpenseModal/CreateExpenseModal";
 import {clearItemForm} from "../../redux/features/domain/forms/itemFormSlice";
 import {clearExpenseForm,clearItemTableState} from "../../redux/features/domain/forms/expenseFormSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 // import {clearItemTableState} from "../../redux/features/domain/tables/itemsTableSlice";
 
 const ExpensesTable = (props)=>{
     const dispatch = useDispatch();
 
-    const {currentExpenseTracker} = props;
+    const {currentExpenseTracker,setCurrentExpenseTracker} = props;
     const [expenseDetailsModalIsOpen, setExpenseDetailsModalIsOpen] = useState(false);
+    const rExpenseTrackers = useSelector((state) => state.expenseTrackers.response);
 
     const [selectedExpense, setSelectedExpense] = useState({});
     const [disable, setDisable] = useState(true);
@@ -39,6 +40,11 @@ const ExpensesTable = (props)=>{
     //     dispatch(clearExpenseForm())
     //     setDisable(false)
     // }
+    useEffect(()=>{
+        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        setUpdate(update)
+        setCurrentExpenseTracker(currentExpenseTracker)
+    },[rExpenseTrackers])
     const handleShowExpenseDetails = (expense)=>{
         setDisable(true)
         setSelectedExpense(expense)

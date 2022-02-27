@@ -76,7 +76,7 @@ const LoginModal = (props) =>{
                                         setShowLoginError(true);
                                     }else{
                                         //redirects to admin page
-                                        history.push("/admin");
+                                        history.push("/admin/dashboard");
                                     }
                                     // toggleLoginModal();
                                 }).then(() => {
