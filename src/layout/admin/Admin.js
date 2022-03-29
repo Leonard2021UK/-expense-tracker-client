@@ -1,13 +1,11 @@
-import React,{useState,useEffect} from 'react';
+import React,{useEffect} from 'react';
 import NavBar from "../../components/Navbar/NavBar";
 import SideBar from "../../components/SideBar/SideBar"
-// import './lognPage.css';
 import '../../components/Navbar/navbar.css'
 import {Route, Switch} from "react-router-dom";
 import UserService from "../../services/UserService";
 import routes from "../../routes";
 import {Col, Container, Row} from "react-bootstrap";
-import DashboardGridCards from "../../components/DashboardGridCards/DashboardGridCards";
 const Admin = (props) =>{
 
     const {path,pathHandler} = props;
@@ -39,12 +37,7 @@ const Admin = (props) =>{
 
         });
     };
-    // <Col lg={4} md={3} xs={1}>
-    //     <SideBar props={props}/>
-    // </Col>
-    // <Col >
-    //     <NavBar />
-    // </Col>
+
     return (
         <>
             <Container fluid style={{padding:0}}>

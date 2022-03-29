@@ -1,6 +1,4 @@
 import React from "react";
-import {Button} from "react-bootstrap";
-// import "../ItemsTableStyle.css"
 const ItemsTableHeader = (props)=>{
     return (
             <th

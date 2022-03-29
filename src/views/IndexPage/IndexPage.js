@@ -8,16 +8,13 @@ import face1 from '../../assets/img/faces/kendall.jpg';
 import face2 from '../../assets/img/faces/christian.jpg';
 import face3 from '../../assets/img/faces/marc.jpg';
 import NavBar from "../../components/Navbar/NavBar";
-import React,{useState,useEffect} from 'react';
+import React,{useState,} from 'react';
 import RegisterModal from "../../components/Modals/RegisterModal/RegisterModal";
 
 
-const IndexPage = (props) => {
-    const {path,pathHandler} = props;
+const IndexPage = () => {
 
-    useEffect(()=>{
-        // pathHandler(path)
-    },[])
+
 
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);

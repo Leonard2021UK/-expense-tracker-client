@@ -1,17 +1,15 @@
 import "./ItemsTableStyle.css";
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import ItemsTableHeader from "./ItemsTableHeader/ItemsTableHeader";
-import AutoSuggestion from "../AutoSuggestion/AutoSuggestion";
-import {Col, Form, FormControl, InputGroup} from "react-bootstrap";
+import {Col, Form, InputGroup} from "react-bootstrap";
 import {setItemCategory, setItemFormState, setUnitType} from "../../redux/features/domain/forms/itemFormSlice";
 import RowAction from "../RowAction/RowAction";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import _ from 'lodash';
 import {useDispatch, useSelector} from "react-redux";
 import TableAutoSuggestion from "../TableAutoSuggestion/TableAutoSuggestion";
-import PropTypes from "prop-types";
 import exact from "prop-types-exact";
-import {setItemTableState,updateSelectedRow,addRow,removeRow,removeSelectedRow,clearTableState} from "../../redux/features/domain/forms/expenseFormSlice";
+import {updateSelectedRow} from "../../redux/features/domain/forms/expenseFormSlice";
 import CustomTableInputField from "../CustomTableInputField/CustomTableInputField";
 
 const {useTable} = require("react-table");
@@ -21,7 +19,6 @@ function ItemsTable(props) {
     const rItemCategories = useSelector((state) => state.suggestions.itemCategory.response);
     const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
     const rItem = useSelector((state) => state.suggestions.item.response);
-    const {itemsTableState,setItemsTableState} = useState({})
 
 
     const {
@@ -32,8 +29,6 @@ function ItemsTable(props) {
         formikValues,
         handleChange,
         setFieldValue,
-        setFieldTouched,
-        setSelectedExpense,
         removeSelectedTableRow,
         setNonExistingItemOption,
         setNonExistingUnitOption,
@@ -97,12 +92,10 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"item_" + index}
                                         rowId={index}
-                                        // disable={disable}
                                         disable={true}
                                         suggestionName="item"
                                         handleSuggestionChange={updateTableRow}
                                         reduxReducer={setItemFormState}
-                                        // data[index].item - present when update or show | data[index] - when create
                                         initialValue={_.isEmpty(data[index].item) ? [] : data[index].item}
                                         options={rItem}
                                         setNonExistingOption={setNonExistingItemOption}
@@ -128,7 +121,6 @@ function ItemsTable(props) {
                                             name="amount"
                                             placeholder="Enter amount"
                                             handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
-                                        // disable={disable}
                                             disable={true}
                                             defaultValue={_.isEmpty(data) ? {} : data[index].amount}
                                             handleChange={handleChange}
@@ -151,7 +143,6 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"unit_" + index}
                                         rowId={index}
-                                        // disable={disable}
                                         disable={true}
                                         suggestionName="unitType"
                                         handleSuggestionChange={updateTableRow}
@@ -180,7 +171,6 @@ function ItemsTable(props) {
                                         name="unitPrice"
                                         placeholder="Enter unitPrice"
                                         handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
-                                        // disable={disable}
                                         disable={true}
                                         defaultValue={_.isEmpty(data) ? {} : data[index].unitPrice}
                                         handleChange={handleChange}
@@ -203,7 +193,6 @@ function ItemsTable(props) {
                                     <TableAutoSuggestion
                                         id={"itemCategory_" + index}
                                         rowId={index}
-                                        // disable={disable}
                                         disable={true}
                                         handleSuggestionChange={updateTableRow}
                                         suggestionName="itemCategory"
@@ -232,7 +221,6 @@ function ItemsTable(props) {
                                         name="price"
                                         placeholder="Enter price"
                                         handleInputFiledOnBlur={(e) =>handleInputFiledOnBlur(e,index)}
-                                        // disable={disable}
                                         disable={true}
                                         defaultValue={_.isEmpty(data) ? {} : data[index].price}
                                         handleChange={handleChange}

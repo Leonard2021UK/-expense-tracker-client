@@ -1,4 +1,3 @@
-// Load LODASH, the full build.
 import notification from "../components/Notification/Notification";
 
 const _ = require('lodash');
@@ -9,7 +8,7 @@ const _ = require('lodash');
  * @param reset
  * @returns {((function(*=, *=, *=): boolean)|*)[]}
  */
-//TODO
+
 export function useResponse(setState,reset) {
 
     /**
@@ -20,6 +19,7 @@ export function useResponse(setState,reset) {
      * @returns {boolean}
      */
     const handleResponse = async (response,customSuccessMessage = null, customErrorMessage = null )=>{
+        //TODO refactor response handler
        try {
            if (!response.ok ) {
 
@@ -31,41 +31,13 @@ export function useResponse(setState,reset) {
                }else if(response && response.errorCauses.length > 0){
                    response.errorCauses.forEach((error)=>{
                        // TODO error handling when server timed out, use debug mode
-                       // notification(response.json().message,"error");
                        notification(error,"error");
                    })
                }else{
-
-                   //     // use custom error message
-                   //     if (customErrorMessage){
-                           notification(customErrorMessage,"error");
-                   //     }else{
-                   //
-                   //         if(!_.isNull(response)){
-                   //             notification("System error:" + response.errorSummary,"error");
-                   //         }else{
-                   //             notification("System error:","error");
-                   //
-                   //         }
-                   //
+                    notification(customErrorMessage,"error");
                }
 
            }
-               // error
-               // return false;
-               //handles errors which are occuring before the request reaches the server
-               // }
-               // else if(response && !_.isUndefined(response.ok) ){
-               //   if (!response.ok) {
-               //       notification(response.statusText, "error");
-               //   }else {
-               //       if(setState){
-               //           setState(response)
-               //           notification(customSuccessMessage,"success");
-               //       }
-               //
-               //   }
-           // }
            else{
                if (customSuccessMessage){
                    notification(customSuccessMessage,"success");
@@ -83,7 +55,8 @@ export function useResponse(setState,reset) {
                // return true;
            }
        }catch (error){
-           notification(error,"error");
+           notification("Something went wrong!","error");
+           console.error(error)
        }
     }
 

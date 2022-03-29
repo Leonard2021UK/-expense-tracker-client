@@ -33,7 +33,7 @@ const ExpenseAddressForm = (props) =>{
 
     const [handleNewExpenseAddressResponse] = useResponse(setSavedExpenseAddress);
 
-    const {saveExpenseAddress} = useApiService();
+    const {expenseAddressApiModule} = useApiService();
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -60,46 +60,23 @@ const ExpenseAddressForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        // dispatch(setRowId({"rowId": rItemTableData.length}))
 
-                        // dispatch(addRow({
-                        //     row:rItemForm,rowId:rItemTableData.length
-                        // }))
-
-                        // dispatch(clearItemForm())
-                        // const reqBody = {
-                        //     "name":rItemForm.item,
-                        //     "amount":rItemForm.amount,
-                        //     "unitPrice":rItemForm.unitPrice,
-                        //     "unitType":rItemForm.unitType[0].id,
-                        //     "mainCategoryId":rItemForm.itemCategory[0].id
-                        // }
                         setFetchingExpenseAddress(true);
-                        saveExpenseAddress("POST",values)
+                        expenseAddressApiModule().saveExpenseAddress("POST",values)
                             .then(async (response)=>{
                                 if(response.ok){
                                     toggleModal();
                                     handleNewExpenseAddressResponse(response, "New address was successfully created!")
-                        //             // let parsedResponse = await response.json();
-                        //             // setSavedNewMainCategory( [parsedResponse]);
                                     dispatch(expenseAddressInValidate({data:true}));
                                     dispatch(expenseAddressThunk());
                                 }else{
                                     toggleModal();
                                     handleNewExpenseAddressResponse(response, null,"New item couldn't be created!")
-                        //
                                 }
-                        //         //TODO error handling
+                        //TODO error handling
                             }).then(()=>{
                             setFetchingExpenseAddress(false);
-                        //setFetchingExpenseAddress
                         })
-                        // UserService.register(values).then((response)=>{
-                        //     console.log(response)
-                        // })
-                        // Resets form after submission is complete
-                        // resetForm();
-
                         // Sets setSubmitting to false after form is reset
                         setSubmitting(false);
                     }}

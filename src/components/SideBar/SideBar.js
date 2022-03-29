@@ -4,12 +4,9 @@ import routes from '../../routes';
 import {NavLink} from "react-router-dom";
 import {useState} from "react";
 import UserService from "../../services/UserService";
-import SubMenu from "./SubMenu";
-import {Col} from "react-bootstrap";
 const SideBar = ()=>{
 
     const [activeSiteName,setActiveSiteName] = useState();
-    // const handleLogout = () => UserService.logout();
 
     return (
         <>

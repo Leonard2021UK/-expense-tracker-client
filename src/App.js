@@ -1,8 +1,6 @@
 import IndexPage from "./views/IndexPage/IndexPage";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 import Admin from "./layout/admin/Admin";
-import PublicRenderer from "./utilityComponents/PublicRenderer";
-import AuthRenderer from "./utilityComponents/AuthRenderer";
 import {useHistory} from "react-router-dom";
 import {SecureRoute} from "./utilityComponents/SecureRoute";
 

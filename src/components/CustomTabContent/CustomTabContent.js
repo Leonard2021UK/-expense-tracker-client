@@ -1,7 +1,7 @@
 import { Card, Table} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faTrash} from "@fortawesome/free-solid-svg-icons";
-import React, {useEffect} from "react";
+import React from "react";
 
 
 const CustomTabContent = (props)=>{

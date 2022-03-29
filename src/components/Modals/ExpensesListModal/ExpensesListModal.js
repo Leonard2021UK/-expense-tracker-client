@@ -1,10 +1,9 @@
-import React, {useState} from "react";
-import {Button, Col, Container, Form, Modal, Row} from "react-bootstrap";
+import React from "react";
+import {Col, Container, Modal, Row} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
 
 import './expensesListModalStyle.css';
-import UserService from "../../../services/UserService";
 import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 const ExpenseListModal = (props) =>{
 
@@ -27,7 +26,6 @@ const ExpenseListModal = (props) =>{
                     <Modal.Title>Submitted expenses</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/*<div style={{width:"80%",margin:"auto"}}>*/}
                         <Container fluid style={{padding:1+"vw"}}>
                             <Row>
                                 <Col>
@@ -35,15 +33,7 @@ const ExpenseListModal = (props) =>{
                                 </Col>
                             </Row>
                         </Container>
-
-                    {/*</div>*/}
                 </Modal.Body>
-                {/*<Modal.Footer>*/}
-                {/*    <Button variant="secondary" onClick={handleClose}>*/}
-                {/*        Close*/}
-                {/*    </Button>*/}
-                {/*    <Button variant="primary" disabled={isSubmitting}> Register</Button>*/}
-                {/*</Modal.Footer>*/}
             </Modal>
         </>
     )

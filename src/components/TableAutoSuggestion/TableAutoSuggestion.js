@@ -1,19 +1,14 @@
 import {Typeahead} from "react-bootstrap-typeahead";
-import {Form, Button, InputGroup, FormControl} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
-import {useSelector,useDispatch} from "react-redux";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
-import {logDOM} from "@testing-library/react";
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
+
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
-import ExpenseForm from "../Forms/ExpenseForm/ExpenseForm";
 
 const _ = require('lodash');
 
 const TableAutoSuggestion = (props) => {
 
-    const dispatch = useDispatch();
 
     const {
         id,
@@ -23,14 +18,10 @@ const TableAutoSuggestion = (props) => {
         errors,
         suggestionLabels,
         handleSuggestionChange,
-        handleTableChange,
         initialValue,
         options,
         className,
-        reduxReducer,
         suggestionName,
-        nonExistingOptionIsValid,
-        setNonExistingOption
     } = props;
 
     //if initial value is an object wrap it in to an array
@@ -67,16 +58,11 @@ const TableAutoSuggestion = (props) => {
             setSelectedItem(selected)
             setCurrentSuggestionValue("")
         }
-        // setSelectedItem(value[0])
-        // console.log(value)
-
     }
 
     const handleOnInputChange = (selected) =>{
         let value = (_.isUndefined(selected.target) ? selected : selected.target.value )
-        // //
         setCurrentSuggestionValue(value)
-        // console.log(currentSuggestionValue)
     }
 
     /**

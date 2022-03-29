@@ -6,8 +6,7 @@ import {
     faPlusSquare
 } from "@fortawesome/free-solid-svg-icons";
 import ExpenseListModal from "../Modals/ExpensesListModal/ExpensesListModal";
-import React, {useEffect, useRef, useState} from "react";
-import {useSelector} from "react-redux";
+import React, {useEffect, useState} from "react";
 import TableToolBar from "../TableToolBars/TableToolBar";
 import CustomPagination from "../CustomPagination/CustomPagination";
 import ExpenseDetailsModal from "../Modals/ExpenseDetailsModal/ExpenseDetailsModal";
@@ -32,7 +31,7 @@ const ExpenseTrackerTable = (props) => {
     const [disabledFields, setDisabledFields] = useState(false);
     const [handleDeleteExpenseTrackerResponse] = useResponse();
 
-    const  {deleteExpenseTracker} = useApiService();
+    const  {expenseTrackerApiModule} = useApiService();
 
     const toggleExpenseDetailsModal = ()=>{
         setCreateExpenseModalIsOpen(!createExpenseModalIsOpen);
@@ -52,7 +51,7 @@ const ExpenseTrackerTable = (props) => {
     }
 
     const handleDeleteExpensesTracker = (expenseTracker) =>{
-        deleteExpenseTracker(expenseTracker.id)
+        expenseTrackerApiModule().deleteExpenseTracker(expenseTracker.id)
             .then(async (response) =>{
                 if(response.ok){
                     handleDeleteExpenseTrackerResponse(response,"Expense tracker was successfully deleted!")
@@ -63,9 +62,7 @@ const ExpenseTrackerTable = (props) => {
                     handleDeleteExpenseTrackerResponse(response, null,"Expense tracker couldn't be deleted!")
                 }
                 //TODO error handling
-            }).then(()=>{
-            // setFetchingExpense(false);
-        });
+            });
     }
 
     const handleShowExpensesTracker = (expenseTracker) => {

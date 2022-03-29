@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import classNames from "classnames";
 
-import { Link, NavLink } from "react-router-dom";
+import {  NavLink } from "react-router-dom";
 import UserService from "../../services/UserService";
 
 import "./sidebars.css"
 
 
 const SubMenu = (props) => {
-    const [collapsed, setCollapsed] = useState(true);
-    const toggle = () => setCollapsed(!collapsed);
-    const { icon, title, items,setActiveSiteName } = props;
+    const {items,setActiveSiteName } = props;
     return (
         <ul className="nav nav-pills flex-column mb-auto" >
             {items.map((prop,key)=>{

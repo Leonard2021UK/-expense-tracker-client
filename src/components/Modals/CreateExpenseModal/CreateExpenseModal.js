@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, Container, Modal, Row, ToastContainer} from "react-bootstrap";
+import {Col, Container, Modal, Row} from "react-bootstrap";
 import ExpenseForm from "../../Forms/ExpenseForm/ExpenseForm";
 
 function CreateExpenseModal(props){
@@ -19,7 +19,6 @@ function CreateExpenseModal(props){
                 <Modal.Title>Add new expense into the tracker</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {/*<div style={{width:"80%",margin:"auto"}}>*/}
                 <Container fluid style={{padding:1+"vw"}}>
                     <Row>
                         <Col>
@@ -31,15 +30,8 @@ function CreateExpenseModal(props){
                         </Col>
                     </Row>
                 </Container>
-
-                {/*</div>*/}
             </Modal.Body>
-            {/*<Modal.Footer>*/}
-            {/*    <Button variant="secondary" onClick={handleClose}>*/}
-            {/*        Close*/}
-            {/*    </Button>*/}
-            {/*    <Button variant="primary" disabled={isSubmitting}> Register</Button>*/}
-            {/*</Modal.Footer>*/}
+
         </Modal>
     )
 }

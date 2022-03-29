@@ -57,6 +57,7 @@ const RegisterModal = (props) =>{
                                 // When button submits form and form is in the process of submitting, submit button is disabled
                                 setSubmitting(true);
                                 UserService.register(values).then((response)=>{
+                                    console.log(response)
                                 })
                                 // Resets form after submission is complete
                                 resetForm();
@@ -148,12 +149,6 @@ const RegisterModal = (props) =>{
                         </Formik>
                     </div>
                 </Modal.Body>
-                {/*<Modal.Footer>*/}
-                {/*    <Button variant="secondary" onClick={handleClose}>*/}
-                {/*        Close*/}
-                {/*    </Button>*/}
-                {/*    <Button variant="primary" disabled={isSubmitting}> Register</Button>*/}
-                {/*</Modal.Footer>*/}
             </Modal>
         </>
     )

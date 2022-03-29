@@ -1,8 +1,5 @@
 import "./expenseDetailsModal.css";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookOpen, faEdit, faMailBulk, faTrash, faArrowUp,faCheck,faTimes,faWindowClose} from "@fortawesome/free-solid-svg-icons";
 import {Col, Container, Modal, Row} from "react-bootstrap";
-import ExpensesTable from "../../ExpensesTable/ExpensesTable";
 import React from "react";
 import ExpenseForm from "../../Forms/ExpenseForm/ExpenseForm";
 
@@ -24,7 +21,6 @@ const ExpenseDetailsModal = (props)=>{
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {/*<div style={{width:"80%",margin:"auto"}}>*/}
                     <Container fluid style={{padding:1+"vw"}}>
                         <Row>
                             <Col>
@@ -39,15 +35,7 @@ const ExpenseDetailsModal = (props)=>{
                             </Col>
                         </Row>
                     </Container>
-
-                    {/*</div>*/}
                 </Modal.Body>
-                {/*<Modal.Footer>*/}
-                {/*    <Button variant="secondary" onClick={handleClose}>*/}
-                {/*        Close*/}
-                {/*    </Button>*/}
-                {/*    <Button variant="primary" disabled={isSubmitting}> Register</Button>*/}
-                {/*</Modal.Footer>*/}
             </Modal>
         </>
     )

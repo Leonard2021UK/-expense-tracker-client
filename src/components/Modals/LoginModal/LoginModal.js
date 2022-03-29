@@ -29,11 +29,6 @@ const LoginModal = (props) =>{
     }
 
 
-
-    const handleLogin = () =>{
-
-    }
-
     const validationSchema = Yup.object().shape({
         email: Yup.string()
             .email("*Must be a valid email address")
@@ -78,11 +73,7 @@ const LoginModal = (props) =>{
                                         //redirects to admin page
                                         history.push("/admin/dashboard");
                                     }
-                                    // toggleLoginModal();
-                                }).then(() => {
-
-
-                                    })
+                                });
 
                                 // Resets form after submission is complete
                                 resetForm();

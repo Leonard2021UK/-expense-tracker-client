@@ -2,11 +2,7 @@ import React, {useEffect, useState} from "react";
 import {
     Button,
     Col,
-    FloatingLabel,
     Form,
-    FormControl,
-    InputGroup,
-    Modal,
     Row,
     Spinner,
     ToastContainer
@@ -44,7 +40,7 @@ const ExpenseTrackerForm = (props) =>{
 
 
     //declared separately to be able to use to validate creation button
-    const {fetchMainCategory,saveExpenseTracker} = useApiService();
+    const {mainCategoryApiModule,expenseTrackerApiModule} = useApiService();
     const dispatch = useDispatch();
     const rExpenseTrackerForm = useSelector((state) => state.expenseTrackerForm.formState)
 
@@ -63,11 +59,10 @@ const ExpenseTrackerForm = (props) =>{
 
             setFetchingNewCategory(true);
 
-            fetchMainCategory("POST",reqBody)
+            mainCategoryApiModule.fetchMainCategory("POST",reqBody)
                 .then(async (response)=>{
                     if(response.ok){
                         handleNewMainCategoryResponse(response, "New category was successfully created!")
-                        // setSavedNewMainCategory( [parsedResponse]);
                         dispatch(mainCategoryInValidate({data:true}));
                         dispatch(mainCategoryThunk());
 
@@ -123,14 +118,11 @@ const ExpenseTrackerForm = (props) =>{
                             "name":rExpenseTrackerForm.mainCategoryName,
                             "mainCategory":rExpenseTrackerForm.mainCategory
                         }
-                        // setFetchingNewExpenseTracker(true);
-                        saveExpenseTracker(reqBody)
+                        expenseTrackerApiModule().saveExpenseTracker(reqBody)
                             .then(async (response)=>{
                                 if(response.ok){
                                     toggleModal();
                                     handleNewExpenseTrackerResponse(response, "New expense-tracker was successfully created!")
-                                    // let parsedResponse = await response.json();
-                                    // setSavedNewMainCategory( [parsedResponse]);
                                     dispatch(expenseTrackersInValidate({data:true}));
 
                                     dispatch(expenseTrackerThunk());
@@ -190,8 +182,6 @@ const ExpenseTrackerForm = (props) =>{
                                 </Form.Group>
                             </Row>
                             <Row className={"category-align"} style={{marginTop:5 + "vh"}}>
-                                {/*<Form.Group>*/}
-                                {/*    <InputGroup className="mb-5">*/}
                                 <Form.Label>Category</Form.Label>
                                         <Col lg={8}>
                                             <AutoSuggestion
@@ -216,41 +206,26 @@ const ExpenseTrackerForm = (props) =>{
                                         </Col>
 
                                         <Col lg={2}>
-                                            {/*<Button*/}
-                                            {/*    variant="outline-secondary"*/}
-                                            {/*    id="button-addon2"*/}
-                                            {/*    className={"input-addon-button"}*/}
-                                            {/*    onClick={handleCreateNewCategory}*/}
-                                            {/*    disabled={ nonExistingOption === '' || nonExistingOption.length < categoryMinLength}*/}
-                                            {/*>*/}
                                                 <FontAwesomeIcon
                                                     icon={faFolderPlus}
-                                                    // className={(nonExistingOption === '' || nonExistingOption.length < categoryMinLength)?"fas fa-2x fa-disabled":"fas fa-2x" }
                                                     className={(nonExistingOptionIsValid && !typedOptionAlreadyExists) ? "fas fa-2x" : "fas fa-2x fa-disabled" }
                                                     color={"green"}
                                                     style={{margin:1+"vh",cursor:"pointer"}}
                                                     onClick={handleCreateNewCategory}
                                                 />
-                                            {/*</Button>*/}
+
                                         </Col>
                                 <Col lg={2} className={(fetchingNewCategory)?'show-spinner':"hide-spinner"}>
                                     <Spinner animation="border" size="sm" />
 
                                 </Col>
-
-                                    {/*</InputGroup>*/}
-                                {/*</Form.Group>*/}
                             </Row>
                             <Row style={{marginTop:5 + "vh"}}>
                                 <Col lg={3}>
-                                    {/*<Form.Group>*/}
-                                    {/*    <Row style={{marginTop:5 + "vh"}}>*/}
-                                            <Col sm={1}>
-                                                <Button variant="primary" type="submit" disabled={isSubmitting}>Create</Button>
-                                            </Col>
-                                        {/*</Row>*/}
+                                    <Col sm={1}>
+                                        <Button variant="primary" type="submit" disabled={isSubmitting}>Create</Button>
+                                    </Col>
 
-                                    {/*</Form.Group>*/}
                                 </Col>
                                 <Col lg={3} className={(fetchingNewExpenseTracker)?'':"hide-spinner"}>
                                     <Spinner animation="border" size="sm" />

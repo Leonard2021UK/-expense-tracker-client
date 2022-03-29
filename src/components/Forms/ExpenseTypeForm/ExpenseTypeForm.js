@@ -29,7 +29,7 @@ const ExpenseTypeForm = (props) =>{
 
     const [handleNewExpenseTypeResponse] = useResponse(setSavedNewExpenseType);
 
-    const {saveExpenseType} = useApiService();
+    const {expenseTypeApiModule} = useApiService();
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -50,13 +50,11 @@ const ExpenseTypeForm = (props) =>{
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
                         setFetchingNewExpenseType(true);
-                        saveExpenseType("POST",values)
+                        expenseTypeApiModule.saveExpenseType("POST",values)
                             .then(async (response)=>{
                                 if(response.ok){
                                     toggleModal();
                                     handleNewExpenseTypeResponse(response, "New item was successfully created!")
-                                    // let parsedResponse = await response.json();
-                                    // setSavedNewMainCategory( [parsedResponse]);
                                     dispatch(expenseTypeInValidate({data:true}));
                                     dispatch(expenseTypeThunk());
                                 }else{
@@ -64,17 +62,10 @@ const ExpenseTypeForm = (props) =>{
                                     handleNewExpenseTypeResponse(response, null,"New item couldn't be created!")
 
                                 }
-                        //         //TODO error handling
+                        //TODO error handling
                             }).then(()=>{
                             setFetchingNewExpenseType(false);
-                        //
                         })
-                        // UserService.register(values).then((response)=>{
-                        //     console.log(response)
-                        // })
-                        // Resets form after submission is complete
-                        // resetForm();
-
                         // Sets setSubmitting to false after form is reset
                         setSubmitting(false);
                     }}
@@ -83,13 +74,9 @@ const ExpenseTypeForm = (props) =>{
                         {
                             handleSubmit,
                             handleChange,
-                            handleBlur,
-                            values,
                             touched,
                             errors,
                             isSubmitting,
-                            setFieldValue,
-                            setFieldTouched,
                         }
                     )=>(
                         <Form onSubmit={handleSubmit}>
@@ -100,11 +87,6 @@ const ExpenseTypeForm = (props) =>{
                                         type="text"
                                         name="name"
                                         placeholder="Enter name"
-                                        // onBlur={(e)=>{
-                                        //     handleBlur(e)
-                                        //     return updateCurrentRowItemFormState(e,e.target.value);
-                                        // }}
-                                        // disabled={disable}
                                         onChange={handleChange}
                                         className={(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched["name"] && errors["name"] ? "error" : null}
                                     />

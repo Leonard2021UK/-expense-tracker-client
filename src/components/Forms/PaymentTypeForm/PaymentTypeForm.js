@@ -1,44 +1,18 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import {
     Button,
     Col,
-    FloatingLabel,
     Form,
-    FormControl,
-    InputGroup,
-    Modal,
     Row,
-    Spinner,
     ToastContainer
 } from "react-bootstrap";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import {itemCategoryThunk,itemCategoryInValidate} from "../../../redux/features/suggestions/itemCategorySuggestionSlice";
-import {unitTypeThunk,unitTypeInValidate} from "../../../redux/features/suggestions/unitSuggestionSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import _ from "lodash";
 import './paymentTypeFormStyle.css';
-import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
-import {
-    setAmount,
-    setItemCategory,
-    setItemFormState,
-    clearItemForm,
-    setItem, setPrice, setUnitType, setUnitPrice
-} from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
-import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
-import TableAutoSuggestion from "../../TableAutoSuggestion/TableAutoSuggestion";
-import CustomTableInputField from "../../CustomTableInputField/CustomTableInputField";
-import {
-    addRow,
-    setRowId,
-    updateSelectedRow
-} from "../../../redux/features/domain/forms/expenseFormSlice";
-import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
 import {
     expensePaymentTypeInValidate,
     expensePaymentTypeThunk
@@ -58,7 +32,7 @@ const PaymentTypeForm = (props) =>{
 
     const [handleNewPaymentTypeResponse] = useResponse(setSavedNewPaymentType);
 
-    const {savePaymentType} = useApiService();
+    const {paymentTypeApiModule} = useApiService();
 
     const validationSchema = Yup.object().shape({
         name: Yup.string()
@@ -78,16 +52,13 @@ const PaymentTypeForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        console.log(values)
 
                         setFetchingNewPaymentType(true);
-                        savePaymentType("POST",values)
+                        paymentTypeApiModule().savePaymentType("POST",values)
                             .then(async (response)=>{
                                 if(response.ok){
                                     toggleModal();
                                     handleNewPaymentTypeResponse(response, "New item was successfully created!")
-                                    // let parsedResponse = await response.json();
-                                    // setSavedNewMainCategory( [parsedResponse]);
                                     dispatch(expensePaymentTypeInValidate({data:true}));
                                     dispatch(expensePaymentTypeThunk());
                                 }else{
@@ -95,17 +66,10 @@ const PaymentTypeForm = (props) =>{
                                     handleNewPaymentTypeResponse(response, null,"New item couldn't be created!")
 
                                 }
-                        //         //TODO error handling
+                        //TODO error handling
                             }).then(()=>{
                             setFetchingNewPaymentType(false);
-                        //
                         })
-                        // UserService.register(values).then((response)=>{
-                        //     console.log(response)
-                        // })
-                        // Resets form after submission is complete
-                        // resetForm();
-
                         // Sets setSubmitting to false after form is reset
                         setSubmitting(false);
                     }}
@@ -114,13 +78,9 @@ const PaymentTypeForm = (props) =>{
                         {
                             handleSubmit,
                             handleChange,
-                            handleBlur,
-                            values,
                             touched,
                             errors,
                             isSubmitting,
-                            setFieldValue,
-                            setFieldTouched,
                         }
                     )=>(
                         <Form onSubmit={handleSubmit}>
@@ -131,11 +91,6 @@ const PaymentTypeForm = (props) =>{
                                         type="text"
                                         name="name"
                                         placeholder="Enter name"
-                                        // onBlur={(e)=>{
-                                        //     handleBlur(e)
-                                        //     return updateCurrentRowItemFormState(e,e.target.value);
-                                        // }}
-                                        // disabled={disable}
                                         onChange={handleChange}
                                         className={(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched["name"] && errors["name"] ? "error" : null}
                                     />

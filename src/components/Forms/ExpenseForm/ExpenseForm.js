@@ -26,7 +26,6 @@ import AddNewResourceModal from "../../Modals/AddNewResourceModal/AddNewResource
 import ExpenseAddressForm from "../ExpenseAddressForm/ExpenseAddressForm";
 import ExpenseTypeForm from "../ExpenseTypeForm/ExpenseTypeForm";
 import PaymentTypeForm from "../PaymentTypeForm/PaymentTypeForm";
-import ItemForm from "../ItemForm/ItemForm";
 
 
 const ExpenseForm = (props) =>{
@@ -56,7 +55,7 @@ const ExpenseForm = (props) =>{
     const [createExpenseTypeModalIsOpen,setCreateExpenseTypeModalIsOpen] = useState(false);
     const [createItemModalIsOpen,setCreateItemModalIsOpen] = useState(false);
 
-    const {saveExpense} = useApiService();
+    const {expenseApiModule} = useApiService();
 
     const rItemTableData = useSelector((state) => state.itemsTable)
     const rExpenseForm = useSelector((state) => state.expenseForm.formState);
@@ -207,21 +206,6 @@ const ExpenseForm = (props) =>{
             <AddNewResourceModal show={createPaymentTypeModalIsOpen} toggleModal={toggleCreatePaymentTypeModalIsOpen} title={"Add new payment type"}>
                 {(toggleCreatePaymentTypeModalIsOpen)=>(<PaymentTypeForm toggleModal={toggleCreatePaymentTypeModalIsOpen}/>)}
             </AddNewResourceModal>
-            {/*<AddNewResourceModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} title={"Add new item"}>*/}
-            {/*    {(toggleCreateItemModal,*/}
-            {/*        rItemTableData,*/}
-            {/*        setNewRowData,*/}
-            {/*        rItemCategories,*/}
-            {/*        rUnitTypes,*/}
-            {/*        rItem)=>(<ItemForm */}
-            {/*            toggleModal={toggleCreateItemModal}*/}
-            {/*            rItemTableData={rItemTableData}*/}
-            {/*            setNewRowData={setNewRowData}*/}
-            {/*            rItemCategories={rItemCategories}*/}
-            {/*            rUnitTypes={rUnitTypes}*/}
-            {/*            rItem={rItem}*/}
-            {/*    />)}*/}
-            {/*</AddNewResourceModal>*/}
 
             <CreateItemModal
                 show={createItemModalIsOpen}
@@ -245,7 +229,7 @@ const ExpenseForm = (props) =>{
                     setFetchingExpense(true);
                     const method = (update) ? "PATCH" : "POST"
 
-                    saveExpense(method,reqBody)
+                    expenseApiModule().saveExpense(method,reqBody)
                         .then(async (response) =>{
                             if(response.ok){
                                 toggleModal();
@@ -264,13 +248,6 @@ const ExpenseForm = (props) =>{
                         }).then(()=>{
                             setFetchingExpense(false);
                         });
-                    // UserService.register(values).then((response)=>{
-                    //     console.log(response)
-                    // })
-                    // Resets form after submission is complete
-                    // resetForm();
-
-                    // Sets setSubmitting to false after form is reset
                     setSubmitting(false);
                 }}
             >

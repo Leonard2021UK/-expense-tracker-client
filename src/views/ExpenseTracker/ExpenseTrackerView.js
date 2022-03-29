@@ -1,15 +1,12 @@
 import ExpenseTrackerTable from "../../components/ExpenseTrackerTable/ExpenseTrackerTable";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {expenseTrackerThunk} from "../../redux/features/domain/expenseTrackerSlice";
 import {mainCategoryThunk} from "../../redux/features/suggestions/mainCategorySuggestionSlice";
 import CreateExpenseTrackerModal from "../../components/Modals/CreateExpenseTrackerModal/CreateExpenseTrackerModal";
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {clearExpenseTrackerForm} from "../../redux/features/domain/forms/expenseTrackerFormSlice";
 import PageLoadingSpinner from "../../components/Spinner/PageLoadingSpinner";
-import _ from "lodash";
-import {useResponse} from "../../customHooks/useResponse";
 
 const ExpenseTrackerView = ()=>{
 

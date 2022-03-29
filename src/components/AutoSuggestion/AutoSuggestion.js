@@ -1,9 +1,6 @@
 import {Typeahead} from "react-bootstrap-typeahead";
-import {Form, Button, InputGroup, FormControl} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {useSelector,useDispatch} from "react-redux";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
+import {useDispatch} from "react-redux";
 
 const _ = require('lodash');
 
@@ -12,20 +9,15 @@ const AutoSuggestion = (props) => {
     const dispatch = useDispatch();
 
     const {
-        id,
-        rowId,
-        disable,
         touched,
         errors,
         suggestionLabels,
         updateCurrentRowItemFormState,
-        handleTableChange,
         initialValue,
         options,
         className,
         reduxReducer,
         suggestionName,
-        nonExistingOptionIsValid,
         setNonExistingOption,
         setFieldValue,
         setFieldTouched,
@@ -38,7 +30,6 @@ const AutoSuggestion = (props) => {
     const [selectedItem,setSelectedItem] = useState(_.isUndefined(initialValue) ? _.isUndefined(savedNewRecord) ? [] : [savedNewRecord] : initialValue);
 
     useEffect(()=>{
-        // setSelectedItem(initialValue);
 
         // if initial value is present and not empty, set Yup validation for initial value
         if(!_.isEmpty(initialValue) && !_.isUndefined(initialValue)){
@@ -97,13 +88,10 @@ const AutoSuggestion = (props) => {
 
             //Store the selected if there is a match otherwise store NULL
             if (cleanValue === cleanStoredOption){
-                // setSelectedItem({value:option, isValid: true})
                 setSelectedItem(option)
 
             }else{
                 setSelectedItem([])
-                // setSelectedItem({value:"", isValid: false})
-                // setSelectedItem(null)
 
             }
         });
@@ -191,7 +179,6 @@ const AutoSuggestion = (props) => {
                 placeholder="Choose a state..."
                 selected={selectedItem.name}
                 className={(_.isUndefined(touched) && _.isUndefined(errors)) ? className : touched[suggestionName] && errors[suggestionName] ? "error" : className}
-                // className={(formikValues[suggestionName] !== formikInitialValues[suggestionName]) ? className :  "error" }
 
             />
             {(_.isUndefined(touched) && _.isUndefined(errors)) ? null : touched[suggestionName] && errors[suggestionName] ? (

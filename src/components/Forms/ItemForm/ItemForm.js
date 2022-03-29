@@ -2,11 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {
     Button,
     Col,
-    FloatingLabel,
     Form,
-    FormControl,
-    InputGroup,
-    Modal,
     Row,
     Spinner,
     ToastContainer
@@ -15,7 +11,7 @@ import {Formik} from "formik";
 import * as Yup from 'yup';
 import {itemCategoryThunk,itemCategoryInValidate} from "../../../redux/features/suggestions/itemCategorySuggestionSlice";
 import {unitTypeThunk,unitTypeInValidate} from "../../../redux/features/suggestions/unitSuggestionSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import _ from "lodash";
 import './itemFormStyle.css';
 import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
@@ -23,20 +19,14 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
 import {
-    setAmount,
     setItemCategory,
-    setItemFormState,
-    clearItemForm,
-    setItem, setPrice, setUnitType, setUnitPrice
+    setItem, setUnitType
 } from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
-import TableAutoSuggestion from "../../TableAutoSuggestion/TableAutoSuggestion";
-import CustomTableInputField from "../../CustomTableInputField/CustomTableInputField";
 import {
     addRow,
     setRowId,
-    updateSelectedRow
 } from "../../../redux/features/domain/forms/expenseFormSlice";
 import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
 
@@ -60,7 +50,7 @@ const ItemForm = (props) =>{
     let nonExistingItemOptionIsValid = false;
     let typedOptionItemAlreadyExists = false;
 
-    const {disable,rItemTableData,itemCategories,unitTypes,toggleModal,rItemCategories,rUnitTypes,rItem} = props;
+    const {disable,rItemTableData,toggleModal,rItemCategories,rUnitTypes,rItem} = props;
 
     const [newRowData,setNewRowData] = useState({});
 
@@ -80,9 +70,7 @@ const ItemForm = (props) =>{
     const [handleNewUnitResponse] = useResponse(setSavedNewUnit);
     const [handleNewItemResponse] = useResponse(setSavedNewItem);
 
-    const {saveItemCategory,saveUnitType,saveItem} = useApiService();
-
-    const rItemForm = useSelector((state) => state.itemForm.formState)
+    const {itemApiModule,unitTypeApiModule,itemCategoryApiModule} = useApiService();
 
     useEffect(()=>{
 
@@ -119,7 +107,6 @@ const ItemForm = (props) =>{
     // if item is used as a table row initialize rowId
     useEffect(() => {
         if (!_.isUndefined(rItemTableData)) {
-            // dispatch(setRowId({"rowId": rItemTableData.length}))
         }
     },[rItemTableData.expenseItems])
     //
@@ -132,7 +119,7 @@ const ItemForm = (props) =>{
             }
             setFetchingNewItemCategory(true);
 
-            saveItemCategory(reqBody)
+            itemCategoryApiModule().saveItemCategory(reqBody)
                 .then(async (response)=>{
                     if(response.ok){
                         // updates the new row data
@@ -161,7 +148,7 @@ const ItemForm = (props) =>{
             }
             setFetchingNewUnit(true);
 
-            saveUnitType("POST", reqBody)
+            unitTypeApiModule().saveUnitType("POST", reqBody)
                 .then(async (response) => {
                     if (response.ok) {
                         // updates the new row data
@@ -190,7 +177,7 @@ const ItemForm = (props) =>{
             }
             setFetchingNewItem(true);
 
-            saveItem(reqBody)
+            itemApiModule().saveItem(reqBody)
                 .then(async (response) => {
                     if (response.ok) {
                         handleNewItemResponse(response, "New item was successfully created!")
@@ -351,42 +338,6 @@ const ItemForm = (props) =>{
                         dispatch(addRow({
                             row:newRowData,rowId:rItemTableData.length
                         }))
-
-                        // dispatch(clearItemForm())
-                        // const reqBody = {
-                        //     "name":rItemForm.item,
-                        //     "amount":rItemForm.amount,
-                        //     "unitPrice":rItemForm.unitPrice,
-                        //     "unitType":rItemForm.unitType[0].id,
-                        //     "mainCategoryId":rItemForm.itemCategory[0].id
-                        // }
-                        // setFetchingNewItem(true);
-                        // saveItem(reqBody)
-                        //     .then(async (response)=>{
-                        //         if(response.ok){
-                        //             toggleModal();
-                        //             handleNewItemResponse(response, "New item was successfully created!")
-                        //             // let parsedResponse = await response.json();
-                        //             // setSavedNewMainCategory( [parsedResponse]);
-                        //             dispatch(itemCategoryInValidate({data:true}));
-                        //             dispatch(itemThunk());
-                        //         }else{
-                        //             toggleModal();
-                        //             handleNewItemResponse(response, null,"New item couldn't be created!")
-                        //
-                        //         }
-                        //         //TODO error handling
-                        //     }).then(()=>{
-                        //     setFetchingNewItem(false);
-                        //
-                        // })
-                        // UserService.register(values).then((response)=>{
-                        //     console.log(response)
-                        // })
-                        // Resets form after submission is complete
-                        // resetForm();
-
-                        // Sets setSubmitting to false after form is reset
                         setSubmitting(false);
                         toggleModal()
                     }}

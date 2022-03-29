@@ -1,4 +1,3 @@
-import Admin from "./layout/admin/Admin";
 import ExpenseTrackerView from "./views/ExpenseTracker/ExpenseTrackerView";
 import DashboardView from "./views/DashboardView/DashboardView";
 import BudgetingView from "./views/BudgetingView/BudgetingView";

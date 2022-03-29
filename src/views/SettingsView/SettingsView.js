@@ -31,7 +31,7 @@ const SettingsView = ()=>{
     const rExpenseType = useSelector((state) => state.suggestions.expenseType.response);
     const rMainCategory = useSelector((state) => state.suggestions.mainCategory.response);
     const [handleNewDataDeleteResponse] = useResponse();
-    const {deleteData} =useApiService();
+    const {generalDataApiModule} =useApiService();
 
     useEffect(()=>{
         dispatch(itemCategoryThunk());
@@ -47,7 +47,7 @@ const SettingsView = ()=>{
 
     const handleDeleteData = (data,url,toDispatch,options) => {
 
-        deleteData(data,url)
+        generalDataApiModule().deleteData(data,url)
             .then(async (response)=>{
 
                 if(response.ok){

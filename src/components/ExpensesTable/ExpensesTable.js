@@ -12,7 +12,7 @@ import {expenseTrackersInValidate, expenseTrackerThunk} from "../../redux/featur
 
 const ExpensesTable = (props)=>{
     const dispatch = useDispatch();
-    const {deleteExpense} =useApiService();
+    const {expenseApiModule} =useApiService();
     const {currentExpenseTracker,setCurrentExpenseTracker} = props;
     const [expenseDetailsModalIsOpen, setExpenseDetailsModalIsOpen] = useState(false);
     const rExpenseTrackers = useSelector((state) => state.expenseTrackers.response);
@@ -51,13 +51,12 @@ const ExpensesTable = (props)=>{
     }
 
     const handleDeleteExpense = (expense)=>{
-        deleteExpense(expense.id)
+        expenseApiModule().deleteExpense(expense.id)
             .then(async (response)=>{
 
             if(response.ok){
                 // updates the new row data
                 handleExpenseDeleteResponse(response, "Expense was successfully deleted!")
-                // setSavedNewMainCategory( [parsedResponse]);
                 dispatch(expenseTrackersInValidate({data:true}));
                 dispatch(expenseTrackerThunk());
             }else {
