@@ -4,11 +4,6 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
     //TODO implement caching e.g. redux-persist, reselect
 
 
-    // console.log(actions)
-    // console.log(dispatch)
-    // console.log(prevState)
-    // console.log(reduxRootDirName)
-    // console.log(fetchUrl)
 
     //Check the store tree hierarchy
     // Check if the data stored is upto date, only if not make a request

@@ -35,6 +35,7 @@ export function UseCustomFetch(url, options) {
 
     return fetchWithTimeout(url, options, 3000)
         .then(async (response) => {
+
             return response;
         })
         .catch((error) => {

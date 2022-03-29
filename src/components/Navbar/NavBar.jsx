@@ -27,8 +27,6 @@ const NavBar = (props)=>{
     }
 
     const handleLogout = () => {
-        console.log('Initial state: ', store.getState())
-
         store.dispatch({ type: 'LOGOUT' })
         storage.removeItem('persist:root')
         UserService.logout(history);

@@ -119,8 +119,6 @@ const ExpenseTrackerForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         // setSubmitting(true);
-
-                        console.log(rExpenseTrackerForm);
                         const reqBody = {
                             "name":rExpenseTrackerForm.mainCategoryName,
                             "mainCategory":rExpenseTrackerForm.mainCategory
@@ -147,9 +145,7 @@ const ExpenseTrackerForm = (props) =>{
                             setFetchingNewExpenseTracker(false);
 
                         })
-                        // UserService.register(values).then((response)=>{
-                        //     console.log(response)
-                        // })
+
                         // Resets form after submission is complete
                         resetForm();
 

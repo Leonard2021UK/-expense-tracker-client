@@ -33,7 +33,6 @@ const TableAutoSuggestion = (props) => {
         setNonExistingOption
     } = props;
 
-    console.log("INITIAL VALUE IN TABLESUGGESTION ", initialValue)
     //if initial value is an object wrap it in to an array
     // typeHead uses array for it's selected item
     const [selectedItem,setSelectedItem] = useState(_.isArray(initialValue) ? initialValue : [initialValue]);
@@ -57,27 +56,8 @@ const TableAutoSuggestion = (props) => {
             handleSuggestionChange(selectedItem,rowId,suggestionName)
 
         }
-
-        // // if(_.isArray(value)){
-        // //     value = value[0].name;
-
-        // setSelectedItem(value[0])
-        //
-        // // //Clean the string value received from the suggestion (remove white spaces)
-        // const cleanValue = _cleanValue(currentSuggestionValue);
-        // console.log(cleanValue)
-        // // // //Check if input is valid in the suggestion field
-        // _findAndSetSelectedOpt (cleanValue);
-
-        // setTimeout(()=>{
-        //     console.log(selectedItem)
-        //
-        // },2000)
     }
-    useEffect(()=>{
-        console.log(selectedItem)
 
-    },[selectedItem])
 
     const handleOnChange = (selected) =>{
 

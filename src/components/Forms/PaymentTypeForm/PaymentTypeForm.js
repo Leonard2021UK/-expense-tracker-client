@@ -51,7 +51,6 @@ const PaymentTypeForm = (props) =>{
 
     const nameMinLength = 3;
 
-
     const {toggleModal} = props;
 
     const [fetchingNewPaymentType,setFetchingNewPaymentType] = useState(false);
@@ -125,7 +124,7 @@ const PaymentTypeForm = (props) =>{
                         }
                     )=>(
                         <Form onSubmit={handleSubmit}>
-                            <Row className={"category-align"}>
+                            <Row className="mb-3">
                                 <Form.Group as={Col}>
                                     <Form.Label>Name</Form.Label>
                                     <Form.Control
@@ -155,7 +154,7 @@ const PaymentTypeForm = (props) =>{
                                             </Button>
                                         </Col>
                                         <Col md={3}>
-                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Register</Button>
+                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Submit </Button>
                                         </Col>
                                     </Row>
                                 </Form.Group>

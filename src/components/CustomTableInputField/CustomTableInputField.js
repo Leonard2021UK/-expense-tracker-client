@@ -18,9 +18,6 @@ export default function CustomTableInputField (props) {
         disable
     } = props;
 
-    console.log("FORMIK ERROR VALUES IN CUSTOMTABLE INPUT : ", errors)
-    console.log("DEFAULT VALUE IN CUSTOMTABLEINPUTFIELD : ", defaultValue)
-
     const [inputField,setInputField] = useState({});
 
     const onBlur = (e,rowId)=>{

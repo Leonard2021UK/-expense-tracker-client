@@ -16,8 +16,6 @@ export const itemThunk = ()=> async (dispatch,getState) => {
 
 
     const prevState = getState();
-    console.log("REDUX THUNK PREVSTATE")
-    console.log(prevState)
     await thunkGenerator(itemSliceName,suggestionActions,dispatch,prevState,rootTreeName,fetchUrl);
 
 };

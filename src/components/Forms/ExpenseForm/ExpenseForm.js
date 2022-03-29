@@ -1,24 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {Accordion, Button, Col, FloatingLabel, Form, FormControl, InputGroup, Modal, Row, Table} from "react-bootstrap";
+import {Accordion, Button, Col, FloatingLabel, Form, FormControl,Row} from "react-bootstrap";
 import exact from "prop-types-exact";
 import PropTypes from "prop-types";
 import "./expenseFormStyle.css";
-import LoginModal from "../../Modals/LoginModal/LoginModal";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import UserService from "../../../services/UserService";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBookOpen, faEdit, faTrash} from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
-import ItemTableRow from "../../ItemsTable/ItemTableRow/ItemTableRow";
 import ItemsTable from "../../ItemsTable/ItemsTable";
-import ItemsTableHeader from "../../ItemsTable/ItemsTableHeader/ItemsTableHeader";
-import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
-import RowAction from "../../RowAction/RowAction";
 import TableToolBar from "../../TableToolBars/TableToolBar";
 import CreateItemModal from "../../Modals/CreateItemModal/CreateItemModal";
-import {setExpenseTrackerCategory} from "../../../redux/features/domain/forms/expenseTrackerFormSlice";
-import {clearItemForm, setItemCategory} from "../../../redux/features/domain/forms/itemFormSlice";
+import {clearItemForm} from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
 import {useApiService} from "../../../services/useApiService";
 import {useDispatch, useSelector} from "react-redux";
@@ -28,25 +19,23 @@ import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice
 import {expenseAddressThunk} from "../../../redux/features/suggestions/expenseAddressSuggestionSlice";
 import {expensePaymentTypeThunk} from "../../../redux/features/suggestions/expensePaymentTypeSuggestionSlice";
 import {expenseTypeThunk} from "../../../redux/features/suggestions/expenseTypeSuggestionSlice";
-import {setItemTableState,addRow,removeRow,removeSelectedRow,clearItemTableState} from "../../../redux/features/domain/forms/expenseFormSlice";
+import {removeRow,removeSelectedRow,clearItemTableState} from "../../../redux/features/domain/forms/expenseFormSlice";
 import {setOwnerExpenseTracker,setExpenseFormState, setExpenseName, setExpenseEmail, setExpensePhone, setExpenseMobile, setExpenseAddress, setExpensePaymentType, setExpenseType, setExpenseComment, clearExpenseForm} from "../../../redux/features/domain/forms/expenseFormSlice";
 import {expenseTrackersInValidate, expenseTrackerThunk} from "../../../redux/features/domain/expenseTrackerSlice";
-import CreateExpenseAddressModal from "../../Modals/CreateExpenseAddressModal/CreateExpenseAddressModal";
+import AddNewResourceModal from "../../Modals/AddNewResourceModal/AddNewResourceModal";
+import ExpenseAddressForm from "../ExpenseAddressForm/ExpenseAddressForm";
+import ExpenseTypeForm from "../ExpenseTypeForm/ExpenseTypeForm";
+import PaymentTypeForm from "../PaymentTypeForm/PaymentTypeForm";
+import ItemForm from "../ItemForm/ItemForm";
 
 
 const ExpenseForm = (props) =>{
 
     const {initialValue,ownerExpenseTracker,disable,toggleModal,update,setSelectedExpense} = props;
-    console.log("INITIAL VALUE IN EXPENSE FORM: ",initialValue)
 
     const dispatch = useDispatch();
 
-    const categoryMinLength = 3;
-    const unitMinLength = 3;
     const expenseNameMinLength = 3;
-    const itemMinLength = 3;
-
-    const [itemTableData,setItemTableData] = useState([])
 
     let nonExistingItemCategoryOptionIsValid = false;
     let nonExistingUnitOptionIsValid = false;
@@ -56,20 +45,10 @@ const ExpenseForm = (props) =>{
     const [nonExistingCategoryOption,setNonExistingCategoryOption] = useState('');
     const [nonExistingItemOption,setNonExistingItemOption] = useState('');
 
-    const [savedExpenseAddress,setSavedExpenseAddress] = useState({});
-    const [savedPaymentType,setSavedPaymentType] = useState({});
-    const [savedExpenseType,setSavedExpenseType] = useState({});
-
     const [newRowData,setNewRowData] = useState({});
 
-    const [fetchingNewCategory,setFetchingNewCategory] = useState(false);
-    const [fetchingNewUnit,setFetchingNewUnit] = useState(false);
-    const [fetchingNewItem,setFetchingNewItem] = useState(false);
     const [fetchingExpense,setFetchingExpense] = useState(false);
-
-    // const [handleNewCategoryResponse] = useResponse(setSavedNewCategory);
-    // const [handleNewUnitResponse] = useResponse(setSavedNewUnit);
-    // const [handleNewItemResponse] = useResponse(setSavedNewItem);
+    const [expenseTotalPrice,setExpenseTotalPrice] = useState(0);
     const [handleExpenseResponse] = useResponse();
 
     const [createExpenseAddressModalIsOpen,setCreateExpenseAddressModalIsOpen] = useState(false);
@@ -77,37 +56,31 @@ const ExpenseForm = (props) =>{
     const [createExpenseTypeModalIsOpen,setCreateExpenseTypeModalIsOpen] = useState(false);
     const [createItemModalIsOpen,setCreateItemModalIsOpen] = useState(false);
 
-    const {saveExpense,getAllItemCategories,getAllUnitTypes,getAllItems,saveItem} = useApiService();
+    const {saveExpense} = useApiService();
 
-    const rItemForm = useSelector((state) => state.itemForm.formState)
     const rItemTableData = useSelector((state) => state.itemsTable)
     const rExpenseForm = useSelector((state) => state.expenseForm.formState);
 
     const rExpenseAddresses = useSelector((state) => state.suggestions.expenseAddress.response);
     const rExpensePaymentType= useSelector((state) => state.suggestions.expensePaymentType.response);
     const rExpenseType = useSelector((state) => state.suggestions.expenseType.response);
-    const rItemCategories = useSelector((state) => state.suggestions.itemCategory.response);
-    const rUnitTypes = useSelector((state) => state.suggestions.unitType.response);
-    const rItems = useSelector((state) => state.suggestions.item.response);
 
     const toggleCreateItemModal = ()=>{
         setCreateItemModalIsOpen(!createItemModalIsOpen);
-        // dispatch(clearExpenseForm())
         dispatch(clearItemForm())
     }
     const toggleCreateExpenseAddressModal = ()=>{
         setCreateExpenseAddressModalIsOpen(!createExpenseAddressModalIsOpen);
-        // dispatch(clearExpenseForm())
         dispatch(clearItemForm())
     }
-    const toggleCreatePaymentTypeModal = ()=>{
+
+    const toggleCreatePaymentTypeModalIsOpen = ()=>{
         setCreatePaymentTypeModalIsOpen(!createPaymentTypeModalIsOpen);
-        // dispatch(clearExpenseForm())
         dispatch(clearItemForm())
     }
-    const toggleCreateExpenseTypeModal = ()=>{
+
+    const toggleCreateExpenseTypeModalIsOpen = ()=>{
         setCreateExpenseTypeModalIsOpen(!createExpenseTypeModalIsOpen);
-        // dispatch(clearExpenseForm())
         dispatch(clearItemForm())
     }
 
@@ -118,44 +91,22 @@ const ExpenseForm = (props) =>{
         dispatch(expenseTypeThunk())
         dispatch(expenseAddressThunk())
         dispatch(expensePaymentTypeThunk())
-        console.log("ownerExpenseTracker VALUE IN EXPENSE FORM: ",ownerExpenseTracker)
 
         // when ownerExpenseTracker is present and no initial value was provided then initialize the form owner with the ownerExpenseTracker data
         if( !_.isUndefined(initialValue) ){
             dispatch(setExpenseFormState({formState:initialValue}))
         }
-        // else {
-        //     console.log("INITIAL VALUE IN EXPENSE FORM", initialValue)
-        //     console.log("SETTING EXPENSE FORM")
-        //
-        //
-        //     dispatch(setOwnerExpenseTracker({expenseTracker:ownerExpenseTracker}))
-        //
-        //     // dispatch(setItemTableState({tableState:initialValue.expenseItems}))
-        // }
         dispatch(setOwnerExpenseTracker({expenseTracker:ownerExpenseTracker}))
 
     },[])
 
-    const prepareNewRow = (newRowData) =>{
+    useEffect(()=>{
+        getExpenseTotalPrice();
+    })
 
-    }
-
-    console.log("rExpenseForm DATA VALUE IN EXPENSEFORM ", rExpenseForm)
     const addTableRow = ()=>{
 
         setCreateItemModalIsOpen(true)
-        // dispatch(addRow({
-        //     row:{
-        //         "unitType": "",
-        //         "itemCategory": "",
-        //         "rowId":rItemTableData.length,
-        //         "item":"",
-        //         "amount":"",
-        //         "unitPrice":"",
-        //         "price":""
-        //     }
-        // }))
     }
 
     const removeTableRow = ()=>{
@@ -174,12 +125,8 @@ const ExpenseForm = (props) =>{
         dispatch(removeSelectedRow({id:index}))
     }
 
-    const handleOnSelect = ()=>{
-        alert()
-    }
 
     const handleFormFieldOnBlur = (e) => {
-        const inputType = e.target.type;
         let name = e.target.name;
         let value = e.target.value;
         switch (true){
@@ -196,10 +143,18 @@ const ExpenseForm = (props) =>{
                 dispatch(setExpenseMobile({[name]:value}))
                 break;
             case (name === "expensePaymentType" ):
-                dispatch(setExpensePaymentType({[name]:value}))
+                if(value === "CREATE"){
+                    toggleCreatePaymentTypeModalIsOpen();
+                }else{
+                    dispatch(setExpensePaymentType({[name]:value}))
+                }
                 break;
             case (name === "expenseType" ):
-                dispatch(setExpenseType({[name]:value}))
+                if(value === "CREATE"){
+                    toggleCreateExpenseTypeModalIsOpen();
+                }else{
+                    dispatch(setExpenseType({[name]:value}))
+                }
                 break;
             case (name === "expenseAddress" ):
                 if(value === "CREATE"){
@@ -222,12 +177,52 @@ const ExpenseForm = (props) =>{
             .required("Name is required")
     });
 
+    const getExpenseTotalPrice = ()=>{
+        let sum;
+        if(!rExpenseForm.expenseItems.length > 1){
+            sum = rExpenseForm.expenseItems.reduce((previousValue, currentValue) =>{
+
+                if(_.isUndefined(previousValue)){
+
+                    return currentValue.price;
+                }
+                return previousValue.price + currentValue.price;
+            })
+            setExpenseTotalPrice(sum);
+        }else {
+            if(!_.isEmpty(rExpenseForm.expenseItems)){
+                setExpenseTotalPrice(rExpenseForm.expenseItems[0].price)
+            }
+        }
+    }
+
     return (
         <>
-            <CreateExpenseAddressModal
-                show={createExpenseAddressModalIsOpen}
-                toggleModal={toggleCreateExpenseAddressModal}
-            />
+            <AddNewResourceModal show={createExpenseAddressModalIsOpen} toggleModal={toggleCreateExpenseAddressModal} title={"Add new address"}>
+                {(toggleCreateExpenseAddressModal)=>(<ExpenseAddressForm toggleModal={toggleCreateExpenseAddressModal}/>)}
+            </AddNewResourceModal>
+            <AddNewResourceModal show={createExpenseTypeModalIsOpen} toggleModal={toggleCreateExpenseTypeModalIsOpen} title={"Add new expense type"}>
+                {(toggleCreateExpenseTypeModalIsOpen)=>(<ExpenseTypeForm toggleModal={toggleCreateExpenseTypeModalIsOpen}/>)}
+            </AddNewResourceModal>
+            <AddNewResourceModal show={createPaymentTypeModalIsOpen} toggleModal={toggleCreatePaymentTypeModalIsOpen} title={"Add new payment type"}>
+                {(toggleCreatePaymentTypeModalIsOpen)=>(<PaymentTypeForm toggleModal={toggleCreatePaymentTypeModalIsOpen}/>)}
+            </AddNewResourceModal>
+            {/*<AddNewResourceModal show={createItemModalIsOpen} toggleModal={toggleCreateItemModal} title={"Add new item"}>*/}
+            {/*    {(toggleCreateItemModal,*/}
+            {/*        rItemTableData,*/}
+            {/*        setNewRowData,*/}
+            {/*        rItemCategories,*/}
+            {/*        rUnitTypes,*/}
+            {/*        rItem)=>(<ItemForm */}
+            {/*            toggleModal={toggleCreateItemModal}*/}
+            {/*            rItemTableData={rItemTableData}*/}
+            {/*            setNewRowData={setNewRowData}*/}
+            {/*            rItemCategories={rItemCategories}*/}
+            {/*            rUnitTypes={rUnitTypes}*/}
+            {/*            rItem={rItem}*/}
+            {/*    />)}*/}
+            {/*</AddNewResourceModal>*/}
+
             <CreateItemModal
                 show={createItemModalIsOpen}
                 toggleModal={toggleCreateItemModal}
@@ -241,16 +236,7 @@ const ExpenseForm = (props) =>{
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
-                    // When button submits form and form is in the process of submitting, submit button is disabled
-                    // setSubmitting(true);
 
-                    console.log("SUBMIT")
-
-                    // rExpenseForm["expenseItems"] = "HELLO";
-                    // let reqBody = {};
-                    // reqBody["expenseForm"] = _.clone(rExpenseForm);
-                    // reqBody["expenseForm"]['expenseItems'] = _.clone(rItemTableData)
-                    // console.log(reqBody)
                     const reqBody = {
                         "expenseForm":rExpenseForm,
                         "items":rItemTableData,
@@ -261,22 +247,23 @@ const ExpenseForm = (props) =>{
 
                     saveExpense(method,reqBody)
                         .then(async (response) =>{
-                            console.log("SUBMIT")
-                            console.log(response)
                             if(response.ok){
                                 toggleModal();
-                                handleExpenseResponse(response,"New expense was successfully " + (update) ? "updated!" : "created!")
+                                let message =  (update) ? "New expense was successfully updated!" : "New expense was successfully created!"
+                                handleExpenseResponse(response,message )
                                 dispatch(expenseTrackersInValidate({data:true}))
                                 dispatch(expenseTrackerThunk())
                                 dispatch(clearExpenseForm())
                                 dispatch(clearItemTableState())
                             }else{
-                                handleExpenseResponse(response, null,"New expense couldn't be created!")
+                                let message =  (update) ? "New expense couldn't be updated!" : "New expense couldn't be created!"
+
+                                handleExpenseResponse(response, null,message)
                             }
                             //TODO error handling
                         }).then(()=>{
-                        setFetchingExpense(false);
-                    })
+                            setFetchingExpense(false);
+                        });
                     // UserService.register(values).then((response)=>{
                     //     console.log(response)
                     // })
@@ -302,9 +289,6 @@ const ExpenseForm = (props) =>{
                         }
                     )=>
                     {
-                        console.log("FORMIK ERROR VALUES IN EXPENSE FORM : ", errors)
-                        console.log("FORMIK TOUCHED VALUES IN EXPENSE FORM : ", touched)
-
                         return     (
                             <Form onSubmit={handleSubmit}>
                                 <Row className="mb-3">
@@ -370,7 +354,7 @@ const ExpenseForm = (props) =>{
                                                 aria-label="Floating label select example"
                                                 disabled={disable}
                                                 name="expenseAddress"
-                                                onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+                                                onChange={(e)=>handleFormFieldOnBlur(e,values.name)}
                                             >
                                                 <>
                                                     <option >Choose an address</option>
@@ -393,12 +377,12 @@ const ExpenseForm = (props) =>{
                                                 aria-label="Floating label select example"
                                                 disabled={disable}
                                                 name="expensePaymentType"
-                                                onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+                                                onChange={(e)=>handleFormFieldOnBlur(e,values.name)}
 
                                             >
                                                 <>
                                                     <option >Choose an payment type</option>
-                                                    <option >Create new ...</option>
+                                                    <option value="CREATE">Create new ...</option>
                                                     {rExpensePaymentType.map((expensePaymentType)=>{
                                                         const isSelected = _.isUndefined(initialValue) ? false : _.isNull(initialValue.expensePaymentType) ? false : initialValue.expensePaymentType.name === expensePaymentType.name
                                                         return <option selected={isSelected} value={JSON.stringify(expensePaymentType)}>{expensePaymentType.name}</option>
@@ -416,11 +400,11 @@ const ExpenseForm = (props) =>{
                                                 aria-label="Floating label select example"
                                                 disabled={disable}
                                                 name="expenseType"
-                                                onBlur={(e)=>handleFormFieldOnBlur(e,values.name)}
+                                                onChange={(e)=>handleFormFieldOnBlur(e,values.name)}
                                             >
                                                 <>
                                                     <option >Choose an expense type</option>
-                                                    <option >Create new ...</option>
+                                                    <option value="CREATE">Create new ...</option>
                                                     {
                                                         rExpenseType.map((expenseType)=>{
                                                             const isSelected = _.isUndefined(initialValue) ? false : _.isNull(initialValue.expenseType) ? false : initialValue.expenseType.name === expenseType.name
@@ -447,11 +431,6 @@ const ExpenseForm = (props) =>{
                                         </FloatingLabel>
                                     </Col>
                                 </Row>
-                                {/*<Row>*/}
-                                {/*    <Modal.Header closeButton>*/}
-                                {/*        <Modal.Title>Items submitted </Modal.Title>*/}
-                                {/*    </Modal.Header>*/}
-                                {/*</Row>*/}
                                 <Row >
                                     <Accordion defaultActiveKey="0">
                                         <Accordion.Item eventKey="0">
@@ -460,7 +439,6 @@ const ExpenseForm = (props) =>{
                                                 <TableToolBar clear= {clearTable} add={addTableRow} remove={removeTableRow} toggleModal={toggleCreateItemModal} disable={disable}/>
                                                 <Row>
                                                     <ItemsTable
-                                                        // data={_.isUndefined(initialValue) ?rExpenseForm.expenseItems : initialValue.expenseItems}
                                                         data={rExpenseForm.expenseItems}
                                                         errors={errors}
                                                         formikValues={values}
@@ -480,6 +458,15 @@ const ExpenseForm = (props) =>{
                                                         nonExistingItemCategoryOptionIsValid={nonExistingItemCategoryOptionIsValid}
                                                     />
                                                 </Row>
+                                                <Row>
+                                                    <Col md={10}/>
+                                                    <Col md={2}>
+                                                        <Form.Group as={Col}>
+                                                            Total:
+                                                            <FormControl value={expenseTotalPrice} disabled={true}/>
+                                                        </Form.Group>
+                                                    </Col>
+                                                </Row>
                                             </Accordion.Body>
                                         </Accordion.Item>
                                     </Accordion>
@@ -487,7 +474,7 @@ const ExpenseForm = (props) =>{
 
                                 <Row>
                                     <Form.Group>
-                                        <Row>
+                                        <Row style={{marginTop:5+"vh"}}>
                                             <Col md={1}>
                                                 <Button variant="secondary" onClick={toggleModal}>
                                                     {(!disable) ? "Cancel": "Close"}
@@ -499,12 +486,9 @@ const ExpenseForm = (props) =>{
                                                         <Button variant="primary" type="submit" disabled={isSubmitting}>{(update ? "Update" : "Submit")}</Button>
                                                     </Col> : null
                                             }
-
                                         </Row>
                                     </Form.Group>
                                 </Row>
-
-
                             </Form>
                         )
                     }

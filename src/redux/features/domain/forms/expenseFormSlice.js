@@ -59,7 +59,6 @@ const expenseFormSlice = createSlice({
         },
         setOwnerExpenseTracker(state,action) {
             const {expenseTracker} = action.payload;
-            console.log("OWNER EXPENSE TRACKER IN EXPENSE FORMSLICE, ", expenseTracker)
             state.formState.expenseTracker = expenseTracker;
         },
         clearExpenseForm(state,action){
@@ -90,7 +89,6 @@ const expenseFormSlice = createSlice({
         },
         updateSelectedRow(state,action){
             const {rowId,fieldName,value} = action.payload;
-            console.log(rowId,fieldName,value)
             state.formState.expenseItems = state.formState.expenseItems.map(row => row.id.rowId === rowId ? {...row,[fieldName]:value[0]}:row)
         },
         removeRow(state,action){

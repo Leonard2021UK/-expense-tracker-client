@@ -317,8 +317,6 @@ const ItemForm = (props) =>{
                 setNewRowData(prevState => ({...prevState,[name]:value}))
                 break;
         }
-        console.log("EVENT TARGET NAME VALUE IN ITEM FORM ",event)
-        console.log("NEW ROW DATA VALUE IN ITEM FORM ",value)
     }
     // const updateTableRow = (selectedItem,rowId,suggestionName)=>{
     //     // setFieldValue(selectedItem)
@@ -346,7 +344,6 @@ const ItemForm = (props) =>{
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
-                        console.log(rItemTableData.length)
 
                         // dispatch(setRowId({"rowId": rItemTableData.length}))
                         dispatch(setRowId({"rowId": rItemTableData.length}))

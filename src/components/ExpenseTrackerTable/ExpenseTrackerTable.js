@@ -2,45 +2,43 @@ import "./expenseTrackerTable.css";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
     faBookOpen,
-    faEdit,
-    faMailBulk,
     faTrash,
-    faArrowUp,
-    faCheck,
-    faTimes,
-    faWindowClose,
     faPlusSquare
 } from "@fortawesome/free-solid-svg-icons";
 import ExpenseListModal from "../Modals/ExpensesListModal/ExpensesListModal";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 import TableToolBar from "../TableToolBars/TableToolBar";
 import CustomPagination from "../CustomPagination/CustomPagination";
-import CreateExpenseModal from "../Modals/CreateExpenseModal/CreateExpenseModal";
 import ExpenseDetailsModal from "../Modals/ExpenseDetailsModal/ExpenseDetailsModal";
 import {useDispatch} from "react-redux";
 import {clearItemTableState,clearExpenseForm} from "../../redux/features/domain/forms/expenseFormSlice";
 import _ from 'lodash';
+import {useApiService} from "../../services/useApiService";
+import {useResponse} from "../../customHooks/useResponse";
+import {expenseTrackersInValidate, expenseTrackerThunk} from "../../redux/features/domain/expenseTrackerSlice";
+import {ToastContainer} from "react-toastify";
+
 const ExpenseTrackerTable = (props) => {
 
     const dispatch = useDispatch();
-    const {toggleExpenseTrackerModal} = props;
+    const {toggleExpenseTrackerModal,rExpenseTrackers} = props;
 
-    const rExpenseTrackers = useSelector((state) => state.expenseTrackers.response);
 
     const [expensesModalIsOpen, setExpensesModalIsOpen] = useState(false);
     const [currentPageContent, setCurrentPageContent] = useState([]);
     const [createExpenseModalIsOpen, setCreateExpenseModalIsOpen] = useState(false);
     const [currentExpenseTracker, setCurrentExpenseTracker] = useState({});
     const [disabledFields, setDisabledFields] = useState(false);
+    const [handleDeleteExpenseTrackerResponse] = useResponse();
 
+    const  {deleteExpenseTracker} = useApiService();
 
     const toggleExpenseDetailsModal = ()=>{
         setCreateExpenseModalIsOpen(!createExpenseModalIsOpen);
-
     }
 
-    const handleCreateExpense = (expenseTracker) =>{
+    const handleCreateExpenseTracker = (expenseTracker) =>{
         setCurrentExpenseTracker(expenseTracker)
         dispatch(clearExpenseForm())
         dispatch(clearItemTableState())
@@ -53,15 +51,31 @@ const ExpenseTrackerTable = (props) => {
         setExpensesModalIsOpen(!expensesModalIsOpen);
     }
 
-    const handleShowExpenses = (expenseTracker) => {
+    const handleDeleteExpensesTracker = (expenseTracker) =>{
+        deleteExpenseTracker(expenseTracker.id)
+            .then(async (response) =>{
+                if(response.ok){
+                    handleDeleteExpenseTrackerResponse(response,"Expense tracker was successfully deleted!")
+                    dispatch(expenseTrackersInValidate({data:true}))
+                    dispatch(expenseTrackerThunk())
+
+                }else{
+                    handleDeleteExpenseTrackerResponse(response, null,"Expense tracker couldn't be deleted!")
+                }
+                //TODO error handling
+            }).then(()=>{
+            // setFetchingExpense(false);
+        });
+    }
+
+    const handleShowExpensesTracker = (expenseTracker) => {
         setCurrentExpenseTracker(expenseTracker)
         toggleExpenseListModal()
         setDisabledFields(true)
     }
 
     useEffect(()=>{
-        console.log(rExpenseTrackers)
-        console.log(currentPageContent)
+
         if(!_.isUndefined(currentExpenseTracker)){
             setCurrentExpenseTracker(rExpenseTrackers.find((expenseTracker)=>
                 expenseTracker.id === currentExpenseTracker.id
@@ -72,6 +86,7 @@ const ExpenseTrackerTable = (props) => {
 
     return (
         <>
+
             <ExpenseListModal
                 show={expensesModalIsOpen}
                 currentExpenseTracker={currentExpenseTracker}
@@ -85,12 +100,7 @@ const ExpenseTrackerTable = (props) => {
                 disable={disabledFields}
                 title="Add new expense into the tracker"
             />
-            {/*<CreateExpenseModal*/}
-            {/*    show={createExpenseModalIsOpen}*/}
-            {/*    toggleModal={toggleExpenseDetailsModal}*/}
-            {/*    currentExpenseTracker={currentExpenseTracker}*/}
-            {/*    disabled={disabledFields}*/}
-            {/*/>*/}
+
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 className="h3" data-cy="page-header">Expense trackers</h1>
             </div>
@@ -115,7 +125,6 @@ const ExpenseTrackerTable = (props) => {
                     (!_.isNull(currentPageContent)) ?
 
                     currentPageContent.map((expenseTracker, index) => {
-                        console.log(expenseTracker)
                         return <>
                             <tr key={index}>
                                 <th scope="row">{index}</th>
@@ -128,22 +137,33 @@ const ExpenseTrackerTable = (props) => {
                                 <td>
                                     <FontAwesomeIcon icon={faPlusSquare} className="mr-2" color={"red"}
                                                      style={{margin: 1 + "vh", cursor: "pointer"}}
-                                                     onClick={() => handleCreateExpense(expenseTracker)}/>
+                                                     onClick={() => handleCreateExpenseTracker(expenseTracker)}/>
                                     <FontAwesomeIcon icon={faBookOpen} className="mr-" color={"green"}
                                                      style={{margin: 1 + "vh", cursor: "pointer"}}
-                                                     onClick={() => handleShowExpenses(expenseTracker)}/>
+                                                     onClick={() => handleShowExpensesTracker(expenseTracker)}/>
                                     <FontAwesomeIcon icon={faTrash} className="mr-2" color={"red"}
-                                                     style={{margin: 1 + "vh", cursor: "pointer"}}/>
+                                                     style={{margin: 1 + "vh", cursor: "pointer"}}
+                                                     onClick={() => handleDeleteExpensesTracker(expenseTracker)}/>
                                 </td>
                             </tr>
                         </>
-                }) : null
+                    }) : null
                 }
                 </tbody>
             </table>
             <CustomPagination data={rExpenseTrackers} setCurrentPageContent={setCurrentPageContent}/>
-
-            {/*</main>*/}
+            <ToastContainer
+                containerId="toast-container"
+                position="bottom-left"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

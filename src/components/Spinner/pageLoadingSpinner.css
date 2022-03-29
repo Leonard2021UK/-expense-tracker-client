@@ -1,0 +1,45 @@
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+}
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+    /*margin-left: -25px;*/
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.spinner > div {
+    z-index: 999;
+    background-color: #FFFFFF;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    font-size: 20px;
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+    20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+    0%, 40%, 100% {
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+    }  20% {
+           transform: scaleY(1.0);
+           -webkit-transform: scaleY(1.0);
+       }
+}

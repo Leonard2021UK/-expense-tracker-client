@@ -42,10 +42,6 @@ function ItemsTable(props) {
         nonExistingItemOptionIsValid,
         nonExistingItemCategoryOptionIsValid
     } = props;
-
-    console.log("FORMIK ERROR VALUES IN ITEMS TABLE : ", errors)
-    console.log("INITIAL DATA IN ITEMS TABLE : ", data)
-
     const dispatch = useDispatch();
 
     const handleInputFiledOnBlur = (inputField) => {
@@ -306,6 +302,7 @@ function ItemsTable(props) {
             <tbody {...getTableBodyProps()}>
             {rows.map((row, i) => {
                 prepareRow(row)
+
                 return (
                     <tr className="text-center border-bottom row-hover" {...row.getRowProps()}>
                         {row.cells.map(cell => {

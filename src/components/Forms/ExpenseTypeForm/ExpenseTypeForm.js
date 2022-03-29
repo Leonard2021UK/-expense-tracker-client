@@ -1,44 +1,18 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import {
     Button,
     Col,
-    FloatingLabel,
     Form,
-    FormControl,
-    InputGroup,
-    Modal,
     Row,
-    Spinner,
     ToastContainer
 } from "react-bootstrap";
 import {Formik} from "formik";
 import * as Yup from 'yup';
-import {itemCategoryThunk,itemCategoryInValidate} from "../../../redux/features/suggestions/itemCategorySuggestionSlice";
-import {unitTypeThunk,unitTypeInValidate} from "../../../redux/features/suggestions/unitSuggestionSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import _ from "lodash";
 import './expenseTypeFormStyle.css';
-import AutoSuggestion from "../../AutoSuggestion/AutoSuggestion";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFolderPlus} from "@fortawesome/free-solid-svg-icons";
 import {useApiService} from "../../../services/useApiService";
-import {
-    setAmount,
-    setItemCategory,
-    setItemFormState,
-    clearItemForm,
-    setItem, setPrice, setUnitType, setUnitPrice
-} from "../../../redux/features/domain/forms/itemFormSlice";
 import {useResponse} from "../../../customHooks/useResponse";
-import {itemThunk} from "../../../redux/features/suggestions/itemSuggestionSlice";
-import TableAutoSuggestion from "../../TableAutoSuggestion/TableAutoSuggestion";
-import CustomTableInputField from "../../CustomTableInputField/CustomTableInputField";
-import {
-    addRow,
-    setRowId,
-    updateSelectedRow
-} from "../../../redux/features/domain/forms/expenseFormSlice";
-import {itemInValidate} from "../../../redux/features/suggestions/itemSuggestionSlice";
 import {expenseTypeInValidate, expenseTypeThunk} from "../../../redux/features/suggestions/expenseTypeSuggestionSlice";
 
 const ExpenseTypeForm = (props) =>{
@@ -119,7 +93,7 @@ const ExpenseTypeForm = (props) =>{
                         }
                     )=>(
                         <Form onSubmit={handleSubmit}>
-                            <Row className={"category-align"}>
+                            <Row className="mb-3">
                                 <Form.Group as={Col}>
                                     <Form.Label>Name</Form.Label>
                                     <Form.Control

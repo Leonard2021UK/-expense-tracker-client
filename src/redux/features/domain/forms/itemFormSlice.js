@@ -11,7 +11,6 @@ const itemFormSlice = createSlice({
             state.formState = formState;
         },
         setItem(state,action) {
-            console.log(state.formState)
             const {item} = action.payload;
             state.formState.item = item;
         },

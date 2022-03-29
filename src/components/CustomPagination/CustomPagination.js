@@ -1,14 +1,11 @@
 import {Pagination} from "react-bootstrap";
-import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {usePagination} from "../../customHooks/usePagination";
 import _ from "lodash";
-import {logDOM} from "@testing-library/react";
 function CustomPagination(props) {
 
     const {data,setCurrentPageContent} = props;
     const [currentPage, setCurrentPage] = useState(1)
-    console.log("PAGINATION DATA ", data)
 
     let option = {
         total: (_.isNull(data) || _.isUndefined(data)) ? 10 : data.length,
@@ -16,10 +13,8 @@ function CustomPagination(props) {
         currentPage:currentPage,
         maxNumberOfTiles:16
     }
-    console.log("PAGINATION OPTION ", option)
 
     let paginationRange = usePagination(option);
-    console.log("PAGINATION RANGE ", paginationRange)
     const getCurrenPageData = ()=>{
 
         let start, end;
@@ -40,8 +35,8 @@ function CustomPagination(props) {
     }
 
     useEffect(()=>{
-        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
         setCurrentPageContent(getCurrenPageData())
+
     },[currentPage,data])
 
     const handleFirstPage = ()=>{
