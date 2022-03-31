@@ -59,7 +59,7 @@ const ExpenseTrackerForm = (props) =>{
 
             setFetchingNewCategory(true);
 
-            mainCategoryApiModule.fetchMainCategory("POST",reqBody)
+            mainCategoryApiModule().fetchMainCategory("POST",reqBody)
                 .then(async (response)=>{
                     if(response.ok){
                         handleNewMainCategoryResponse(response, "New category was successfully created!")

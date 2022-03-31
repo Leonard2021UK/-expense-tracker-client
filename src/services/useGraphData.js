@@ -2,8 +2,6 @@
 import inMemoryJWT from "../utils/inMemoryJWT";
 import {UseCustomFetch} from "../customHooks/useCustomFetch";
 
-
-
 const getExpenseTrackerSum = async ()=>{
     const fetchOption = {
         "method": "GET",

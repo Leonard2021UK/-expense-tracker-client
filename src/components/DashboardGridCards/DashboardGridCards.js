@@ -26,6 +26,7 @@ const DashboardGridCards = ()=>{
             try {
                 setExpenseTrackerSum(await r.json())
             }catch (error){
+                console.error(error);
             }
         })
         getExpenseTrackerItemByCategoryPeriod()
@@ -33,6 +34,7 @@ const DashboardGridCards = ()=>{
                 try {
                     setExpenseTrackerItemByCategory(await r.json())
                 }catch (error){
+                    console.error(error);
                 }
         })
 
