@@ -31,7 +31,7 @@ const CustomTabContent = (props)=>{
                         <tbody>
                         {dataCollection.map((data,index)=>{
                             return(
-                                <tr>
+                                <tr key={index}>
                                     <td>{index+1}</td>
                                     <td>{data.name}</td>
                                     <td>{data.updatedAt}</td>

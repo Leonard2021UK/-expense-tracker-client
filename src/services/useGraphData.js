@@ -13,6 +13,7 @@ const getExpenseTrackerSum = async ()=>{
     };
 
     const url = process.env.REACT_APP_EXPENSES_TRACKER_SUM;
+
     return await UseCustomFetch(url,fetchOption)
         .then( (response)=>{
             return response;
@@ -37,7 +38,7 @@ const getExpenseTrackerItemByCategoryPeriod = async ()=>{
 
 const UseGraphService ={
 
-        getExpenseTrackerSum,
+    getExpenseTrackerSum,
     getExpenseTrackerItemByCategoryPeriod
 }
 

@@ -118,11 +118,11 @@ const ExpenseTypeForm = (props) =>{
                     autoClose={2000}
                     hideProgressBar={false}
                     newestOnTop={false}
-                    closeOnClick
+                    closeOnClick={true}
                     rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
+                    pauseOnFocusLoss={false}
+                    draggable={false}
+                    pauseOnHover={true}
                 />
             </div>
         </>

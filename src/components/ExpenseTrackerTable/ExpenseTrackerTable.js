@@ -124,7 +124,7 @@ const ExpenseTrackerTable = (props) => {
                     currentPageContent.map((expenseTracker, index) => {
                         return <>
                             <tr key={index}>
-                                <th scope="row">{index}</th>
+                                <td scope="row">{index+1}</td>
                                 <td>{expenseTracker.name}</td>
                                 <td>{expenseTracker.mainCategory.name}</td>
                                 <td>{expenseTracker.expenses.length}</td>
@@ -155,11 +155,11 @@ const ExpenseTrackerTable = (props) => {
                 autoClose={2000}
                 hideProgressBar={false}
                 newestOnTop={false}
-                closeOnClick
+                closeOnClick={true}
                 rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={true}
             />
         </>
     )

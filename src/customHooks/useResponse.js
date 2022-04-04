@@ -20,6 +20,7 @@ export function useResponse(setState,reset) {
      */
     const handleResponse = async (response,customSuccessMessage = null, customErrorMessage = null )=>{
         //TODO refactor response handler
+
        try {
            if (!response.ok ) {
 

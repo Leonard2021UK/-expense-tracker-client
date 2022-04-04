@@ -1,24 +1,22 @@
+import React from "react";
 import CompanyLogo from "../../assets/svg/CompanyLogo/CompanyLogo";
 import UserService from "../../services/UserService";
 import PublicRenderer from "../../utilityComponents/PublicRenderer";
 import AuthRenderer from "../../utilityComponents/AuthRenderer";
 import {useHistory} from "react-router-dom";
-import storage from 'redux-persist/lib/storage'
-import store from '../../redux/store/index';
 import './navbar.css';
 import {Container} from "react-bootstrap";
-import {useDispatch} from "react-redux";
 const NavBar = (props)=>{
 
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     let history = useHistory();
 
     const {toggleLoginModal,toggleRegisterModal} = props;
 
-    const handleLogin = () => UserService.login();
-
-    const handleRegister= () => UserService.register();
+    // const handleLogin = () => UserService.login();
+    //
+    // const handleRegister= () => UserService.register();
 
     const getRefresh =  () =>{
         UserService.refreshToken().then(async(response) => {
@@ -27,10 +25,11 @@ const NavBar = (props)=>{
     }
 
     const handleLogout = () => {
-        store.dispatch({ type: 'LOGOUT' })
-        storage.removeItem('persist:root')
-        UserService.logout(history);
+        // store.dispatch({ type: 'LOGOUT' })
+        // storage.removeItem('persist:root')
         history.push("/");
+        UserService.logout();
+
     }
 
     return(
@@ -89,7 +88,6 @@ const NavBar = (props)=>{
                   </Container>
               </header>
           </>
-
     )
 }
 

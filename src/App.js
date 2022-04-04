@@ -1,3 +1,4 @@
+import React from "react";
 import IndexPage from "./views/IndexPage/IndexPage";
 import { Route, Switch} from "react-router-dom";
 import Admin from "./layout/admin/Admin";

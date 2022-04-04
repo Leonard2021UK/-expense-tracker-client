@@ -106,6 +106,11 @@ grep port standalone/configuration/standalone.xml
 #The Ultimate Guide to handling JWTs on frontend clients (GraphQL)
 https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/#jwt_persist
 
+#Spring Boot + React: JWT Authentication with Spring Security
+https://www.bezkoder.com/spring-boot-react-jwt-auth/
+https://www.bezkoder.com/spring-boot-refresh-token-jwt/
+https://www.bezkoder.com/react-refresh-token/
+
 #How to Get SSL HTTPS for Localhost
 https://www.section.io/engineering-education/how-to-get-ssl-https-for-localhost/
 

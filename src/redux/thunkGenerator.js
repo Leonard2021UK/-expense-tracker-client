@@ -1,4 +1,5 @@
 import inMemoryJWT from "../utils/inMemoryJWT";
+import {UseCustomFetch} from "../customHooks/useCustomFetch";
 
 const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirName,fetchUrl)=>{
     //TODO implement caching e.g. redux-persist, reselect
@@ -34,7 +35,8 @@ const thunkGenerator = async (sliceName,actions,dispatch,prevState,reduxRootDirN
         dispatch(actions[`${sliceName}InValidate`]({data: false}));
         try {
             // dispatch(actions[`${sliceName}RequestFetching`]({data: true}));
-            const response = await fetch(fetchUrl, fetchOption);
+            // const response = await fetch(fetchUrl, fetchOption);
+            const response = await UseCustomFetch(fetchUrl, fetchOption);
 
             // Suggestion fetching is successful
             if (response.status === 200) {

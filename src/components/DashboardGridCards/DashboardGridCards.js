@@ -28,7 +28,8 @@ const DashboardGridCards = ()=>{
             }catch (error){
                 console.error(error);
             }
-        })
+        });
+
         getExpenseTrackerItemByCategoryPeriod()
             .then(async (r)=>{
                 try {
@@ -36,7 +37,7 @@ const DashboardGridCards = ()=>{
                 }catch (error){
                     console.error(error);
                 }
-        })
+        });
 
     },[]);
 
@@ -86,7 +87,6 @@ const DashboardGridCards = ()=>{
                     <Card.Header>Spending in total</Card.Header>
                     <Card.Body>
                         <Card.Title>Expenses </Card.Title>
-                        <Card.Text>
                             <div style={{ width: '100%', height: 300 }}>
                                 <ResponsiveContainer>
                                     <AreaChart width={600} height={250} data={mapExpenseTrackerData()}
@@ -105,7 +105,6 @@ const DashboardGridCards = ()=>{
                                     </AreaChart>
                                 </ResponsiveContainer>
                             </div>
-                        </Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
