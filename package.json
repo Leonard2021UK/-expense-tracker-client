@@ -6,6 +6,7 @@
     "node": "16.14.0",
     "npm": "8.1.1"
   },
+  "proxy": "https://expense-tracker-api-2022.herokuapp.com/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
