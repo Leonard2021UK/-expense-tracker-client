@@ -117,6 +117,9 @@ https://www.section.io/engineering-education/how-to-get-ssl-https-for-localhost/
 #Importing an existing SSL key/certificate pair into a Java keystore
 https://blog.jgc.org/2011/06/importing-existing-ssl-keycertificate.html
 
+#package json script start
+"start": "HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem react-scripts start",
+
 #The Most Common Java Keytool Keystore Commands
 https://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html
 https://www.thomasvitale.com/https-spring-boot-ssl-certificate/

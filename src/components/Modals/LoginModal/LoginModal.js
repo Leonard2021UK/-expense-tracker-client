@@ -64,15 +64,21 @@ const LoginModal = (props) =>{
                                 // When button submits form and form is in the process of submitting, submit button is disabled
                                 setSubmitting(true);
                                 setShowSpinner(true)
-                                UserService.login(values).then((response)=>{
+                                UserService.login(values)
+                                    .then((response)=>{
+                                        try{
+                                            setShowSpinner(false);
+                                            if(_.isNull(response.getToken())){
+                                                setShowLoginError(true);
+                                            }else{
+                                                //redirects to admin page
+                                                history.push("/admin/dashboard");
+                                            }
+                                        }catch (error){
+                                            //TODO feedback on login form
+                                            console.error(error)
+                                        }
 
-                                    setShowSpinner(false);
-                                    if(_.isNull(response.getToken())){
-                                        setShowLoginError(true);
-                                    }else{
-                                        //redirects to admin page
-                                        history.push("/admin/dashboard");
-                                    }
                                 });
 
                                 // Resets form after submission is complete

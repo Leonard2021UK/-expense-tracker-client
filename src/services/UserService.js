@@ -21,15 +21,19 @@ const login = async (values) => {
     }
     return await UseCustomFetch(process.env.REACT_APP_SIGN_IN,fetchOption)
         .then( async (response)=>{
-            if(response['status'] === 200){
-                const parsedResponse = await response.json();
-                if(parsedResponse['accessToken']){
-                    const jwt = parsedResponse['accessToken'];
-                    inMemoryJWT.setToken(jwt)
-                }
+          try{
+              if(response['status'] === 200){
+                  const parsedResponse = await response.json();
+                  if(parsedResponse['accessToken']){
+                      const jwt = parsedResponse['accessToken'];
+                      inMemoryJWT.setToken(jwt)
+                  }
 
-            }
-            return inMemoryJWT
+              }
+              return inMemoryJWT
+          }catch (error){
+              console.error(error)
+          }
         })
 };
 
