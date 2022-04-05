@@ -53,7 +53,7 @@ const register = async (values) => {
         "body": JSON.stringify(values),
 
     }
-    return await UseCustomFetch("https://expense-tracker-api-2022.herokuapp.com/" + process.env.REACT_APP_SIGNUP,fetchOption)
+    return await UseCustomFetch( process.env.REACT_APP_SIGNUP,fetchOption)
         .then(async (response)=>{
             return response;
         })
