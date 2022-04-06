@@ -502,7 +502,7 @@ const ItemForm = (props) =>{
                                     </Col>
                                 </Form.Group>
                             </Row>
-                            <Row className={"category-align"} >
+                            <Row className="mb-3"  >
                                 <Form.Group as={Col}>
                                     <Form.Label>Price</Form.Label>
                                     <Form.Control
