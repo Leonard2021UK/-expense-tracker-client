@@ -524,14 +524,16 @@ const ItemForm = (props) =>{
                             </Row>
                             <Row className="mb-3" >
                                 <Form.Group>
-                                    <Row>
+                                    <Row className="mb-3" >
                                         <Col md={3}>
                                             <Button variant="secondary" onClick={toggleModal}>
                                                 Close
                                             </Button>
                                         </Col>
                                         <Col md={3}>
-                                            <Button variant="primary" type="submit" disabled={isSubmitting}> Register</Button>
+                                            <Button variant="primary" type="submit" disabled={isSubmitting}>
+                                                Submit
+                                            </Button>
                                         </Col>
                                     </Row>
                                 </Form.Group>
