@@ -1,6 +1,7 @@
 
 import generalDataApiModule from "../services/domain/generalModule.mjs";
 import expenseApiModule from "./domain/expenseModule.mjs";
+import expenseTypeApiModule from "./domain/expenseTypeModule.mjs"
 import mainCategoryApiModule from "./domain/mainCategoryModule.mjs";
 import itemCategoryApiModule from "./domain/itemCategoryModule.mjs";
 import paymentTypeApiModule from "./domain/paymentTypesModule.mjs";
@@ -20,5 +21,6 @@ export function useApiService() {
         expenseTrackerApiModule,
         unitTypeApiModule,
         expenseAddressApiModule,
+        expenseTypeApiModule
     }
 }

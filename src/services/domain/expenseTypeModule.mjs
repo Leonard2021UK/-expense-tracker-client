@@ -1,6 +1,8 @@
 import inMemoryJWT from "../../utils/inMemoryJWT.js";
 import {UseCustomFetch} from "../../customHooks/useCustomFetch.js";
 
+export default function usePaymentTypeModule() {
+
 const getAllExpenseTypes = async ()=>{
     const fetchOption = {
         "method": "GET",
@@ -18,7 +20,7 @@ const getAllExpenseTypes = async ()=>{
         })
 }
 
-const saveExpenseType = async (method,data = {})=>{
+const saveExpenseType = async (method,data = {})=> {
     const fetchOption = {
         "method": method,
         "headers": {
@@ -30,8 +32,13 @@ const saveExpenseType = async (method,data = {})=>{
     };
 
     const url = process.env.REACT_APP_EXPENSE_TYPE
-    return await UseCustomFetch(url,fetchOption)
-        .then( (response)=>{
+    return await UseCustomFetch(url, fetchOption)
+        .then((response) => {
             return response;
         })
+}
+    return{
+        saveExpenseType,
+        getAllExpenseTypes
+    }
 }

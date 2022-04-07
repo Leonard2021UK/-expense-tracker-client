@@ -50,7 +50,7 @@ const ExpenseTypeForm = (props) =>{
                         // When button submits form and form is in the process of submitting, submit button is disabled
                         setSubmitting(true);
                         setFetchingNewExpenseType(true);
-                        expenseTypeApiModule.saveExpenseType("POST",values)
+                        expenseTypeApiModule().saveExpenseType("POST",values)
                             .then(async (response)=>{
                                 if(response.ok){
                                     toggleModal();
